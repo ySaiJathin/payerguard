@@ -8,7 +8,7 @@ FR-008, SC-004).
 
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ClaimFeatures(BaseModel):
@@ -39,7 +39,20 @@ class WindowFeatures(BaseModel):
     invalid_status_pct: float
     volume_deviation: float
     amount_deviation: dict[str, float] = {}
-    anomaly_count: int | None = None
+    anomaly_count: int | None = Field(default=None, json_schema_extra={"deferred": True})
+
+
+def deferred_window_feature_fields() -> set[str]:
+    """Fields on `WindowFeatures` that are known to be all-null pre-Phase-7
+    and so must be exempted from missingness-based dropping in Phase 6's
+    feature selection (spec 006 FR-008), per research.md's schema-level
+    tag decision -- not a hardcoded column-name exception list.
+    """
+    return {
+        name
+        for name, field in WindowFeatures.model_fields.items()
+        if (field.json_schema_extra or {}).get("deferred") is True
+    }
 
 
 class EncodingScheme(BaseModel):
