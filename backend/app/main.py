@@ -8,14 +8,14 @@ module only includes them.
 from fastapi import FastAPI
 
 from app.data_engineering.router import router as data_engineering_router
+from app.quality.router import router as quality_router
 
 app = FastAPI(title="PayerGuard")
 
-for r in (data_engineering_router,):
+for r in (data_engineering_router, quality_router):
     app.include_router(r)
 
-# Remaining domain routers (ingestion, quality, baseline, anomaly, risk,
-# llm, incidents, hitl, revalidation, simulation, audit) are wired in as
-# each feature is implemented -- their router.py files are still
-# placeholders as of this feature (002-cleaning-standardization, still
-# within the data_engineering module).
+# Remaining domain routers (ingestion, baseline, anomaly, risk, llm,
+# incidents, hitl, remediation, revalidation, simulation, audit) are wired
+# in as each feature is implemented -- their router.py files are still
+# placeholders as of this feature (003-quality-validation-layer).

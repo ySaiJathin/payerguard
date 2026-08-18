@@ -1,0 +1,11 @@
+{
+  "BENE_ID": "identifier",
+  "CLM_ID": "identifier",
+  "CLM_FROM_DT": "date",
+  "CLM_THRU_DT": "date",
+  "CLM_PMT_AMT": "amount",
+  "CLM_IP_ADMSN_TYPE_CD": "categorical_code",
+  "PRNCPAL_DGNS_CD": "diagnosis_procedure_code",
+  "OT_PHYSN_UPIN": "identifier",
+  "CLM_LINE_NUM": "categorical_code"
+}

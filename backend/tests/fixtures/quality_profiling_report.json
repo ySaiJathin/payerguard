@@ -1,0 +1,103 @@
+{
+  "source_file": "backend/tests/fixtures/quality_cleaned_sample.csv",
+  "generated_at": "2026-08-18T00:00:00Z",
+  "total_rows": 6,
+  "total_columns": 9,
+  "unique_claim_count": 5,
+  "unique_beneficiary_count": 5,
+  "lines_per_claim_mean": 1.2,
+  "lines_per_claim_median": 1.0,
+  "duplicate_row_count": 0,
+  "columns": [
+    {
+      "column_name": "BENE_ID",
+      "category": "identifier",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 5
+    },
+    {
+      "column_name": "CLM_ID",
+      "category": "identifier",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 5
+    },
+    {
+      "column_name": "CLM_FROM_DT",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 5,
+      "date_format_observed": "%Y-%m-%d",
+      "date_min": "1990-01-01",
+      "date_max": "2020-03-01"
+    },
+    {
+      "column_name": "CLM_THRU_DT",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 5,
+      "date_format_observed": "%Y-%m-%d",
+      "date_min": "1990-01-05",
+      "date_max": "2020-03-04"
+    },
+    {
+      "column_name": "CLM_PMT_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 6,
+      "numeric_stats": {
+        "mean": 470.04,
+        "median": 500.0,
+        "std": 610.0,
+        "min": -430.25,
+        "max": 1250.0,
+        "p25": 300.0,
+        "p50": 500.0,
+        "p75": 999.99,
+        "p95": 1200.5,
+        "p99": 1250.0
+      }
+    },
+    {
+      "column_name": "CLM_IP_ADMSN_TYPE_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 4
+    },
+    {
+      "column_name": "PRNCPAL_DGNS_CD",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 5
+    },
+    {
+      "column_name": "OT_PHYSN_UPIN",
+      "category": "identifier",
+      "dtype_observed": "object",
+      "missing_count": 6,
+      "missing_pct": 100.0,
+      "cardinality": 0
+    },
+    {
+      "column_name": "CLM_LINE_NUM",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2
+    }
+  ]
+}
