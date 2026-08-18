@@ -1,0 +1,9 @@
+{
+  "source_file": "D:\\CODIN\\payerguard\\data\\raw\\inpatient.csv",
+  "output_file": "D:\\CODIN\\payerguard\\data\\cleaned\\inpatient_cleaned.csv",
+  "rows_in": 58066,
+  "rows_out": 58066,
+  "duplicate_rows_excluded": 0,
+  "quality_issue_count": 4456950,
+  "generated_at": "2026-08-18T10:43:17.777929Z"
+}

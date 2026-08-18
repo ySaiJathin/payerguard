@@ -1,0 +1,41 @@
+# Env / secrets
+.env
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Data (large / generated -- keep raw/ tracked via Git LFS or exclude per team policy)
+data/processed/*
+data/sampled/*
+data/baseline/*
+data/features/*
+!data/processed/.gitkeep
+!data/sampled/.gitkeep
+!data/baseline/.gitkeep
+!data/features/.gitkeep
+
+# ML artifacts (trained models -- large binaries)
+ml/artifacts/*
+!ml/artifacts/.gitkeep
+
+# Great Expectations local state
+great_expectations/uncommitted/
+
+# Node (frontend, deferred)
+node_modules/
+dist/
+build/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

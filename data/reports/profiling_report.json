@@ -1,0 +1,5583 @@
+{
+  "source_file": "D:\\CODIN\\payerguard\\data\\raw\\inpatient.csv",
+  "generated_at": "2026-08-18T08:37:37.325237Z",
+  "total_rows": 58066,
+  "total_columns": 197,
+  "unique_claim_count": 20867,
+  "unique_beneficiary_count": 5699,
+  "lines_per_claim_mean": 2.78267120333541,
+  "lines_per_claim_median": 1.0,
+  "duplicate_row_count": 0,
+  "columns": [
+    {
+      "column_name": "BENE_ID",
+      "category": "identifier",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 5699,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "-10000010282387",
+          "count": 1090
+        },
+        {
+          "value": "-10000010255799",
+          "count": 1032
+        },
+        {
+          "value": "-10000010275202",
+          "count": 1007
+        },
+        {
+          "value": "-10000010271058",
+          "count": 728
+        },
+        {
+          "value": "-10000010262670",
+          "count": 655
+        },
+        {
+          "value": "-10000010282719",
+          "count": 650
+        },
+        {
+          "value": "-10000010277644",
+          "count": 528
+        },
+        {
+          "value": "-10000010256636",
+          "count": 447
+        },
+        {
+          "value": "-10000010264641",
+          "count": 362
+        },
+        {
+          "value": "-10000010273616",
+          "count": 351
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_ID",
+      "category": "identifier",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 20867,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "-10000930775141",
+          "count": 46
+        },
+        {
+          "value": "-10000930521375",
+          "count": 34
+        },
+        {
+          "value": "-10000930487748",
+          "count": 34
+        },
+        {
+          "value": "-10000931409722",
+          "count": 32
+        },
+        {
+          "value": "-10000931016403",
+          "count": 30
+        },
+        {
+          "value": "-10000931200764",
+          "count": 30
+        },
+        {
+          "value": "-10000930487752",
+          "count": 28
+        },
+        {
+          "value": "-10000930304311",
+          "count": 27
+        },
+        {
+          "value": "-10000930775175",
+          "count": 26
+        },
+        {
+          "value": "-10000930265510",
+          "count": 25
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_NEAR_LINE_REC_IDENT_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "V",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_CLM_TYPE_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "60",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_FROM_DT",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2914,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "25-Feb-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "CLM_THRU_DT",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2910,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "07-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "NCH_WKLY_PROC_DT",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 417,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "13-Mar-2015",
+      "date_max": "03-Mar-2023"
+    },
+    {
+      "column_name": "FI_CLM_PROC_DT",
+      "category": "date",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLAIM_QUERY_CODE",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "3",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRVDR_NUM",
+      "category": "identifier",
+      "dtype_observed": "object",
+      "missing_count": 2841,
+      "missing_pct": 4.892708297454621,
+      "cardinality": 4876,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "491581",
+          "count": 1093
+        },
+        {
+          "value": "030115",
+          "count": 1077
+        },
+        {
+          "value": "377673",
+          "count": 1009
+        },
+        {
+          "value": "335432",
+          "count": 756
+        },
+        {
+          "value": "155199",
+          "count": 655
+        },
+        {
+          "value": "507102",
+          "count": 650
+        },
+        {
+          "value": "420053",
+          "count": 523
+        },
+        {
+          "value": "060113",
+          "count": 447
+        },
+        {
+          "value": "193074",
+          "count": 430
+        },
+        {
+          "value": "107522",
+          "count": 361
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_FAC_TYPE_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "1",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_SRVC_CLSFCTN_TYPE_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "1",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_FREQ_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "1",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "FI_NUM",
+      "category": "identifier",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_MDCR_NON_PMT_RSN_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PMT_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 10341,
+      "numeric_stats": {
+        "mean": 13638.307733613474,
+        "median": 1481.7150000000001,
+        "std": 35993.90777966173,
+        "min": 62.44,
+        "max": 598716.31,
+        "p25": 945.37,
+        "p50": 1481.7150000000001,
+        "p75": 9932.04,
+        "p95": 79307.53,
+        "p99": 156543.4
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_PRMRY_PYR_CLM_PD_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2263,
+      "numeric_stats": {
+        "mean": 2732.677874487652,
+        "median": 0.0,
+        "std": 17139.23026435715,
+        "min": 0.0,
+        "max": 598077.27,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 9164.9475,
+        "p99": 75222.53
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_PRMRY_PYR_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "FI_CLM_ACTN_CD",
+      "category": "categorical_code",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRVDR_STATE_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 51,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "10",
+          "count": 6285
+        },
+        {
+          "value": "5",
+          "count": 4866
+        },
+        {
+          "value": "33",
+          "count": 4448
+        },
+        {
+          "value": "45",
+          "count": 3150
+        },
+        {
+          "value": "49",
+          "count": 2244
+        },
+        {
+          "value": "3",
+          "count": 2216
+        },
+        {
+          "value": "39",
+          "count": 2180
+        },
+        {
+          "value": "34",
+          "count": 2070
+        },
+        {
+          "value": "36",
+          "count": 1951
+        },
+        {
+          "value": "15",
+          "count": 1911
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ORG_NPI_NUM",
+      "category": "identifier",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 4902,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "1063523132",
+          "count": 1093
+        },
+        {
+          "value": "1275566200",
+          "count": 1077
+        },
+        {
+          "value": "1306950993",
+          "count": 1009
+        },
+        {
+          "value": "1265846273",
+          "count": 756
+        },
+        {
+          "value": "1144220823",
+          "count": 655
+        },
+        {
+          "value": "1629288618",
+          "count": 650
+        },
+        {
+          "value": "1649209743",
+          "count": 609
+        },
+        {
+          "value": "1316030083",
+          "count": 523
+        },
+        {
+          "value": "1609820125",
+          "count": 515
+        },
+        {
+          "value": "1689688988",
+          "count": 447
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "AT_PHYSN_UPIN",
+      "category": "identifier",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "AT_PHYSN_NPI",
+      "category": "identifier",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2463,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "9999868992",
+          "count": 1479
+        },
+        {
+          "value": "9999997494",
+          "count": 1108
+        },
+        {
+          "value": "9999907899",
+          "count": 1012
+        },
+        {
+          "value": "9999720698",
+          "count": 756
+        },
+        {
+          "value": "9999878397",
+          "count": 662
+        },
+        {
+          "value": "9999902494",
+          "count": 656
+        },
+        {
+          "value": "9999731190",
+          "count": 609
+        },
+        {
+          "value": "9999996298",
+          "count": 591
+        },
+        {
+          "value": "9999999193",
+          "count": 556
+        },
+        {
+          "value": "9999857698",
+          "count": 515
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "OP_PHYSN_UPIN",
+      "category": "identifier",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "OP_PHYSN_NPI",
+      "category": "identifier",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2463,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "9999868992",
+          "count": 1479
+        },
+        {
+          "value": "9999997494",
+          "count": 1108
+        },
+        {
+          "value": "9999907899",
+          "count": 1012
+        },
+        {
+          "value": "9999720698",
+          "count": 756
+        },
+        {
+          "value": "9999878397",
+          "count": 662
+        },
+        {
+          "value": "9999902494",
+          "count": 656
+        },
+        {
+          "value": "9999731190",
+          "count": 609
+        },
+        {
+          "value": "9999996298",
+          "count": 591
+        },
+        {
+          "value": "9999999193",
+          "count": 556
+        },
+        {
+          "value": "9999857698",
+          "count": 515
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "OT_PHYSN_UPIN",
+      "category": "identifier",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "OT_PHYSN_NPI",
+      "category": "identifier",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_MCO_PD_SW",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "0",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PTNT_DSCHRG_STUS_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "1",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_IND_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_TOT_CHRG_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 10341,
+      "numeric_stats": {
+        "mean": 13638.307733613474,
+        "median": 1481.7150000000001,
+        "std": 35993.90777966173,
+        "min": 62.44,
+        "max": 598716.31,
+        "p25": 945.37,
+        "p50": 1481.7150000000001,
+        "p75": 9932.04,
+        "p95": 79307.53,
+        "p99": 156543.4
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_ADMSN_DT",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2914,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "25-Feb-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "CLM_IP_ADMSN_TYPE_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 3,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "1",
+          "count": 43089
+        },
+        {
+          "value": "3",
+          "count": 14020
+        },
+        {
+          "value": "2",
+          "count": 957
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_SRC_IP_ADMSN_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "5",
+          "count": 14838
+        },
+        {
+          "value": "1",
+          "count": 14707
+        },
+        {
+          "value": "2",
+          "count": 14285
+        },
+        {
+          "value": "4",
+          "count": 14236
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_PTNT_STATUS_IND_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "A",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PASS_THRU_PER_DIEM_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 10.0,
+        "median": 10.0,
+        "std": 0.0,
+        "min": 10.0,
+        "max": 10.0,
+        "p25": 10.0,
+        "p50": 10.0,
+        "p75": 10.0,
+        "p95": 10.0,
+        "p99": 10.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_BENE_IP_DDCTBL_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 694,
+      "numeric_stats": {
+        "mean": 9.590875555402473,
+        "median": 0.0,
+        "std": 84.71334545719272,
+        "min": 0.0,
+        "max": 1644.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 227.11
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_BENE_PTA_COINSRNC_LBLTY_AM",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 8032,
+      "numeric_stats": {
+        "mean": 1894.9540321358456,
+        "median": 228.01,
+        "std": 6138.646528541673,
+        "min": 0.0,
+        "max": 119743.4,
+        "p25": 0.0,
+        "p50": 228.01,
+        "p75": 435.11,
+        "p95": 10640.9475,
+        "p99": 26871.99
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_BENE_BLOOD_DDCTBL_LBLTY_AM",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_PROFNL_CMPNT_CHRG_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 4.0,
+        "median": 4.0,
+        "std": 0.0,
+        "min": 4.0,
+        "max": 4.0,
+        "p25": 4.0,
+        "p50": 4.0,
+        "p75": 4.0,
+        "p95": 4.0,
+        "p99": 4.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_IP_NCVRD_CHRG_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2370,
+      "numeric_stats": {
+        "mean": 1695.810203389247,
+        "median": 0.0,
+        "std": 12396.736167847776,
+        "min": 0.0,
+        "max": 246764.71,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 35.0,
+        "p95": 1976.685,
+        "p99": 65008.74
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_IP_TOT_DDCTN_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2370,
+      "numeric_stats": {
+        "mean": 1695.810203389247,
+        "median": 0.0,
+        "std": 12396.736167847776,
+        "min": 0.0,
+        "max": 246764.71,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 35.0,
+        "p95": 1976.685,
+        "p99": 65008.74
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_TOT_PPS_CPTL_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_CPTL_FSP_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_CPTL_OUTLIER_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_CPTL_DSPRPRTNT_SHR_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_CPTL_IME_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_CPTL_EXCPTN_AMT",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_OLD_CPTL_HLD_HRMLS_AMT",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "0",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_PPS_CPTL_DRG_WT_NUM",
+      "category": "amount",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_UTLZTN_DAY_CNT",
+      "category": "utilization_duration",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 45,
+      "numeric_stats": {
+        "mean": 1.700272104157338,
+        "median": 0.0,
+        "std": 4.0024997263281525,
+        "min": 0.0,
+        "max": 104.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 1.0,
+        "p95": 11.0,
+        "p99": 17.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "BENE_TOT_COINSRNC_DAYS_CNT",
+      "category": "utilization_duration",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 3,
+      "numeric_stats": {
+        "mean": 0.0016532910825612234,
+        "median": 0.0,
+        "std": 0.2592918468549491,
+        "min": 0.0,
+        "max": 44.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "BENE_LRD_USED_CNT",
+      "category": "utilization_duration",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_NON_UTLZTN_DAYS_CNT",
+      "category": "utilization_duration",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_BLOOD_PNTS_FRNSHD_QTY",
+      "category": "utilization_duration",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_VRFD_NCVRD_STAY_FROM_DT",
+      "category": "date",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_VRFD_NCVRD_STAY_THRU_DT",
+      "category": "date",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_ACTV_OR_CVRD_LVL_CARE_THRU",
+      "category": "date",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_BENE_MDCR_BNFTS_EXHTD_DT_I",
+      "category": "date",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_BENE_DSCHRG_DT",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2910,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "07-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "CLM_DRG_CD",
+      "category": "categorical_code",
+      "dtype_observed": "float64",
+      "missing_count": 3262,
+      "missing_pct": 5.617745324286157,
+      "cardinality": 167,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "951.0",
+          "count": 28831
+        },
+        {
+          "value": "950.0",
+          "count": 1456
+        },
+        {
+          "value": "949.0",
+          "count": 1332
+        },
+        {
+          "value": "922.0",
+          "count": 1110
+        },
+        {
+          "value": "923.0",
+          "count": 1015
+        },
+        {
+          "value": "203.0",
+          "count": 849
+        },
+        {
+          "value": "202.0",
+          "count": 741
+        },
+        {
+          "value": "181.0",
+          "count": 688
+        },
+        {
+          "value": "963.0",
+          "count": 654
+        },
+        {
+          "value": "965.0",
+          "count": 622
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_DRG_OUTLIER_STAY_CD",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 3,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "0",
+          "count": 56137
+        },
+        {
+          "value": "2",
+          "count": 1925
+        },
+        {
+          "value": "1",
+          "count": 4
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "NCH_DRG_OUTLIER_APRVD_PMT_AMT",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "0",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ADMTG_DGNS_CD",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 41938,
+      "missing_pct": 72.22470981297144,
+      "cardinality": 65,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z7682",
+          "count": 2881
+        },
+        {
+          "value": "T50901A",
+          "count": 2541
+        },
+        {
+          "value": "Z951",
+          "count": 1694
+        },
+        {
+          "value": "Z95818",
+          "count": 1058
+        },
+        {
+          "value": "C3490",
+          "count": 940
+        },
+        {
+          "value": "R931",
+          "count": 789
+        },
+        {
+          "value": "G479",
+          "count": 586
+        },
+        {
+          "value": "J1282",
+          "count": 367
+        },
+        {
+          "value": "Z3400",
+          "count": 364
+        },
+        {
+          "value": "J45909",
+          "count": 363
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRNCPAL_DGNS_CD",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 190,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z733",
+          "count": 11469
+        },
+        {
+          "value": "Z608",
+          "count": 7216
+        },
+        {
+          "value": "T7432X",
+          "count": 3314
+        },
+        {
+          "value": "Z604",
+          "count": 3227
+        },
+        {
+          "value": "Z7682",
+          "count": 3092
+        },
+        {
+          "value": "T50901A",
+          "count": 2541
+        },
+        {
+          "value": "C3490",
+          "count": 1856
+        },
+        {
+          "value": "Z951",
+          "count": 1766
+        },
+        {
+          "value": "I214",
+          "count": 1114
+        },
+        {
+          "value": "Z95818",
+          "count": 1098
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD1",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 231,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z733",
+          "count": 13031
+        },
+        {
+          "value": "Z608",
+          "count": 8227
+        },
+        {
+          "value": "T7432X",
+          "count": 3727
+        },
+        {
+          "value": "Z604",
+          "count": 3537
+        },
+        {
+          "value": "Z940",
+          "count": 2858
+        },
+        {
+          "value": "Z951",
+          "count": 2500
+        },
+        {
+          "value": "C3490",
+          "count": 1365
+        },
+        {
+          "value": "Z95818",
+          "count": 1131
+        },
+        {
+          "value": "R0902",
+          "count": 970
+        },
+        {
+          "value": "I214",
+          "count": 915
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW1",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 30497
+        },
+        {
+          "value": "N",
+          "count": 27569
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD2",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57,
+      "missing_pct": 0.09816415802707264,
+      "cardinality": 242,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z733",
+          "count": 9567
+        },
+        {
+          "value": "Z608",
+          "count": 9095
+        },
+        {
+          "value": "T7432X",
+          "count": 4054
+        },
+        {
+          "value": "R931",
+          "count": 3996
+        },
+        {
+          "value": "Z604",
+          "count": 3966
+        },
+        {
+          "value": "C3490",
+          "count": 2221
+        },
+        {
+          "value": "N1830",
+          "count": 1539
+        },
+        {
+          "value": "N184",
+          "count": 1154
+        },
+        {
+          "value": "Z7682",
+          "count": 878
+        },
+        {
+          "value": "F0280",
+          "count": 810
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW2",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57,
+      "missing_pct": 0.09816415802707264,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 45106
+        },
+        {
+          "value": "N",
+          "count": 12903
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD3",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 268,
+      "missing_pct": 0.4615437605483415,
+      "cardinality": 238,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z608",
+          "count": 5868
+        },
+        {
+          "value": "Z733",
+          "count": 5823
+        },
+        {
+          "value": "N1830",
+          "count": 3002
+        },
+        {
+          "value": "T7432X",
+          "count": 2887
+        },
+        {
+          "value": "Z604",
+          "count": 2581
+        },
+        {
+          "value": "I259",
+          "count": 2176
+        },
+        {
+          "value": "Z653",
+          "count": 1800
+        },
+        {
+          "value": "N184",
+          "count": 1770
+        },
+        {
+          "value": "R931",
+          "count": 1601
+        },
+        {
+          "value": "F0280",
+          "count": 1326
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW3",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 268,
+      "missing_pct": 0.4615437605483415,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 44689
+        },
+        {
+          "value": "N",
+          "count": 13109
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD4",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 642,
+      "missing_pct": 1.1056384114628182,
+      "cardinality": 223,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "N1830",
+          "count": 4203
+        },
+        {
+          "value": "Z608",
+          "count": 3359
+        },
+        {
+          "value": "I259",
+          "count": 2715
+        },
+        {
+          "value": "Z653",
+          "count": 2501
+        },
+        {
+          "value": "Z733",
+          "count": 2354
+        },
+        {
+          "value": "R931",
+          "count": 2156
+        },
+        {
+          "value": "T7432X",
+          "count": 1912
+        },
+        {
+          "value": "Z604",
+          "count": 1844
+        },
+        {
+          "value": "N184",
+          "count": 1630
+        },
+        {
+          "value": "R801",
+          "count": 1559
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW4",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 642,
+      "missing_pct": 1.1056384114628182,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 44407
+        },
+        {
+          "value": "N",
+          "count": 13017
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD5",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 1099,
+      "missing_pct": 1.8926738538904007,
+      "cardinality": 218,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "N1830",
+          "count": 4338
+        },
+        {
+          "value": "Z653",
+          "count": 2704
+        },
+        {
+          "value": "I259",
+          "count": 2515
+        },
+        {
+          "value": "E1121",
+          "count": 2192
+        },
+        {
+          "value": "R931",
+          "count": 2176
+        },
+        {
+          "value": "Z608",
+          "count": 2117
+        },
+        {
+          "value": "R809",
+          "count": 1830
+        },
+        {
+          "value": "R801",
+          "count": 1825
+        },
+        {
+          "value": "E1129",
+          "count": 1824
+        },
+        {
+          "value": "M810",
+          "count": 1362
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW5",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 1099,
+      "missing_pct": 1.8926738538904007,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 44224
+        },
+        {
+          "value": "N",
+          "count": 12743
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD6",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 1592,
+      "missing_pct": 2.741707711914029,
+      "cardinality": 204,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z653",
+          "count": 3230
+        },
+        {
+          "value": "N1830",
+          "count": 3195
+        },
+        {
+          "value": "E1121",
+          "count": 3067
+        },
+        {
+          "value": "I259",
+          "count": 2226
+        },
+        {
+          "value": "R931",
+          "count": 2187
+        },
+        {
+          "value": "R801",
+          "count": 2003
+        },
+        {
+          "value": "E1129",
+          "count": 1960
+        },
+        {
+          "value": "R809",
+          "count": 1861
+        },
+        {
+          "value": "Z608",
+          "count": 1582
+        },
+        {
+          "value": "N182",
+          "count": 1560
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW6",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 1592,
+      "missing_pct": 2.741707711914029,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 43729
+        },
+        {
+          "value": "N",
+          "count": 12745
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD7",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 2282,
+      "missing_pct": 3.9300106775049084,
+      "cardinality": 210,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 3205
+        },
+        {
+          "value": "Z653",
+          "count": 3129
+        },
+        {
+          "value": "R931",
+          "count": 2661
+        },
+        {
+          "value": "N1830",
+          "count": 2449
+        },
+        {
+          "value": "E1129",
+          "count": 2230
+        },
+        {
+          "value": "I259",
+          "count": 2148
+        },
+        {
+          "value": "R809",
+          "count": 2095
+        },
+        {
+          "value": "R801",
+          "count": 2056
+        },
+        {
+          "value": "N182",
+          "count": 1765
+        },
+        {
+          "value": "E8881",
+          "count": 1457
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW7",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 2282,
+      "missing_pct": 3.9300106775049084,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 42633
+        },
+        {
+          "value": "N",
+          "count": 13151
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD8",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 3112,
+      "missing_pct": 5.359418592635966,
+      "cardinality": 204,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 3445
+        },
+        {
+          "value": "Z653",
+          "count": 2979
+        },
+        {
+          "value": "I259",
+          "count": 2662
+        },
+        {
+          "value": "R931",
+          "count": 2418
+        },
+        {
+          "value": "R809",
+          "count": 2230
+        },
+        {
+          "value": "E1129",
+          "count": 2183
+        },
+        {
+          "value": "R801",
+          "count": 2164
+        },
+        {
+          "value": "E669",
+          "count": 1916
+        },
+        {
+          "value": "N1830",
+          "count": 1701
+        },
+        {
+          "value": "E8881",
+          "count": 1401
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW8",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 3112,
+      "missing_pct": 5.359418592635966,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 41926
+        },
+        {
+          "value": "N",
+          "count": 13028
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD9",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 4476,
+      "missing_pct": 7.708469672441705,
+      "cardinality": 202,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 3768
+        },
+        {
+          "value": "Z653",
+          "count": 2433
+        },
+        {
+          "value": "I259",
+          "count": 2377
+        },
+        {
+          "value": "R801",
+          "count": 1946
+        },
+        {
+          "value": "R931",
+          "count": 1902
+        },
+        {
+          "value": "E1129",
+          "count": 1875
+        },
+        {
+          "value": "E669",
+          "count": 1851
+        },
+        {
+          "value": "E8881",
+          "count": 1814
+        },
+        {
+          "value": "R809",
+          "count": 1700
+        },
+        {
+          "value": "R7303",
+          "count": 1587
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW9",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 4476,
+      "missing_pct": 7.708469672441705,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 41862
+        },
+        {
+          "value": "N",
+          "count": 11728
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD10",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 6135,
+      "missing_pct": 10.56556332449282,
+      "cardinality": 196,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 4461
+        },
+        {
+          "value": "R931",
+          "count": 2149
+        },
+        {
+          "value": "Z653",
+          "count": 2029
+        },
+        {
+          "value": "E8881",
+          "count": 1963
+        },
+        {
+          "value": "E669",
+          "count": 1928
+        },
+        {
+          "value": "I259",
+          "count": 1910
+        },
+        {
+          "value": "R801",
+          "count": 1700
+        },
+        {
+          "value": "R7303",
+          "count": 1621
+        },
+        {
+          "value": "R809",
+          "count": 1604
+        },
+        {
+          "value": "N181",
+          "count": 1536
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW10",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 6135,
+      "missing_pct": 10.56556332449282,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 41085
+        },
+        {
+          "value": "N",
+          "count": 10846
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD11",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 8000,
+      "missing_pct": 13.777425688010196,
+      "cardinality": 190,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 4741
+        },
+        {
+          "value": "I259",
+          "count": 2223
+        },
+        {
+          "value": "E669",
+          "count": 2201
+        },
+        {
+          "value": "R931",
+          "count": 2169
+        },
+        {
+          "value": "Z653",
+          "count": 1987
+        },
+        {
+          "value": "R7303",
+          "count": 1680
+        },
+        {
+          "value": "E8881",
+          "count": 1622
+        },
+        {
+          "value": "E1129",
+          "count": 1584
+        },
+        {
+          "value": "R809",
+          "count": 1458
+        },
+        {
+          "value": "R801",
+          "count": 1445
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW11",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 8000,
+      "missing_pct": 13.777425688010196,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 40264
+        },
+        {
+          "value": "N",
+          "count": 9802
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD12",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 10186,
+      "missing_pct": 17.542107257258984,
+      "cardinality": 179,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 3906
+        },
+        {
+          "value": "E669",
+          "count": 2752
+        },
+        {
+          "value": "I259",
+          "count": 2176
+        },
+        {
+          "value": "R7303",
+          "count": 1965
+        },
+        {
+          "value": "E8881",
+          "count": 1918
+        },
+        {
+          "value": "R931",
+          "count": 1854
+        },
+        {
+          "value": "Z653",
+          "count": 1628
+        },
+        {
+          "value": "I10",
+          "count": 1413
+        },
+        {
+          "value": "P292",
+          "count": 1335
+        },
+        {
+          "value": "E1129",
+          "count": 1299
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW12",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 10186,
+      "missing_pct": 17.542107257258984,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 39708
+        },
+        {
+          "value": "N",
+          "count": 8172
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD13",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 12576,
+      "missing_pct": 21.65811318155203,
+      "cardinality": 171,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 3187
+        },
+        {
+          "value": "E669",
+          "count": 2558
+        },
+        {
+          "value": "E8881",
+          "count": 2053
+        },
+        {
+          "value": "R7303",
+          "count": 1762
+        },
+        {
+          "value": "R931",
+          "count": 1746
+        },
+        {
+          "value": "D649",
+          "count": 1711
+        },
+        {
+          "value": "I259",
+          "count": 1674
+        },
+        {
+          "value": "E781",
+          "count": 1637
+        },
+        {
+          "value": "I10",
+          "count": 1542
+        },
+        {
+          "value": "Z653",
+          "count": 1456
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW13",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 12576,
+      "missing_pct": 21.65811318155203,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 37973
+        },
+        {
+          "value": "N",
+          "count": 7517
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD14",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 15201,
+      "missing_pct": 26.178830985430373,
+      "cardinality": 170,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 3334
+        },
+        {
+          "value": "E669",
+          "count": 2659
+        },
+        {
+          "value": "E8881",
+          "count": 2148
+        },
+        {
+          "value": "R7303",
+          "count": 2000
+        },
+        {
+          "value": "R931",
+          "count": 1604
+        },
+        {
+          "value": "P292",
+          "count": 1544
+        },
+        {
+          "value": "E781",
+          "count": 1509
+        },
+        {
+          "value": "D649",
+          "count": 1495
+        },
+        {
+          "value": "I259",
+          "count": 1491
+        },
+        {
+          "value": "Z653",
+          "count": 1341
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW14",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 15201,
+      "missing_pct": 26.178830985430373,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 36200
+        },
+        {
+          "value": "N",
+          "count": 6665
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD15",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 17819,
+      "missing_pct": 30.687493541831707,
+      "cardinality": 165,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E1121",
+          "count": 2755
+        },
+        {
+          "value": "E8881",
+          "count": 2552
+        },
+        {
+          "value": "E669",
+          "count": 2324
+        },
+        {
+          "value": "R7303",
+          "count": 2158
+        },
+        {
+          "value": "E119",
+          "count": 1801
+        },
+        {
+          "value": "D649",
+          "count": 1766
+        },
+        {
+          "value": "I259",
+          "count": 1537
+        },
+        {
+          "value": "R931",
+          "count": 1519
+        },
+        {
+          "value": "P292",
+          "count": 1516
+        },
+        {
+          "value": "I10",
+          "count": 1457
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW15",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 17819,
+      "missing_pct": 30.687493541831707,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 34792
+        },
+        {
+          "value": "N",
+          "count": 5455
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD16",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 20922,
+      "missing_pct": 36.031412530568666,
+      "cardinality": 157,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E8881",
+          "count": 2826
+        },
+        {
+          "value": "E669",
+          "count": 2719
+        },
+        {
+          "value": "E1121",
+          "count": 2233
+        },
+        {
+          "value": "R7303",
+          "count": 2102
+        },
+        {
+          "value": "I259",
+          "count": 1835
+        },
+        {
+          "value": "D649",
+          "count": 1656
+        },
+        {
+          "value": "R931",
+          "count": 1515
+        },
+        {
+          "value": "E781",
+          "count": 1412
+        },
+        {
+          "value": "P292",
+          "count": 1390
+        },
+        {
+          "value": "E119",
+          "count": 1347
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW16",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 20922,
+      "missing_pct": 36.031412530568666,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 32610
+        },
+        {
+          "value": "N",
+          "count": 4534
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD17",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 24225,
+      "missing_pct": 41.71976716150587,
+      "cardinality": 154,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E8881",
+          "count": 3021
+        },
+        {
+          "value": "E669",
+          "count": 2872
+        },
+        {
+          "value": "R7303",
+          "count": 2463
+        },
+        {
+          "value": "P292",
+          "count": 1815
+        },
+        {
+          "value": "D649",
+          "count": 1714
+        },
+        {
+          "value": "E1121",
+          "count": 1539
+        },
+        {
+          "value": "I10",
+          "count": 1403
+        },
+        {
+          "value": "R931",
+          "count": 1380
+        },
+        {
+          "value": "E781",
+          "count": 1244
+        },
+        {
+          "value": "I259",
+          "count": 1231
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW17",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 24225,
+      "missing_pct": 41.71976716150587,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 29618
+        },
+        {
+          "value": "N",
+          "count": 4223
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD18",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 27384,
+      "missing_pct": 47.1601281300589,
+      "cardinality": 140,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E669",
+          "count": 2962
+        },
+        {
+          "value": "R7303",
+          "count": 2560
+        },
+        {
+          "value": "D649",
+          "count": 2121
+        },
+        {
+          "value": "E8881",
+          "count": 2004
+        },
+        {
+          "value": "I10",
+          "count": 1471
+        },
+        {
+          "value": "P292",
+          "count": 1398
+        },
+        {
+          "value": "I259",
+          "count": 1261
+        },
+        {
+          "value": "E781",
+          "count": 1210
+        },
+        {
+          "value": "E119",
+          "count": 1139
+        },
+        {
+          "value": "E1121",
+          "count": 969
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW18",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 27384,
+      "missing_pct": 47.1601281300589,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 26787
+        },
+        {
+          "value": "N",
+          "count": 3895
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD19",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 30316,
+      "missing_pct": 52.20955464471464,
+      "cardinality": 132,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "R7303",
+          "count": 2632
+        },
+        {
+          "value": "E669",
+          "count": 2428
+        },
+        {
+          "value": "D649",
+          "count": 2356
+        },
+        {
+          "value": "E8881",
+          "count": 1565
+        },
+        {
+          "value": "I10",
+          "count": 1378
+        },
+        {
+          "value": "E119",
+          "count": 1258
+        },
+        {
+          "value": "I259",
+          "count": 1173
+        },
+        {
+          "value": "P292",
+          "count": 1166
+        },
+        {
+          "value": "E1121",
+          "count": 948
+        },
+        {
+          "value": "E781",
+          "count": 734
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW19",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 30316,
+      "missing_pct": 52.20955464471464,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 24714
+        },
+        {
+          "value": "N",
+          "count": 3036
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD20",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 33503,
+      "missing_pct": 57.6981366031757,
+      "cardinality": 133,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "D649",
+          "count": 2560
+        },
+        {
+          "value": "R7303",
+          "count": 2053
+        },
+        {
+          "value": "E669",
+          "count": 2012
+        },
+        {
+          "value": "I10",
+          "count": 1271
+        },
+        {
+          "value": "P292",
+          "count": 1239
+        },
+        {
+          "value": "E119",
+          "count": 1225
+        },
+        {
+          "value": "E8881",
+          "count": 1014
+        },
+        {
+          "value": "I259",
+          "count": 975
+        },
+        {
+          "value": "E781",
+          "count": 873
+        },
+        {
+          "value": "J329",
+          "count": 782
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW20",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 33503,
+      "missing_pct": 57.6981366031757,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 21945
+        },
+        {
+          "value": "N",
+          "count": 2618
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD21",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 36443,
+      "missing_pct": 62.76134054351944,
+      "cardinality": 129,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "D649",
+          "count": 2064
+        },
+        {
+          "value": "R7303",
+          "count": 1751
+        },
+        {
+          "value": "E669",
+          "count": 1534
+        },
+        {
+          "value": "E781",
+          "count": 1148
+        },
+        {
+          "value": "P292",
+          "count": 1034
+        },
+        {
+          "value": "Z560",
+          "count": 987
+        },
+        {
+          "value": "I10",
+          "count": 969
+        },
+        {
+          "value": "E8881",
+          "count": 895
+        },
+        {
+          "value": "O039",
+          "count": 876
+        },
+        {
+          "value": "J329",
+          "count": 860
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW21",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 36443,
+      "missing_pct": 62.76134054351944,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 19446
+        },
+        {
+          "value": "N",
+          "count": 2177
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD22",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 39841,
+      "missing_pct": 68.61330210450177,
+      "cardinality": 116,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "D649",
+          "count": 1614
+        },
+        {
+          "value": "E669",
+          "count": 1584
+        },
+        {
+          "value": "R7303",
+          "count": 1532
+        },
+        {
+          "value": "E781",
+          "count": 1086
+        },
+        {
+          "value": "Z560",
+          "count": 923
+        },
+        {
+          "value": "E119",
+          "count": 918
+        },
+        {
+          "value": "O039",
+          "count": 879
+        },
+        {
+          "value": "J329",
+          "count": 787
+        },
+        {
+          "value": "E8881",
+          "count": 771
+        },
+        {
+          "value": "E785",
+          "count": 588
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW22",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 39841,
+      "missing_pct": 68.61330210450177,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 16395
+        },
+        {
+          "value": "N",
+          "count": 1830
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD23",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 43436,
+      "missing_pct": 74.80453277305136,
+      "cardinality": 106,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "E669",
+          "count": 1533
+        },
+        {
+          "value": "R7303",
+          "count": 1493
+        },
+        {
+          "value": "D649",
+          "count": 1470
+        },
+        {
+          "value": "E119",
+          "count": 1137
+        },
+        {
+          "value": "J329",
+          "count": 795
+        },
+        {
+          "value": "E8881",
+          "count": 724
+        },
+        {
+          "value": "R4689",
+          "count": 554
+        },
+        {
+          "value": "E781",
+          "count": 509
+        },
+        {
+          "value": "O039",
+          "count": 473
+        },
+        {
+          "value": "I10",
+          "count": 435
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW23",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 43436,
+      "missing_pct": 74.80453277305136,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 13104
+        },
+        {
+          "value": "N",
+          "count": 1526
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD24",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 46384,
+      "missing_pct": 79.88151413908311,
+      "cardinality": 103,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "R7303",
+          "count": 1684
+        },
+        {
+          "value": "D649",
+          "count": 1531
+        },
+        {
+          "value": "E669",
+          "count": 1083
+        },
+        {
+          "value": "E119",
+          "count": 930
+        },
+        {
+          "value": "J329",
+          "count": 659
+        },
+        {
+          "value": "P292",
+          "count": 405
+        },
+        {
+          "value": "I10",
+          "count": 389
+        },
+        {
+          "value": "Z558",
+          "count": 359
+        },
+        {
+          "value": "E8881",
+          "count": 338
+        },
+        {
+          "value": "R4689",
+          "count": 318
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW24",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 46384,
+      "missing_pct": 79.88151413908311,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 10358
+        },
+        {
+          "value": "N",
+          "count": 1324
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_CD25",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 48762,
+      "missing_pct": 83.97685392484414,
+      "cardinality": 92,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "D649",
+          "count": 1372
+        },
+        {
+          "value": "R7303",
+          "count": 1356
+        },
+        {
+          "value": "E669",
+          "count": 682
+        },
+        {
+          "value": "Z591",
+          "count": 526
+        },
+        {
+          "value": "J329",
+          "count": 459
+        },
+        {
+          "value": "G479",
+          "count": 429
+        },
+        {
+          "value": "I10",
+          "count": 420
+        },
+        {
+          "value": "E119",
+          "count": 402
+        },
+        {
+          "value": "R4689",
+          "count": 337
+        },
+        {
+          "value": "Z558",
+          "count": 326
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_POA_IND_SW25",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 48762,
+      "missing_pct": 83.97685392484414,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 8093
+        },
+        {
+          "value": "N",
+          "count": 1211
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "FST_DGNS_E_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 12541,
+      "missing_pct": 21.597836944166982,
+      "cardinality": 137,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "W86",
+          "count": 10445
+        },
+        {
+          "value": "X58",
+          "count": 7202
+        },
+        {
+          "value": "W19",
+          "count": 4899
+        },
+        {
+          "value": "Y92",
+          "count": 3291
+        },
+        {
+          "value": "Y83",
+          "count": 2488
+        },
+        {
+          "value": "W18",
+          "count": 2117
+        },
+        {
+          "value": "W01",
+          "count": 1941
+        },
+        {
+          "value": "Y07",
+          "count": 1419
+        },
+        {
+          "value": "Y04",
+          "count": 1272
+        },
+        {
+          "value": "Y84",
+          "count": 1085
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD1",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 12541,
+      "missing_pct": 21.597836944166982,
+      "cardinality": 126,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "W86",
+          "count": 10445
+        },
+        {
+          "value": "X58",
+          "count": 6868
+        },
+        {
+          "value": "W19",
+          "count": 5162
+        },
+        {
+          "value": "Y92",
+          "count": 3432
+        },
+        {
+          "value": "Y83",
+          "count": 2320
+        },
+        {
+          "value": "W01",
+          "count": 1991
+        },
+        {
+          "value": "W18",
+          "count": 1755
+        },
+        {
+          "value": "Y07",
+          "count": 1417
+        },
+        {
+          "value": "Y04",
+          "count": 1185
+        },
+        {
+          "value": "Y84",
+          "count": 1010
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW1",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 12541,
+      "missing_pct": 21.597836944166982,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Y",
+          "count": 29170
+        },
+        {
+          "value": "U",
+          "count": 16355
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD2",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW2",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD3",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW3",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD4",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW4",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD5",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW5",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD6",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW6",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD7",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW7",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD8",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW8",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD9",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW9",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD10",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW10",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD11",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW11",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_DGNS_E_CD12",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_E_POA_IND_SW12",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": " ",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "ICD_PRCDR_CD1",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 9913,
+      "missing_pct": 17.071952605655632,
+      "cardinality": 114,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "GZ3",
+          "count": 16142
+        },
+        {
+          "value": "Z741",
+          "count": 12421
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 3337
+        },
+        {
+          "value": "G4730",
+          "count": 2134
+        },
+        {
+          "value": "F13",
+          "count": 2054
+        },
+        {
+          "value": "Z9981",
+          "count": 1400
+        },
+        {
+          "value": "S4990",
+          "count": 903
+        },
+        {
+          "value": "S9091",
+          "count": 613
+        },
+        {
+          "value": "S6091",
+          "count": 598
+        },
+        {
+          "value": "0TY00Z0",
+          "count": 582
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT1",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 9913,
+      "missing_pct": 17.071952605655632,
+      "cardinality": 2824,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "07-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD2",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 13007,
+      "missing_pct": 22.400371990493575,
+      "cardinality": 51,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z741",
+          "count": 14553
+        },
+        {
+          "value": "F419",
+          "count": 6575
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 3712
+        },
+        {
+          "value": "Z9181",
+          "count": 3645
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 2881
+        },
+        {
+          "value": "T1490",
+          "count": 2505
+        },
+        {
+          "value": "Z9981",
+          "count": 2227
+        },
+        {
+          "value": "F13",
+          "count": 2054
+        },
+        {
+          "value": "G4730",
+          "count": 1598
+        },
+        {
+          "value": "Z1331",
+          "count": 1280
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT2",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 13007,
+      "missing_pct": 22.400371990493575,
+      "cardinality": 2724,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "07-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD3",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 18082,
+      "missing_pct": 31.140426411325045,
+      "cardinality": 53,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9181",
+          "count": 8017
+        },
+        {
+          "value": "F419",
+          "count": 7868
+        },
+        {
+          "value": "Z1331",
+          "count": 6869
+        },
+        {
+          "value": "Z139",
+          "count": 3057
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 2722
+        },
+        {
+          "value": "Z9981",
+          "count": 2231
+        },
+        {
+          "value": "F13",
+          "count": 2054
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 2002
+        },
+        {
+          "value": "M859",
+          "count": 1810
+        },
+        {
+          "value": "Z741",
+          "count": 1597
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT3",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 18082,
+      "missing_pct": 31.140426411325045,
+      "cardinality": 2530,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "08-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD4",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 22375,
+      "missing_pct": 38.533737471153515,
+      "cardinality": 23,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z1331",
+          "count": 15086
+        },
+        {
+          "value": "Z9181",
+          "count": 4857
+        },
+        {
+          "value": "Z139",
+          "count": 3939
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 2382
+        },
+        {
+          "value": "Z9981",
+          "count": 2210
+        },
+        {
+          "value": "F13",
+          "count": 1820
+        },
+        {
+          "value": "F1990",
+          "count": 1798
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 1608
+        },
+        {
+          "value": "F419",
+          "count": 812
+        },
+        {
+          "value": "07HN33Z",
+          "count": 385
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT4",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 22375,
+      "missing_pct": 38.533737471153515,
+      "cardinality": 2332,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "09-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD5",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 26438,
+      "missing_pct": 45.53094754245169,
+      "cardinality": 16,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z1331",
+          "count": 16209
+        },
+        {
+          "value": "F1990",
+          "count": 4218
+        },
+        {
+          "value": "Z9981",
+          "count": 2197
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 2147
+        },
+        {
+          "value": "Z139",
+          "count": 1644
+        },
+        {
+          "value": "F13",
+          "count": 1540
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 1492
+        },
+        {
+          "value": "Z715",
+          "count": 960
+        },
+        {
+          "value": "F109",
+          "count": 838
+        },
+        {
+          "value": "Z9181",
+          "count": 314
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT5",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 26438,
+      "missing_pct": 45.53094754245169,
+      "cardinality": 2167,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "09-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD6",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 32607,
+      "missing_pct": 56.155064926118555,
+      "cardinality": 11,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z1331",
+          "count": 8637
+        },
+        {
+          "value": "F1990",
+          "count": 5933
+        },
+        {
+          "value": "Z9981",
+          "count": 2185
+        },
+        {
+          "value": "Z715",
+          "count": 2158
+        },
+        {
+          "value": "F109",
+          "count": 2060
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 1853
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 1310
+        },
+        {
+          "value": "F13",
+          "count": 1190
+        },
+        {
+          "value": "Z139",
+          "count": 105
+        },
+        {
+          "value": "6A550Z2",
+          "count": 14
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT6",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 32607,
+      "missing_pct": 56.155064926118555,
+      "cardinality": 1893,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "09-Mar-2015",
+      "date_max": "02-Mar-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD7",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 39885,
+      "missing_pct": 68.68907794578583,
+      "cardinality": 11,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F1990",
+          "count": 4285
+        },
+        {
+          "value": "Z715",
+          "count": 2967
+        },
+        {
+          "value": "F109",
+          "count": 2966
+        },
+        {
+          "value": "Z9981",
+          "count": 2173
+        },
+        {
+          "value": "Z1331",
+          "count": 2005
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 1657
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 1148
+        },
+        {
+          "value": "F13",
+          "count": 938
+        },
+        {
+          "value": "6A550Z2",
+          "count": 16
+        },
+        {
+          "value": "Z8616",
+          "count": 14
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT7",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 39885,
+      "missing_pct": 68.68907794578583,
+      "cardinality": 1404,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "12-Mar-2015",
+      "date_max": "28-Feb-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD8",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 47366,
+      "missing_pct": 81.57269314228637,
+      "cardinality": 12,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z715",
+          "count": 2211
+        },
+        {
+          "value": "Z9981",
+          "count": 2134
+        },
+        {
+          "value": "F109",
+          "count": 2074
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 1441
+        },
+        {
+          "value": "F1990",
+          "count": 1008
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 854
+        },
+        {
+          "value": "F13",
+          "count": 728
+        },
+        {
+          "value": "Z1331",
+          "count": 169
+        },
+        {
+          "value": "30277R1",
+          "count": 30
+        },
+        {
+          "value": "Z8616",
+          "count": 25
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT8",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 47366,
+      "missing_pct": 81.57269314228637,
+      "cardinality": 829,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "15-Mar-2015",
+      "date_max": "28-Feb-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD9",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 52393,
+      "missing_pct": 90.23008300898977,
+      "cardinality": 9,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 2084
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 1252
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 620
+        },
+        {
+          "value": "F13",
+          "count": 536
+        },
+        {
+          "value": "F109",
+          "count": 504
+        },
+        {
+          "value": "Z715",
+          "count": 504
+        },
+        {
+          "value": "F1990",
+          "count": 121
+        },
+        {
+          "value": "Z8616",
+          "count": 38
+        },
+        {
+          "value": "30277R1",
+          "count": 14
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT9",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 52393,
+      "missing_pct": 90.23008300898977,
+      "cardinality": 366,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "15-Mar-2015",
+      "date_max": "24-Feb-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD10",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 53929,
+      "missing_pct": 92.87534874108772,
+      "cardinality": 9,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 2073
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 1122
+        },
+        {
+          "value": "F13",
+          "count": 428
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 336
+        },
+        {
+          "value": "F109",
+          "count": 80
+        },
+        {
+          "value": "Z715",
+          "count": 41
+        },
+        {
+          "value": "Z8616",
+          "count": 25
+        },
+        {
+          "value": "30277R1",
+          "count": 18
+        },
+        {
+          "value": "N289",
+          "count": 14
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT10",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 53929,
+      "missing_pct": 92.87534874108772,
+      "cardinality": 237,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "23-Mar-2015",
+      "date_max": "25-Feb-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD11",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 54398,
+      "missing_pct": 93.68305032204732,
+      "cardinality": 5,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 2062
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 990
+        },
+        {
+          "value": "F13",
+          "count": 368
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 198
+        },
+        {
+          "value": "Z8616",
+          "count": 50
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT11",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 54398,
+      "missing_pct": 93.68305032204732,
+      "cardinality": 205,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "13-May-2015",
+      "date_max": "16-Feb-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD12",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 55172,
+      "missing_pct": 95.01601625736231,
+      "cardinality": 6,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 1612
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 870
+        },
+        {
+          "value": "F13",
+          "count": 302
+        },
+        {
+          "value": "Z8616",
+          "count": 76
+        },
+        {
+          "value": "BW03ZZZ",
+          "count": 20
+        },
+        {
+          "value": "N289",
+          "count": 14
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT12",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 55172,
+      "missing_pct": 95.01601625736231,
+      "cardinality": 157,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "14-May-2015",
+      "date_max": "27-Jan-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD13",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 55623,
+      "missing_pct": 95.7927186305239,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 1448
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 727
+        },
+        {
+          "value": "F13",
+          "count": 230
+        },
+        {
+          "value": "Z8616",
+          "count": 38
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT13",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 55623,
+      "missing_pct": 95.7927186305239,
+      "cardinality": 130,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "14-Sep-2015",
+      "date_max": "28-Jan-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD14",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 56074,
+      "missing_pct": 96.56942100368546,
+      "cardinality": 5,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 1110
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 601
+        },
+        {
+          "value": "F13",
+          "count": 204
+        },
+        {
+          "value": "Z8616",
+          "count": 63
+        },
+        {
+          "value": "N289",
+          "count": 14
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT14",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 56074,
+      "missing_pct": 96.56942100368546,
+      "cardinality": 103,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "15-Sep-2015",
+      "date_max": "29-Jan-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD15",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 56556,
+      "missing_pct": 97.39951090138807,
+      "cardinality": 5,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 800
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 496
+        },
+        {
+          "value": "F13",
+          "count": 176
+        },
+        {
+          "value": "Z8616",
+          "count": 24
+        },
+        {
+          "value": "0BP13DZ",
+          "count": 14
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT15",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 56556,
+      "missing_pct": 97.39951090138807,
+      "cardinality": 78,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "16-Sep-2015",
+      "date_max": "30-Jan-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD16",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57104,
+      "missing_pct": 98.34326456101678,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "Z9981",
+          "count": 385
+        },
+        {
+          "value": "F08H5ZZ",
+          "count": 368
+        },
+        {
+          "value": "F13",
+          "count": 146
+        },
+        {
+          "value": "Z8616",
+          "count": 63
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT16",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57104,
+      "missing_pct": 98.34326456101678,
+      "cardinality": 48,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "17-Sep-2015",
+      "date_max": "31-Jan-2023"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD17",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57557,
+      "missing_pct": 99.12341129060034,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 283
+        },
+        {
+          "value": "F13",
+          "count": 114
+        },
+        {
+          "value": "Z9981",
+          "count": 88
+        },
+        {
+          "value": "Z8616",
+          "count": 24
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT17",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57557,
+      "missing_pct": 99.12341129060034,
+      "cardinality": 21,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "18-Sep-2015",
+      "date_max": "11-Dec-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD18",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57696,
+      "missing_pct": 99.36279406192952,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 229
+        },
+        {
+          "value": "Z9981",
+          "count": 49
+        },
+        {
+          "value": "Z8616",
+          "count": 46
+        },
+        {
+          "value": "F13",
+          "count": 46
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT18",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57696,
+      "missing_pct": 99.36279406192952,
+      "cardinality": 15,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "19-Sep-2015",
+      "date_max": "12-Dec-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD19",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57696,
+      "missing_pct": 99.36279406192952,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 229
+        },
+        {
+          "value": "Z9981",
+          "count": 71
+        },
+        {
+          "value": "F13",
+          "count": 46
+        },
+        {
+          "value": "Z8616",
+          "count": 24
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT19",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57696,
+      "missing_pct": 99.36279406192952,
+      "cardinality": 15,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "20-Sep-2015",
+      "date_max": "13-Dec-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD20",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57776,
+      "missing_pct": 99.50056831880964,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 149
+        },
+        {
+          "value": "Z9981",
+          "count": 49
+        },
+        {
+          "value": "Z8616",
+          "count": 46
+        },
+        {
+          "value": "F13",
+          "count": 46
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT20",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57776,
+      "missing_pct": 99.50056831880964,
+      "cardinality": 11,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "21-Sep-2015",
+      "date_max": "14-Dec-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD21",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57776,
+      "missing_pct": 99.50056831880964,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 149
+        },
+        {
+          "value": "Z9981",
+          "count": 71
+        },
+        {
+          "value": "F13",
+          "count": 46
+        },
+        {
+          "value": "Z8616",
+          "count": 24
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT21",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57776,
+      "missing_pct": 99.50056831880964,
+      "cardinality": 11,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "22-Sep-2015",
+      "date_max": "15-Dec-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD22",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57819,
+      "missing_pct": 99.57462198188269,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 127
+        },
+        {
+          "value": "Z9981",
+          "count": 49
+        },
+        {
+          "value": "F13",
+          "count": 46
+        },
+        {
+          "value": "Z8616",
+          "count": 25
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT22",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57819,
+      "missing_pct": 99.57462198188269,
+      "cardinality": 9,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "23-Sep-2015",
+      "date_max": "16-Dec-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD23",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57865,
+      "missing_pct": 99.65384217958875,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 81
+        },
+        {
+          "value": "Z9981",
+          "count": 50
+        },
+        {
+          "value": "F13",
+          "count": 46
+        },
+        {
+          "value": "Z8616",
+          "count": 24
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT23",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57865,
+      "missing_pct": 99.65384217958875,
+      "cardinality": 7,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "09-Apr-2020",
+      "date_max": "17-Dec-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD24",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57935,
+      "missing_pct": 99.77439465435883,
+      "cardinality": 3,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 57
+        },
+        {
+          "value": "Z9981",
+          "count": 49
+        },
+        {
+          "value": "Z8616",
+          "count": 25
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT24",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57935,
+      "missing_pct": 99.77439465435883,
+      "cardinality": 5,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "10-Apr-2020",
+      "date_max": "05-Aug-2022"
+    },
+    {
+      "column_name": "ICD_PRCDR_CD25",
+      "category": "diagnosis_procedure_code",
+      "dtype_observed": "object",
+      "missing_count": 57984,
+      "missing_pct": 99.8587813866979,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "F08H5ZZ",
+          "count": 57
+        },
+        {
+          "value": "Z9981",
+          "count": 25
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "PRCDR_DT25",
+      "category": "date",
+      "dtype_observed": "object",
+      "missing_count": 57984,
+      "missing_pct": 99.8587813866979,
+      "cardinality": 3,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": "DD-Mon-YYYY",
+      "date_min": "11-Apr-2020",
+      "date_max": "24-Jan-2021"
+    },
+    {
+      "column_name": "IME_OP_CLM_VAL_AMT",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "0",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "DSH_OP_CLM_VAL_AMT",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 1,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "0",
+          "count": 58066
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_UNCOMPD_CARE_PMT_AMT",
+      "category": "amount",
+      "dtype_observed": "float64",
+      "missing_count": 58066,
+      "missing_pct": 100.0,
+      "cardinality": 0,
+      "numeric_stats": null,
+      "categorical_top_values": null,
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "CLM_LINE_NUM",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 46,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "1",
+          "count": 20867
+        },
+        {
+          "value": "2",
+          "count": 8982
+        },
+        {
+          "value": "3",
+          "count": 7148
+        },
+        {
+          "value": "4",
+          "count": 6051
+        },
+        {
+          "value": "5",
+          "count": 4933
+        },
+        {
+          "value": "6",
+          "count": 3591
+        },
+        {
+          "value": "7",
+          "count": 2291
+        },
+        {
+          "value": "8",
+          "count": 1263
+        },
+        {
+          "value": "9",
+          "count": 623
+        },
+        {
+          "value": "10",
+          "count": 470
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "REV_CNTR",
+      "category": "categorical_code",
+      "dtype_observed": "int64",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 2,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "450",
+          "count": 43089
+        },
+        {
+          "value": "1",
+          "count": 14977
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "HCPCS_CD",
+      "category": "categorical_code",
+      "dtype_observed": "object",
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "cardinality": 106,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "99221",
+          "count": 8298
+        },
+        {
+          "value": "G0444",
+          "count": 7990
+        },
+        {
+          "value": "96156",
+          "count": 5080
+        },
+        {
+          "value": "99408",
+          "count": 4196
+        },
+        {
+          "value": "99495",
+          "count": 3867
+        },
+        {
+          "value": "M1069",
+          "count": 2781
+        },
+        {
+          "value": "96127",
+          "count": 2496
+        },
+        {
+          "value": "94640",
+          "count": 2332
+        },
+        {
+          "value": "L5701",
+          "count": 2085
+        },
+        {
+          "value": "71046",
+          "count": 1960
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    },
+    {
+      "column_name": "REV_CNTR_DDCTBL_COINSRNC_CD",
+      "category": "categorical_code",
+      "dtype_observed": "float64",
+      "missing_count": 8298,
+      "missing_pct": 14.290634794888573,
+      "cardinality": 4,
+      "numeric_stats": null,
+      "categorical_top_values": [
+        {
+          "value": "3.0",
+          "count": 44973
+        },
+        {
+          "value": "2.0",
+          "count": 4555
+        },
+        {
+          "value": "1.0",
+          "count": 222
+        },
+        {
+          "value": "0.0",
+          "count": 18
+        }
+      ],
+      "date_format_observed": null,
+      "date_min": null,
+      "date_max": null
+    }
+  ]
+}

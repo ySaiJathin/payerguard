@@ -1,0 +1,39 @@
+# PayerGuard backend dependencies
+# Versions intentionally left unpinned at scaffold time -- pin exact versions
+# when implementation begins (Phase 1+) and commit a lockfile.
+
+# API
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+
+# Database
+sqlalchemy
+psycopg2-binary
+alembic
+
+# Data engineering
+pandas
+numpy
+
+# Data quality
+great_expectations
+
+# Anomaly detection
+pyod          # HBOS, LOF
+scikit-learn  # Isolation Forest, general ML utilities
+
+# Risk models
+xgboost
+
+# LLM
+mistralai
+
+# Testing
+pytest
+pytest-cov
+
+# Utilities
+python-dotenv
+python-multipart

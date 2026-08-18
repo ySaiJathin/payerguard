@@ -1,0 +1,71 @@
+# PayerGuard local development stack.
+# Frontend service is intentionally commented out below -- implementation is
+# deferred per MVP_CONTEXT.md, but it WILL be containerized (its own
+# Dockerfile, its own service here) once built, same pattern as backend.
+# No live-streaming ingestion service -- ingestion happens via the backend's
+# manual-upload / continuous-file-watch endpoints against the mounted data/
+# folder.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: payerguard-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-payerguard}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-payerguard}
+      POSTGRES_DB: ${POSTGRES_DB:-payerguard}
+    ports:
+      - "5432:5432"
+    volumes:
+      - payerguard_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-payerguard}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: payerguard-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-payerguard}:${POSTGRES_PASSWORD:-payerguard}@postgres:5432/${POSTGRES_DB:-payerguard}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+      - ./data:/app/data
+      - ./ml/artifacts:/app/ml_artifacts
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: payerguard-frontend
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     # Base URL the frontend uses to reach the backend container.
+  #     API_BASE_URL: http://backend:8000
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/app
+  #   depends_on:
+  #     - backend
+  # STATUS: not implemented yet. Uncomment once frontend/Dockerfile and a
+  # real app exist -- see MVP_CONTEXT.md Phase 18/19. Port, build context,
+  # and env vars above are placeholders and should be revisited against
+  # whatever frontend framework gets chosen.
+
+volumes:
+  payerguard_pgdata:
