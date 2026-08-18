@@ -1,13 +1,13 @@
-"""Shared DB session builder for `tests/incidents/`, `tests/hitl/`, and
-`tests/remediation/` -- not a test module itself (no `test_` prefix, so
-pytest doesn't collect it).
+"""Shared DB session builder for `tests/incidents/`, `tests/hitl/`,
+`tests/remediation/`, and `tests/revalidation/` -- not a test module
+itself (no `test_` prefix, so pytest doesn't collect it).
 
 Builds a fresh, isolated `sqlite:///:memory:` engine per call -- no
 Docker/Postgres needed to test the real SQLAlchemy models (012's Setup
-phase). Importing `app.incidents.models`, `app.hitl.models`, and
-`app.remediation.models` before `init_db()` ensures every table is
-registered on `Base.metadata`, regardless of which module a given test
-file imports directly.
+phase). Importing `app.incidents.models`, `app.hitl.models`,
+`app.remediation.models`, and `app.revalidation.models` before
+`init_db()` ensures every table is registered on `Base.metadata`,
+regardless of which module a given test file imports directly.
 """
 
 from sqlalchemy import create_engine
@@ -17,6 +17,7 @@ from sqlalchemy.pool import StaticPool
 import app.hitl.models  # noqa: F401 -- registers HumanFeedback/IncidentStatusTransition on Base.metadata
 import app.incidents.models  # noqa: F401 -- registers Incident on Base.metadata
 import app.remediation.models  # noqa: F401 -- registers RemediationRun/RemediationAction/ManualActionRequired on Base.metadata
+import app.revalidation.models  # noqa: F401 -- registers RevalidationRun on Base.metadata
 from app.core.database import init_db
 
 
