@@ -39,3 +39,7 @@ def cleaned_dir() -> Path:
 
 def features_dir() -> Path:
     return find_data_dir() / "features"
+
+
+def models_dir() -> Path:
+    return find_data_dir() / "models"
