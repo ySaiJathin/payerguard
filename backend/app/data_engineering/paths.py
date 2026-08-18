@@ -35,3 +35,7 @@ def sampled_dir() -> Path:
 
 def cleaned_dir() -> Path:
     return find_data_dir() / "cleaned"
+
+
+def features_dir() -> Path:
+    return find_data_dir() / "features"
