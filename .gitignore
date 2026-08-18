@@ -41,6 +41,10 @@ build/
 .idea/
 .vscode/
 
+# Claude Code / Spec Kit local state
+.claude/
+.specify/
+
 
 
 data/reports/quality_issues.json
