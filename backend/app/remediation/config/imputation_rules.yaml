@@ -1,0 +1,23 @@
+# Approved-imputation rule table (spec FR-001).
+#
+# `imp-001` is an illustrative starter entry: a narrow, pre-approved
+# sentinel value ("UNKNOWN") for a missing admitting-diagnosis code --
+# never a fabricated/guessed clinical value (constitution Principle II,
+# No Fabricated Values). Imputation is the most invasive of the three
+# handler types (it fills a genuine gap rather than correcting/flagging
+# an existing value), hence `precedence_rank: 3`, the highest -- applied
+# only when nothing less invasive (duplicate flagging, status mapping)
+# matches, per research.md's precedence ordering.
+#
+# As with status_mapping_rules.yaml, real production entries here are a
+# config-management/clinical-review concern the spec's Assumptions
+# section places outside this feature's own scope.
+
+version: "1.0.0"
+rules:
+  - rule_id: imp-001
+    precondition:
+      column: ADMTG_DGNS_CD
+      condition: missing
+    to_value: "UNKNOWN"
+    precedence_rank: 3

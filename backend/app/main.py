@@ -19,6 +19,7 @@ from app.hitl.router import router as hitl_router
 from app.incidents.router import router as incidents_router
 from app.llm.router import router as llm_router
 from app.quality.router import router as quality_router
+from app.remediation.router import router as remediation_router
 from app.risk.benchmark.router import router as risk_benchmark_router
 from app.risk.dataset.router import router as risk_dataset_router
 from app.risk.scoring.router import router as risk_scoring_router
@@ -48,10 +49,10 @@ for r in (
     llm_router,
     incidents_router,
     hitl_router,
+    remediation_router,
 ):
     app.include_router(r)
 
-# Remaining domain routers (ingestion, remediation, revalidation,
-# simulation, audit) are wired in as each feature is implemented -- their
-# router.py files are still placeholders as of this feature
-# (012-incident-management-hitl).
+# Remaining domain routers (ingestion, revalidation, simulation, audit)
+# are wired in as each feature is implemented -- their router.py files
+# are still placeholders as of this feature (013-remediation-engine).

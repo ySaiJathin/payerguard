@@ -37,3 +37,4 @@ pytest-cov
 # Utilities
 python-dotenv
 python-multipart
+pyyaml       # remediation's versioned rule-table config (backend/app/remediation/precedence.py)
