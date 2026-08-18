@@ -107,6 +107,27 @@ def _load_inputs() -> tuple[pd.DataFrame, list, list, TemporalSplit, SelectedFea
     if feature_set is None:
         raise AnomalyInputUnavailableError("No SelectedFeatureSet computed yet -- run POST /features/select first.")
 
+    # Phase 2's cleaned batch and Phase 5's `ClaimFeatures` are both persisted
+    # at claim-LINE grain (one row per CLM_LINE_NUM, e.g. up to 46 rows for a
+    # single CLM_ID) rather than one row per claim. This module's contract is
+    # claim grain (see module docstring), so collapse both to one row per
+    # CLM_ID here, before any join touches them -- left ungated, the later
+    # merge on CLM_ID becomes many-to-many (a 46-line claim produced 46x46
+    # duplicate rows), which both explodes runtime and breaks the injection
+    # harness's scalar `.loc[row_id, col]` reads once a row_id repeats in the
+    # index. Keeping the first line per claim is a lossless collapse, not an
+    # aggregation choice: CMS RIF-format data replicates every claim-level
+    # source column identically across a claim's lines, so all candidates
+    # being dropped are exact duplicates of the one being kept.
+    cleaned_df = cleaned_df.drop_duplicates(subset=[CLAIM_ID_COLUMN], keep="first")
+    seen_claim_ids: set[str] = set()
+    deduped_claim_features = []
+    for cf in claim_features:
+        if cf.claim_id not in seen_claim_ids:
+            seen_claim_ids.add(cf.claim_id)
+            deduped_claim_features.append(cf)
+    claim_features = deduped_claim_features
+
     return cleaned_df, claim_features, window_features, split, feature_set
 
 
