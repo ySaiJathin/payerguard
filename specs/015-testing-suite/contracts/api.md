@@ -4,5 +4,4 @@
 
 Every capability this feature exercises is already contracted by its owning phase:
 - HITL round-trips: [Phase 12 contracts](../../012-incident-management-hitl/contracts/api.md), [Phase 13 contracts](../../013-remediation-engine/contracts/api.md), [Phase 14 contracts](../../014-revalidation/contracts/api.md)
-- Ingestion scenarios: [Phase 15 contracts](../../015-continuous-ingestion/contracts/api.md)
 - Anomaly/Risk/LLM tests: [Phase 7](../../007-anomaly-detection-benchmark/contracts/api.md), [Phase 9](../../009-risk-model-benchmark/contracts/api.md), [Phase 11](../../011-llm-investigation/contracts/api.md) contracts

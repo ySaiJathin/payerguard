@@ -1,8 +1,8 @@
 # Implementation Plan: Testing Suite
 
-**Branch**: `016-testing-suite` | **Date**: 2026-08-18 | **Spec**: [spec.md](./spec.md)
+**Branch**: `015-testing-suite` | **Date**: 2026-08-18 | **Spec**: [spec.md](./spec.md)
 
-**Input**: Feature specification from `/specs/016-testing-suite/spec.md`
+**Input**: Feature specification from `/specs/015-testing-suite/spec.md`
 
 ## Summary
 
@@ -49,7 +49,7 @@ No violations. No entries required in Complexity Tracking.
 ### Documentation (this feature)
 
 ```text
-specs/016-testing-suite/
+specs/015-testing-suite/
 ├── plan.md
 ├── research.md
 ├── data-model.md

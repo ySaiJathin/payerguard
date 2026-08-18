@@ -1,8 +1,8 @@
 # Implementation Plan: Audit & History
 
-**Branch**: `017-audit-history` | **Date**: 2026-08-18 | **Spec**: [spec.md](./spec.md)
+**Branch**: `016-audit-history` | **Date**: 2026-08-18 | **Spec**: [spec.md](./spec.md)
 
-**Input**: Feature specification from `/specs/017-audit-history/spec.md`
+**Input**: Feature specification from `/specs/016-audit-history/spec.md`
 
 ## Summary
 
@@ -49,7 +49,7 @@ No violations. No entries required in Complexity Tracking.
 ### Documentation (this feature)
 
 ```text
-specs/017-audit-history/
+specs/016-audit-history/
 ├── plan.md
 ├── research.md
 ├── data-model.md

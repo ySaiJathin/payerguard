@@ -1,6 +1,6 @@
 # Feature Specification: Audit & History
 
-**Feature Branch**: `017-audit-history`
+**Feature Branch**: `016-audit-history`
 
 **Created**: 2026-08-18
 
