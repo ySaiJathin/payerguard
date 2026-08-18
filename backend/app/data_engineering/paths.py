@@ -43,3 +43,7 @@ def features_dir() -> Path:
 
 def models_dir() -> Path:
     return find_data_dir() / "models"
+
+
+def risk_dir() -> Path:
+    return find_data_dir() / "risk"

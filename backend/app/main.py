@@ -13,13 +13,23 @@ from app.data_engineering.router import router as data_engineering_router
 from app.features.router import router as features_router
 from app.features.selection.router import router as selection_router
 from app.quality.router import router as quality_router
+from app.risk.dataset.router import router as risk_dataset_router
 
 app = FastAPI(title="PayerGuard")
 
-for r in (data_engineering_router, quality_router, baseline_router, features_router, selection_router, anomaly_router):
+for r in (
+    data_engineering_router,
+    quality_router,
+    baseline_router,
+    features_router,
+    selection_router,
+    anomaly_router,
+    risk_dataset_router,
+):
     app.include_router(r)
 
-# Remaining domain routers (ingestion, risk, llm, incidents, hitl,
-# remediation, revalidation, simulation, audit) are wired in as each
-# feature is implemented -- their router.py files are still placeholders
-# as of this feature (007-anomaly-detection-benchmark).
+# Remaining domain routers (ingestion, llm, incidents, hitl, remediation,
+# revalidation, simulation, audit; and the risk module's own benchmark/
+# scoring endpoints in app/risk/router.py) are wired in as each feature is
+# implemented -- their router.py files are still placeholders as of this
+# feature (008-risk-dataset-construction).
