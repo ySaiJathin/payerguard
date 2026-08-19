@@ -355,8 +355,8 @@ Broken out explicitly per category (previously bundled into one line). Coverage 
 - *HITL:* accept → fix → revalidate; reject → feedback → recalculate → re-review.
 - *Ingestion:* large files, malformed batches, repeated/continuous uploads.
 
-**Phase 16 — Audit & history** 🔲 Not started (spec `016-audit-history`, renumbered from `017-audit-history` — spec/plan stage only, no `tasks.md` yet)
-Full audit log across every pipeline stage; `/history` and `/baseline` read endpoints.
+**Phase 16 — Audit & history** ✅ Implemented (spec `016-audit-history`, 31/31 tasks; renumbered from `017-audit-history`)
+Full audit log across every pipeline stage; `/history` and `/audit/baseline` read endpoints. Ten decision-producing modules call `audit.append_entry` at their own write sites, so the trail is built at write time rather than reconstructed retroactively; entries reference (never copy) the owning module's record. The baseline endpoint is a direct pass-through to Phase 4 and is mounted at `/audit/baseline` because Phase 4's router already owns `/baseline` — a duplicate would have been silently shadowed. `ingestion` is deliberately absent from the audit-source registry (its phase was retired; no write path exists).
 
 **Phase 17 — Frontend (deferred)** 🔲 Not started for real, but not a blank slate either — see Section 4.1's frontend reality-check: a UI scaffold + compiled mockup bundle exists with no source and no backend wiring. When implementation starts, it gets its own Dockerfile and is added to `docker-compose.yml` as a `frontend` service — same containerized-deployment pattern as the backend, confirmed by the user.
 
@@ -442,6 +442,13 @@ This section records what changed from the first version of this document and wh
 18. **One unsatisfiable requirement dropped.** `016-audit-history` FR-001 required aggregating `Phase 15`'s `IngestedBatch` record into the audit trail. That record type died with the retired ingestion phase, so the requirement could never be met; it was removed from the list rather than left as a spec demanding a module read a record that will never exist.
 19. **Two pre-existing test failures fixed** (both unrelated to the above, both confirmed present before spec 014's commit): pandas 3.x's default string dtype was coercing genuine `None` into a float `NaN` in `date_standardization.py`, and `investigation_log.py`'s "newest first" ordering had no tiebreaker for entries sharing a timestamp at the host clock's resolution.
 
+**v5 (2026-08-19) — spec 016 implemented; backend pipeline complete:**
+
+20. **Spec 016 (audit & history) implemented**, 31/31 tasks. `audit_logs` is built at write time: ten decision-producing modules call `audit.append_entry` inside their own transaction, so an audit entry can never become durable for a fact that was rolled back. Entries store only a `source_record_id` reference; a test asserts the table has no column capable of holding a copy of upstream content. Phases 1-16 are now functionally complete (396 tests passing).
+21. **Three deviations from spec 016's design documents, each decided explicitly rather than drifted into.** (a) `ingestion` was dropped from `EXPECTED_AUDITED_MODULES` — its phase was retired and there is no write path to instrument, so keeping it would ship a permanently failing completeness check, which trains people to ignore red tests. (b) `data_engineering` was *added* to that list, which research.md had omitted, because FR-001 and User Story 1's first acceptance scenario both require Phase 2 cleaning corrections in a claim's trail. (c) The baseline endpoint is mounted at `/audit/baseline`, not `/baseline`: Phase 4's router already owns that path, and a duplicate registration is silently shadowed by whichever router was included first (verified empirically, not assumed).
+22. **FR-005's baseline-snapshot provenance is resolved by matching, not by stamping.** `EvidenceBundle` carries baseline percentile *values* but no snapshot id, so the link is genuinely absent upstream. Rather than record "whatever the current baseline is" and hope, an incident's `baseline_snapshot_id_used` is set only when the supplied percentiles exactly match a persisted snapshot's own — otherwise it stays null. Guessing would have violated Principle II.
+23. **Cleaning audit entries are per-claim, not per-`QualityIssueRecord`.** The real 58,066-row x 197-column file produces on the order of millions of individual records; one audit row each would dwarf the rest of the trail while answering no question the claim-level entry doesn't. Every individual record stays resolvable in the same run's `quality_issues.json`. A bulk `append_entries` path was added at the same time, since a per-entry `MAX(sequence_number)` lookup would otherwise have been one database round trip per record.
+
 ---
 
 ## 9. MVP status snapshot & completion plan (shareable handoff doc)
@@ -490,12 +497,12 @@ Explicitly out of scope for this MVP pass: live claims-stream ingestion (any soc
 | 013-remediation-engine | 13 | ✅ 33/33 |
 | 014-revalidation | 14 | ✅ 26/26 |
 | 015-testing-suite | 15 | ✅ 19/19 — see `docs/testing/phase15_coverage_map.md`; 3 Ingestion scenarios are `limitation_documented`, not tested (retired pipeline) |
-| 016-audit-history | 16 | 🔲 spec/plan only, no tasks.md |
+| 016-audit-history | 16 | ✅ 31/31 — `/history` + `/audit/baseline`; audit-source registry covers 10 modules (`ingestion` excluded, phase retired) |
 | *(015-continuous-ingestion)* | *(retired)* | Deleted — live pipeline out of scope; left an open ingestion-coverage gap, see below |
 | Frontend | 17 | 🔲 Scaffold + compiled mockup only, no real source, zero backend wiring (Section 4.1) |
 | Dockerization/CI-CD/AWS/Monitoring | 18–21 | 🔲 Not started — deliberately deferred until the backend pipeline is functionally complete |
 
-**15 of 16 active specs fully complete, 1 partially complete (007 at 28/29), 1 not started (016-audit-history), plus a frontend that's visually designed but has zero real implementation.** The backend test suite runs 362 passed / 3 skipped (the 3 skips are a deliberate hand-off between two complementary HITL state-machine tests, not gaps).
+**All 16 active specs complete, 1 of them with a single open manual task (007's T028, which needs a running backend), plus a frontend that's visually designed but has zero real implementation.** The backend pipeline (Phases 1-16) is functionally done. The backend test suite runs 396 passed / 3 skipped (the 3 skips are a deliberate hand-off between two complementary HITL state-machine tests, not gaps).
 
 ### 9.5 High-level tasks to finish by tomorrow (for review before any building starts)
 
@@ -506,7 +513,9 @@ This is a priority-ordered task list, not a promise every item fits in one day �
 3. ~~**Implement spec 013 (remediation engine)**~~ ✅ **Done** — 33/33 tasks. Deterministic-only handlers (duplicate flagging, approved imputation, approved status mapping); anything unmapped becomes "Manual Action Required."
 4. ~~**Plan/tasks/implement spec 014 (revalidation)**~~ ✅ **Done** — 26/26 tasks. Re-runs GX + anomaly + risk on affected claims post-remediation, honest before/after comparison (deltas are never clamped to look favourable), Resolved/Reopened status.
 5. ~~**Plan/tasks/implement spec 015 (testing suite)**~~ ✅ **Done** — 19/19 tasks. Two scope conflicts were found and resolved rather than papered over: the Ingestion category's three scenarios are recorded as `limitation_documented` (the pipeline they test was retired with the old Phase 15), and the reject→feedback→recalculate→re-review round-trip is cited to Phase 12's existing test rather than duplicated. Coverage is tracked in `docs/testing/phase15_coverage_map.md`.
-6. **Run `/speckit.plan` + `/speckit.tasks` for spec 016 (audit & history)** — the last unimplemented backend spec. Then implement the full audit log + `/history`/`/baseline` read endpoints. Note its FR-001 previously required aggregating a `Phase 15 IngestedBatch` record; that record type died with the retired ingestion phase and has been dropped from the requirement.
+6. ~~**Plan/tasks/implement spec 016 (audit & history)**~~ ✅ **Done** — 31/31 tasks. Full audit log across ten pipeline-stage modules, `/history` with pagination/filtering and deterministic ordering, `/audit/baseline` pass-through, and an executable registry-completeness check. Its FR-001 previously required aggregating a `Phase 15 IngestedBatch` record; that record type died with the retired ingestion phase and was dropped from the requirement.
+
+**Remaining work now that Phases 1-16 are complete:** 007's T028 manual verification (needs a running backend), the ingestion re-scoping decision in item 2 above, and then the deferred Phases 17-21 (frontend, Docker validation, CI/CD, AWS, monitoring).
 7. **Decide on the frontend's fate before doing anything with it**: the existing `frontend/` folder is a mockup, not a partial implementation (Section 4.1). Decide whether to rebuild it from scratch against real endpoints (reusing its route list and Tailwind theme only), and resolve the `/stream` route conflict with the continuous-ingestion removal, before any frontend coding starts.
 8. **Only after 1–6 are functionally complete locally (no Docker):** validate `docker compose up --build` actually works end-to-end (Phase 18) — this has never been build-tested in this project so far.
 

@@ -16,6 +16,7 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
+from app.audit.aggregation_service import append_entry
 from app.hitl import state_machine
 from app.hitl.models import IncidentStatusTransition
 from app.hitl.schemas import RecalculateResponse
@@ -98,9 +99,10 @@ def recalculate_incident(
     assert to_status in legal_destinations  # state_machine.py's table is the single source of truth for this set
 
     now = datetime.now(timezone.utc)
+    transition_id = str(uuid4())
     db.add(
         IncidentStatusTransition(
-            transition_id=str(uuid4()),
+            transition_id=transition_id,
             incident_id=incident_id,
             from_status=orm.status,
             to_status=to_status,
@@ -109,6 +111,28 @@ def recalculate_incident(
             occurred_at=now,
         )
     )
+
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="incident_status",
+        source_module="hitl",
+        source_record_id=transition_id,
+        occurred_at=now,
+    )
+    if new_investigation is not None:
+        # Same rule as incidents.create_incident: no entry for a failed
+        # investigation, since there is no record to reference.
+        append_entry(
+            db,
+            entity_type="incident",
+            entity_id=incident_id,
+            pipeline_stage="llm_investigation",
+            source_module="llm",
+            source_record_id=new_investigation.investigation_id,
+            occurred_at=now,
+        )
 
     orm.status = to_status
     if evidence_changed:

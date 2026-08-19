@@ -14,6 +14,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+import app.audit.models  # noqa: F401 -- registers AuditLog on Base.metadata
 import app.hitl.models  # noqa: F401 -- registers HumanFeedback/IncidentStatusTransition on Base.metadata
 import app.incidents.models  # noqa: F401 -- registers Incident on Base.metadata
 import app.remediation.models  # noqa: F401 -- registers RemediationRun/RemediationAction/ManualActionRequired on Base.metadata

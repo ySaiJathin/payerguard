@@ -14,6 +14,7 @@ from uuid import uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.audit.aggregation_service import append_entry
 from app.incidents.service import get_incident_orm
 from app.remediation import manual_handler, precedence
 from app.remediation.errors import NotAcceptedIncidentError
@@ -192,6 +193,44 @@ def run_remediation(db: Session, incident_id: str, affected_claims: list[Affecte
 
     completed_at = datetime.now(timezone.utc)
     run_orm.completed_at = completed_at
+
+    # Audit entries (Phase 16 FR-001). Actions and manual-action records
+    # are scoped to their own `claim_id` -- that is what makes a *claim's*
+    # history answerable, and what keeps two incidents that happen to
+    # touch the same claim from conflating their trails (spec Edge Cases).
+    for action in actions:
+        append_entry(
+            db,
+            entity_type="claim",
+            entity_id=action.claim_id,
+            pipeline_stage="remediation",
+            source_module="remediation",
+            source_record_id=action.action_id,
+            occurred_at=action.applied_at,
+        )
+    for manual in manual_actions:
+        append_entry(
+            db,
+            entity_type="claim",
+            entity_id=manual.claim_id,
+            pipeline_stage="remediation",
+            source_module="remediation",
+            source_record_id=manual.record_id,
+            occurred_at=manual.flagged_at,
+        )
+    # Plus one incident-scoped entry for the run itself, so the incident's
+    # own trail shows that remediation happened even when every claim-level
+    # action is scoped elsewhere.
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="remediation",
+        source_module="remediation",
+        source_record_id=run_id,
+        occurred_at=completed_at,
+    )
+
     db.commit()
 
     return RemediationRun(

@@ -12,6 +12,8 @@ from uuid import uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.audit.aggregation_service import append_entry
+from app.baseline.snapshot_log import read_baseline_history_snapshots
 from app.hitl.models import IncidentStatusTransition
 from app.incidents.models import Incident as IncidentORM
 from app.incidents.schemas import EvidenceBundle, Incident, IncidentCreate, IncidentUpdate
@@ -25,6 +27,36 @@ from app.risk.scoring.severity import compute_severity
 
 def _to_dict(model) -> dict:
     return json.loads(model.model_dump_json())
+
+
+def _resolve_baseline_snapshot_id(evidence: EvidenceBundle) -> str | None:
+    """Which baseline snapshot the incident's evidence actually came from
+    (Phase 16 FR-005), or `None` when that cannot be established.
+
+    `EvidenceBundle` carries baseline *percentile values* but no snapshot
+    id -- the caller supplies the numbers directly, so the provenance link
+    is genuinely absent upstream. Rather than fabricate one (constitution
+    Principle II) or stamp "whatever the current baseline is" and hope, we
+    record a snapshot id only when the supplied percentiles exactly match
+    a persisted snapshot's own amount percentiles, which is real evidence
+    that snapshot was in effect. Anything else stays `None`, honestly.
+    """
+    supplied = evidence.baseline_amount_percentiles
+    if supplied is None:
+        return None
+    try:
+        history = read_baseline_history_snapshots()
+    except Exception:
+        # Baseline artifacts are file-based and optional at this stage --
+        # an incident must never fail to be created because the baseline
+        # log is missing or unreadable.
+        return None
+
+    for snapshot in reversed(history):  # newest first
+        for amount_baseline in snapshot.amount_baselines:
+            if amount_baseline.percentiles == supplied:
+                return snapshot.snapshot_id
+    return None
 
 
 def create_incident(db: Session, payload: IncidentCreate, mistral_client_override=None) -> Incident:
@@ -102,6 +134,47 @@ def create_incident(db: Session, payload: IncidentCreate, mistral_client_overrid
                 reviewer_id=None,
                 occurred_at=now,
             )
+        )
+
+    # Audit entries (Phase 16 FR-001). Appended into this same transaction
+    # so they commit or roll back with the records they reference.
+    baseline_snapshot_id = _resolve_baseline_snapshot_id(evidence)
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="incident_status",
+        source_module="incidents",
+        source_record_id=incident_id,
+        occurred_at=now,
+    )
+    # Phase 10's Severity/Business Impact/Priority results are persisted on
+    # the incident row itself, so the incident id is their honest source
+    # reference -- there is no separate scoring record to point at.
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="severity_scoring",
+        source_module="risk.scoring",
+        source_record_id=incident_id,
+        baseline_snapshot_id_used=baseline_snapshot_id,
+        occurred_at=now,
+    )
+    if investigation_id is not None:
+        # Only when an investigation record genuinely exists. A failed
+        # investigation produced nothing to reference, and emitting an
+        # entry pointing at a non-existent record would break provenance
+        # (FR-001, SC-002) -- the incident's `status` already records the
+        # failure honestly.
+        append_entry(
+            db,
+            entity_type="incident",
+            entity_id=incident_id,
+            pipeline_stage="llm_investigation",
+            source_module="llm",
+            source_record_id=investigation_id,
+            occurred_at=now,
         )
 
     db.commit()

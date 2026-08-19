@@ -1,13 +1,15 @@
 """Reject action (spec FR-003, FR-004, FR-006; research.md).
 
 **No auto-retrain guarantee (spec FR-006, SC-005)**: this module imports
-only `app.hitl`'s own state machine/models and `app.incidents`' read
-accessor -- zero import of `app.anomaly.benchmark` or `app.risk.
-benchmark`'s model-fitting functions. `HumanFeedback` is written to its
-own table and nothing else happens automatically; there is no code path
-here that could reach a retraining trigger even by mistake, mirroring
-Phase 11's read-only-boundary pattern (import-graph isolation, not just
-a convention).
+only `app.hitl`'s own state machine/models, `app.incidents`' read
+accessor, and Phase 16's dependency-light `audit.append_entry` -- zero
+import of `app.anomaly.benchmark` or `app.risk.benchmark`'s model-fitting
+functions. (`audit.aggregation_service` imports nothing but SQLAlchemy and
+its own models, by design, so it cannot reintroduce a path to either.)
+`HumanFeedback` is written to its own table and nothing else happens
+automatically; there is no code path here that could reach a retraining
+trigger even by mistake, mirroring Phase 11's read-only-boundary pattern
+(import-graph isolation, not just a convention).
 """
 
 from datetime import datetime, timezone
@@ -15,6 +17,7 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
+from app.audit.aggregation_service import append_entry
 from app.hitl import state_machine
 from app.hitl.errors import MissingFeedbackError
 from app.hitl.models import HumanFeedback, IncidentStatusTransition
@@ -36,9 +39,11 @@ def reject_incident(
     to_status = next(iter(legal_destinations))
 
     now = datetime.now(timezone.utc)
+    transition_id = str(uuid4())
+    feedback_id = str(uuid4())
     db.add(
         IncidentStatusTransition(
-            transition_id=str(uuid4()),
+            transition_id=transition_id,
             incident_id=incident_id,
             from_status=orm.status,
             to_status=to_status,
@@ -49,7 +54,7 @@ def reject_incident(
     )
     db.add(
         HumanFeedback(
-            feedback_id=str(uuid4()),
+            feedback_id=feedback_id,
             incident_id=incident_id,
             investigation_id=orm.current_investigation_id or "",
             reason_category=reason_category,
@@ -60,6 +65,25 @@ def reject_incident(
     )
     orm.status = to_status
     orm.updated_at = now
+
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="incident_status",
+        source_module="hitl",
+        source_record_id=transition_id,
+        occurred_at=now,
+    )
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="human_feedback",
+        source_module="hitl",
+        source_record_id=feedback_id,
+        occurred_at=now,
+    )
 
     db.commit()
     db.refresh(orm)

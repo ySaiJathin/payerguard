@@ -15,6 +15,7 @@ from uuid import uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.audit.aggregation_service import append_entry
 from app.hitl import state_machine
 from app.hitl.models import IncidentStatusTransition
 from app.incidents.service import get_incident_orm
@@ -73,9 +74,10 @@ def run_revalidation(db: Session, incident_id: str, request: RevalidationRunRequ
         )
 
     completed_at = datetime.now(timezone.utc)
+    transition_id = str(uuid4())
     db.add(
         IncidentStatusTransition(
-            transition_id=str(uuid4()),
+            transition_id=transition_id,
             incident_id=incident_id,
             from_status=incident_orm.status,
             to_status=to_status,
@@ -120,6 +122,29 @@ def run_revalidation(db: Session, incident_id: str, request: RevalidationRunRequ
             blocked_by_manual_actions=resolution.blocked_by_manual_actions,
         )
     )
+
+    # Audit entries (Phase 16 FR-001): the revalidation itself, plus the
+    # status transition it drove -- attributed to `hitl`, which owns the
+    # IncidentStatusTransition record type, not to `revalidation`.
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="revalidation",
+        source_module="revalidation",
+        source_record_id=revalidation_id,
+        occurred_at=completed_at,
+    )
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="incident_status",
+        source_module="hitl",
+        source_record_id=transition_id,
+        occurred_at=completed_at,
+    )
+
     db.commit()
 
     revalidation_run = RevalidationRun(

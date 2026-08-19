@@ -10,6 +10,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.anomaly.router import router as anomaly_router
+from app.audit.router import router as audit_router
 from app.baseline.router import router as baseline_router
 from app.core.database import init_db
 from app.data_engineering.router import router as data_engineering_router
@@ -52,9 +53,11 @@ for r in (
     hitl_router,
     remediation_router,
     revalidation_router,
+    audit_router,
 ):
     app.include_router(r)
 
-# Remaining domain routers (ingestion, simulation, audit) are wired in as
-# each feature is implemented -- their router.py files are still
-# placeholders as of this feature (014-revalidation).
+# `ingestion` and `simulation` have no routers wired in: the
+# continuous-ingestion feature that would have built them was removed
+# 2026-08-18 (commit 6dd9ad2) and both remain Phase-0 placeholders. They
+# are not pending work on any current spec.

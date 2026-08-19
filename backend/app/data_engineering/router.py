@@ -3,9 +3,11 @@
 Endpoints per specs/001-data-profiling-foundation/contracts/api.md.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
+from app.core.database import get_db
 from app.data_engineering import quality_issue_log, report_writer
 from app.data_engineering.cleaning_service import (
     CategoriesUnavailableError,
@@ -79,10 +81,14 @@ def run_sample(body: SampleRequest | None = None) -> SampleManifest:
 
 
 @router.post("/clean", response_model=CleaningRunSummary)
-def run_clean(body: CleanRequest | None = None) -> CleaningRunSummary:
+def run_clean(
+    body: CleanRequest | None = None, db: Session = Depends(get_db)
+) -> CleaningRunSummary:
     body = body or CleanRequest()
     try:
-        return run_cleaning(source=body.source)
+        summary = run_cleaning(source=body.source, db=db)
+        db.commit()  # run_cleaning's audit entries join this transaction
+        return summary
     except CategoriesUnavailableError as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     except SchemaValidationError as exc:

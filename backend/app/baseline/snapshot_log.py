@@ -58,3 +58,10 @@ def read_baseline_history(out_dir: Path | None = None) -> list[BaselineSnapshotS
         )
         for entry in history
     ]
+
+
+def read_baseline_history_snapshots(out_dir: Path | None = None) -> list[BaselineSnapshot]:
+    """Full snapshots (not just the provenance projection) -- used by
+    Phase 16's audit trail to resolve which snapshot an incident's
+    evidence actually came from (spec 016 FR-005)."""
+    return [BaselineSnapshot.model_validate(entry) for entry in _read_history(out_dir)]

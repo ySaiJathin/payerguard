@@ -3,8 +3,11 @@
 Endpoints per specs/009-risk-model-benchmark/contracts/api.md.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
+from app.audit.aggregation_service import append_entries
+from app.core.database import get_db
 from app.risk.benchmark import benchmark_log
 from app.risk.benchmark.benchmark_runner import run_benchmark
 from app.risk.benchmark.data_loading import build_benchmark_frame
@@ -33,11 +36,31 @@ def _run_and_persist() -> RiskBenchmarkRunResult:
 
 
 @router.post("", response_model=RiskBenchmarkRunResult)
-def benchmark() -> RiskBenchmarkRunResult:
+def benchmark(db: Session = Depends(get_db)) -> RiskBenchmarkRunResult:
     try:
-        return _run_and_persist()
+        run_result = _run_and_persist()
     except RiskModelInputUnavailableError as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    # One audit entry per benchmarked model result (Phase 16 FR-001) --
+    # same bounded, provenance-resolvable pattern as the anomaly router.
+    selection = run_result.production_model_selection
+    append_entries(
+        db,
+        [
+            {
+                "entity_type": "batch",
+                "entity_id": selection.selected_model.value,
+                "pipeline_stage": "risk",
+                "source_module": "risk",
+                "source_record_id": result_id,
+                "occurred_at": selection.selected_at,
+            }
+            for result_id in selection.benchmark_result_ids
+        ],
+    )
+    db.commit()
+    return run_result
 
 
 @router.get("/results", response_model=RiskBenchmarkRunResult)

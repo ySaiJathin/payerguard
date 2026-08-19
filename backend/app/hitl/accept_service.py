@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
+from app.audit.aggregation_service import append_entry
 from app.hitl import state_machine
 from app.hitl.models import IncidentStatusTransition
 from app.incidents.schemas import Incident
@@ -22,9 +23,10 @@ def accept_incident(db: Session, incident_id: str, reviewer_id: str) -> Incident
     to_status = next(iter(legal_destinations))  # "accept" has exactly one legal destination
 
     now = datetime.now(timezone.utc)
+    transition_id = str(uuid4())
     db.add(
         IncidentStatusTransition(
-            transition_id=str(uuid4()),
+            transition_id=transition_id,
             incident_id=incident_id,
             from_status=orm.status,
             to_status=to_status,
@@ -35,6 +37,16 @@ def accept_incident(db: Session, incident_id: str, reviewer_id: str) -> Incident
     )
     orm.status = to_status
     orm.updated_at = now
+
+    append_entry(
+        db,
+        entity_type="incident",
+        entity_id=incident_id,
+        pipeline_stage="incident_status",
+        source_module="hitl",
+        source_record_id=transition_id,
+        occurred_at=now,
+    )
 
     db.commit()
     db.refresh(orm)

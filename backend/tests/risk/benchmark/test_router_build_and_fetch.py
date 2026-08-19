@@ -1,14 +1,22 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
+from app.core.database import get_db
 from app.risk.benchmark import benchmark_log, benchmark_runner, data_loading, router as router_module
 from app.risk.benchmark.errors import RiskModelInputUnavailableError
+from tests._db_fixtures import make_test_session
 from tests.risk.benchmark._fixtures import make_rows, make_split
 
 
 def _app() -> FastAPI:
     app = FastAPI()
     app.include_router(router_module.router)
+    # POST /risk/benchmark appends a Phase 16 audit entry, so the endpoint
+    # now genuinely needs a session. Without this override it would fall
+    # through to the real DATABASE_URL-bound SessionLocal, whose
+    # audit_logs table this test never creates.
+    db = make_test_session()
+    app.dependency_overrides[get_db] = lambda: db
     return app
 
 
