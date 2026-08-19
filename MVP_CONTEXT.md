@@ -1,6 +1,6 @@
 # PayerGuard — MVP Context Document
 
-Status: In progress (v3 — 15 of 16 active specs implemented; see Section 9 for a condensed shareable status snapshot, Section 8 for the full changelog)
+Status: In progress (v5 — all 16 active specs implemented; backend pipeline Phases 1-16 functionally complete. See Section 9 for a condensed shareable status snapshot, Section 8 for the full changelog)
 Last updated: 2026-08-18
 Owner: AAT2
 
