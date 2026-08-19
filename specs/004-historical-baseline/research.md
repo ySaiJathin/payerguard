@@ -4,7 +4,7 @@
 
 **Decision**: Processing windows are defined by claim date grouping (e.g., calendar day/week bucket of `CLM_FROM_DT`) or fixed-size sequential batches of N claims, not real-time wall-clock intervals (the "5/15/30-min" windows mentioned in MVP_CONTEXT.md Section 3's architecture diagram).
 
-**Rationale**: This dataset has no live arrival timestamps — claims arrive as a static historical file, and Phase 15's "continuous ingestion" is repeated batch upload, not a live stream (constitution "Scope Discipline"). Wall-clock windows would be meaningless against a historical CSV; date-based or batch-index windows are the only semantically valid interpretation for this data shape.
+**Rationale**: This dataset has no live arrival timestamps — claims arrive as a static historical file, and the planned "continuous ingestion" was repeated batch upload, not a live stream (the continuous-ingestion phase was removed 2026-08-18) (constitution "Scope Discipline"). Wall-clock windows would be meaningless against a historical CSV; date-based or batch-index windows are the only semantically valid interpretation for this data shape.
 
 **Alternatives considered**: Literal 5/15/30-minute wall-clock windows (rejected — no timestamp in the data supports this; would require fabricating arrival times, violating Principle II); a single "whole file = one window" (rejected — defeats the purpose of a volume-per-window baseline, which needs multiple windows to establish a distribution to deviate from).
 
@@ -28,6 +28,6 @@
 
 **Decision**: Every computed baseline is wrapped in a `BaselineSnapshot` envelope recording the exact source file/batch, row count, and date range it was computed from, rather than baseline statistics being returned as bare numbers.
 
-**Rationale**: FR-007/SC-006 require this so that as Phase 15 adds more historical batches over time, a consumer of "the baseline" always knows which historical period it reflects — critical for Phase 22's future drift-monitoring work to compare like-for-like.
+**Rationale**: FR-007/SC-006 require this so that as more historical batches are loaded over time (the continuous-ingestion phase was removed 2026-08-18), a consumer of "the baseline" always knows which historical period it reflects — critical for Phase 21's future drift-monitoring work to compare like-for-like.
 
 **Alternatives considered**: A single global mutable baseline with no versioning/provenance (rejected — would make it impossible to know what "historical" meant at the time a given downstream decision was made, undermining the audit trail principle that runs through the whole project).

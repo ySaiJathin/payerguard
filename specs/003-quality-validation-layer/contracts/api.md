@@ -6,7 +6,7 @@ New `quality` module router.
 
 Runs all category expectation suites against the most recent Phase 2 cleaned batch and computes the composite score.
 
-**Request body**: none required (operates on the latest `data/cleaned/inpatient_cleaned.csv`); optional `{"batch_source": "..."}` to target a specific cleaned batch once Phase 15 continuous ingestion exists.
+**Request body**: none required (operates on the latest `data/cleaned/inpatient_cleaned.csv`); optional `{"batch_source": "..."}` to target a specific cleaned batch if continuous ingestion is ever built (the continuous-ingestion phase was removed 2026-08-18).
 
 **Response `200 OK`**: `QualityScoreResult` (see data-model.md).
 

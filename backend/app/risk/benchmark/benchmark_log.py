@@ -3,7 +3,7 @@ data/reports/risk_benchmark_results.json (spec FR-009; research.md).
 
 Unlike Phase 3/7/8's overwrite-on-each-run logs, each run is *appended* to
 a history list -- mirroring Phase 4's `snapshot_log.py` precedent -- so
-re-running the benchmark after Phase 15 adds new historical data produces
+re-running the benchmark after new historical data is loaded produces
 a new, distinguishable, versioned entry rather than erasing the prior
 one. Runs are keyed by `(risk_dataset_version, split_id)`.
 """

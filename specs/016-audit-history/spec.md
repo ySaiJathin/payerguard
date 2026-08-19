@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: User description: "Phase 17 — Audit & history (MVP_CONTEXT.md Section 5): full audit log across every pipeline stage; /history and /baseline read endpoints."
+**Input**: User description: "Phase 16 — Audit & history (MVP_CONTEXT.md Section 5): full audit log across every pipeline stage; /history and /baseline read endpoints."
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -61,13 +61,13 @@ As the person accountable for this project's audit-trail promise, I need assuran
 - What happens when an audit query is made for a claim/incident identifier that doesn't exist or has no recorded activity? The system MUST return a clear "no history found" response, not an empty-but-ambiguous 200 OK that could be mistaken for "confirmed zero activity."
 - What happens if two pipeline stages' timestamps are extremely close together (e.g., automated recalculation firing multiple sub-steps within the same second)? The audit trail MUST preserve a stable, deterministic ordering (e.g., a monotonic sequence number in addition to timestamp) so history is never ambiguous about which event happened first.
 - What happens to audit history when a claim is affected by remediation from one incident and separately referenced by a different, unrelated incident? The audit trail for each incident MUST correctly scope to its own relevant stages without conflating the two incidents' histories.
-- What happens if this feature's aggregation query becomes slow as pipeline history grows (many batches via Phase 15 over time)? The system MUST support paginated/filtered history queries (e.g., by date range or stage) rather than requiring every query to return an unbounded full history.
+- What happens if this feature's aggregation query becomes slow as pipeline history grows (many batches over time)? The system MUST support paginated/filtered history queries (e.g., by date range or stage) rather than requiring every query to return an unbounded full history.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: System MUST aggregate audit-relevant records from every pipeline-stage module (Phase 2's `QualityIssueRecord`, Phase 3's `ExpectationCheckResult`, Phase 7's anomaly scores, Phase 9's risk scores, Phase 10's Severity/Business Impact/Priority results, Phase 11's `LLMInvestigation`, Phase 12's `IncidentStatusTransition`/`HumanFeedback`, Phase 13's `RemediationAction`/`ManualActionRequired`, Phase 14's `RevalidationRun`/`BeforeAfterComparison`/`ResolutionDetermination`, Phase 15's `IngestedBatch`) into one queryable audit trail, by reference to each owning module's own persisted record — never by independently re-deriving or duplicating the underlying fact.
+- **FR-001**: System MUST aggregate audit-relevant records from every pipeline-stage module (Phase 2's `QualityIssueRecord`, Phase 3's `ExpectationCheckResult`, Phase 7's anomaly scores, Phase 9's risk scores, Phase 10's Severity/Business Impact/Priority results, Phase 11's `LLMInvestigation`, Phase 12's `IncidentStatusTransition`/`HumanFeedback`, Phase 13's `RemediationAction`/`ManualActionRequired`, Phase 14's `RevalidationRun`/`BeforeAfterComparison`/`ResolutionDetermination`) into one queryable audit trail, by reference to each owning module's own persisted record — never by independently re-deriving or duplicating the underlying fact.
 - **FR-002**: System MUST expose a `GET /history` endpoint that returns the complete, chronologically-ordered audit trail for a given claim or incident identifier.
 - **FR-003**: System MUST expose a `GET /baseline` endpoint that returns Phase 4's current baseline (or, given a specific snapshot identifier, that specific historical baseline snapshot via Phase 4's existing provenance) — as a pass-through/alias to Phase 4's own data, never a second independently-computed baseline.
 - **FR-004**: System MUST preserve a stable, deterministic ordering for audit entries (a monotonic sequence in addition to timestamp) so near-simultaneous events are never ambiguously ordered.
@@ -98,4 +98,4 @@ As the person accountable for this project's audit-trail promise, I need assuran
 
 - This feature is purely a read/aggregation layer over every prior phase's own persisted audit-relevant records — it introduces no new write path for pipeline facts, consistent with constitution Principle VI's modular ownership (each module owns its own data; this feature only indexes/aggregates for read access).
 - "Every pipeline stage" (FR-001) excludes purely internal computation modules with no decision/score/action output of their own (e.g., Phase 1's profiling, Phase 5's feature engineering, Phase 6's feature selection) — these feed into stages that do produce audited decisions (quality, anomaly, risk, incidents, etc.) rather than being separately audited themselves, consistent with FR-008's "modules producing decisions/scores/actions" framing.
-- This feature completes the MVP's Phase 1-17 build order (Phases 18-22 are explicitly deferred per MVP_CONTEXT.md Section 5) — it does not depend on or anticipate frontend (Phase 18), CI/CD (Phase 20), cloud deployment (Phase 21), or monitoring (Phase 22) capabilities.
+- This feature completes the MVP's Phase 1-16 build order (Phases 17-21 are explicitly deferred per MVP_CONTEXT.md Section 5) — it does not depend on or anticipate frontend (Phase 17), CI/CD (Phase 19), cloud deployment (Phase 20), or monitoring (Phase 21) capabilities.

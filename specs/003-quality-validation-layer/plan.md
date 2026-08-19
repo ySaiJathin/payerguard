@@ -18,7 +18,7 @@ Build the `quality` module: Great Expectations suites per column category (built
 
 **Testing**: pytest, with fixtures covering: a column with legitimately high missingness (must not tank the score), a negative-amount cell (must trigger the amount validity CRITICAL), and a full re-run for determinism (SC-004)
 
-**Target Platform**: Same as Phases 1-2 (local dev now, Docker Compose validated later in Phase 19)
+**Target Platform**: Same as Phases 1-2 (local dev now, Docker Compose validated later in Phase 18)
 
 **Project Type**: Backend module — new `backend/app/quality/` module per constitution Principle VI ("quality (Great Expectations)" is its own named module boundary in MVP_CONTEXT.md Section 3)
 

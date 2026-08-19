@@ -14,7 +14,7 @@
 
 As a reviewer using PayerGuard, I need incidents created from the pipeline's findings (Phase 10's Priority score, Phase 11's LLM investigation) and manageable through standard CRUD operations, so I have a durable, queryable record of every finding that warranted attention.
 
-**Why this priority**: Incidents are the central object every downstream HITL/remediation/audit phase operates on — nothing else in Phases 12-17 works without this.
+**Why this priority**: Incidents are the central object every downstream HITL/remediation/audit phase operates on — nothing else in Phases 12-16 works without this.
 
 **Independent Test**: Can be tested by triggering incident creation for a window/finding with real Phase 10 Priority and Phase 11 investigation data, and confirming a queryable `Incident` record exists with all of that data attached.
 
@@ -54,7 +54,7 @@ As a reviewer who rejects an LLM investigation, I need to provide feedback expla
 
 1. **Given** a reviewer rejects an incident, **When** the reject action is submitted, **Then** feedback text (and a structured reason category, if provided) is required and persisted, linked to the specific incident and `LLMInvestigation` being rejected.
 2. **Given** a rejected incident with feedback, **When** recalculation is triggered, **Then** the system re-invokes Phase 11's investigation (and, if the underlying evidence changed, the relevant upstream scoring) producing a new `LLMInvestigation` for the same incident, available for the reviewer to accept/reject again.
-3. **Given** human feedback has been captured, **When** inspected, **Then** it is stored in a form suitable for future retraining use (e.g., linked to the specific incident's features/label) but the system does NOT automatically trigger model retraining from this single feedback event — retraining remains a separate, deliberate, gated process (Phase 22).
+3. **Given** human feedback has been captured, **When** inspected, **Then** it is stored in a form suitable for future retraining use (e.g., linked to the specific incident's features/label) but the system does NOT automatically trigger model retraining from this single feedback event — retraining remains a separate, deliberate, gated process (Phase 21).
 
 ### Edge Cases
 
@@ -73,7 +73,7 @@ As a reviewer who rejects an LLM investigation, I need to provide feedback expla
 - **FR-003**: System MUST implement an explicit reject action that transitions an incident to a "rejected" status and requires feedback (free text, plus a structured reason category) as part of the same action — the system MUST NOT allow a reject without feedback.
 - **FR-004**: System MUST persist every feedback record linked to the specific incident and `LLMInvestigation` it responds to, preserving full history across multiple reject cycles (never overwritten).
 - **FR-005**: System MUST support a recalculation action on a rejected incident that re-invokes Phase 11's investigation (and, if applicable, re-invokes affected upstream scoring), producing a new `LLMInvestigation` available for review, without discarding the prior rejected investigation or its feedback.
-- **FR-006**: System MUST NOT trigger automatic model retraining (Phase 7/9's production models) from any single feedback event — feedback is stored for future, separately-gated retraining (Phase 22) only.
+- **FR-006**: System MUST NOT trigger automatic model retraining (Phase 7/9's production models) from any single feedback event — feedback is stored for future, separately-gated retraining (Phase 21) only.
 - **FR-007**: System MUST reject invalid state transitions explicitly (e.g., accepting an already-accepted incident, or accepting a rejected incident without a new investigation cycle) with a clear error, rather than silently allowing an inconsistent state.
 - **FR-008**: System MUST design the incident status field to be extensible to downstream statuses introduced by Phase 13/14 (e.g., "resolved," "reopened") without requiring a breaking redesign of this feature's data model.
 - **FR-009**: System MUST reflect a failed investigation (Phase 11's `InvestigationFailure`) in the incident's state clearly, distinguishing "investigation failed/pending" from "ready for review."

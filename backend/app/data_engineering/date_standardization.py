@@ -44,7 +44,11 @@ def standardize_date_column(series: pd.Series) -> DateStandardizationResult:
 
     parsed = pd.to_datetime(str_series.where(format_ok), format=_STRPTIME_FORMAT, errors="coerce")
     success = parsed.notna()
-    iso = parsed.dt.strftime("%Y-%m-%d").where(success, other=None)
+    # astype(object) before .where(...): pandas 3.x's default "str" dtype for
+    # strftime's output coerces `other=None` into its own NA sentinel (a
+    # float NaN) rather than preserving Python `None` -- forcing object
+    # dtype here keeps unparseable/missing cells as genuine `None`.
+    iso = parsed.dt.strftime("%Y-%m-%d").astype(object).where(success, other=None)
 
     changes: list[DateChange] = []
     changed_idx = series.index[non_null_mask]
@@ -59,6 +63,9 @@ def standardize_date_column(series: pd.Series) -> DateStandardizationResult:
                 changes.append(DateChange(idx_val, orig, None, QualityIssue.DATE_UNPARSEABLE))
 
     return DateStandardizationResult(
-        cleaned=pd.Series(iso.to_numpy(), index=series.index, name=series.name),
+        # dtype=object pinned explicitly: pandas 3.x's automatic string-dtype
+        # inference would otherwise re-coerce the `None`s built above into
+        # its own NA sentinel (a float NaN) on construction.
+        cleaned=pd.Series(iso.to_numpy(), index=series.index, name=series.name, dtype=object),
         changes=changes,
     )

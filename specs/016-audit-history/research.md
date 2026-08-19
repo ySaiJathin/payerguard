@@ -2,7 +2,7 @@
 
 ## Decision: Each owning module appends a lightweight `AuditTrailEntry` reference at write time; `audit` module never scrapes/re-derives history after the fact
 
-**Decision**: Phase 2-15's own write operations (e.g., `QualityIssueRecord` creation, `IncidentStatusTransition` creation) each make one additional, simple call — `audit.append_entry(entity_type, entity_id, pipeline_stage, source_module, source_record_id)` — at the moment they persist their own record; the `audit` module's `audit_logs` table is built up incrementally this way, not reconstructed retroactively by querying every other module's tables on each history request.
+**Decision**: Phase 2-14's own write operations (e.g., `QualityIssueRecord` creation, `IncidentStatusTransition` creation) each make one additional, simple call — `audit.append_entry(entity_type, entity_id, pipeline_stage, source_module, source_record_id)` — at the moment they persist their own record; the `audit` module's `audit_logs` table is built up incrementally this way, not reconstructed retroactively by querying every other module's tables on each history request.
 
 **Rationale**: FR-001/SC-002 require entries to reference real upstream records without duplicating facts, and FR-004 requires stable deterministic ordering — an append-at-write-time model naturally gives a correct, real-time sequence number, whereas reconstructing history after the fact from N different tables' timestamps would be slower per-query and more fragile in the face of clock-skew/near-simultaneous events (the exact problem FR-004's Edge Case calls out).
 
@@ -12,13 +12,13 @@
 
 **Decision**: `audit.append_entry` lives in a minimal, low-level shared utility module with zero dependencies on any other pipeline-stage module (it only needs a DB connection and the four/five plain fields), so every other module (Phase 2 through 15) can safely import and call it without creating an import cycle back into their own domain logic.
 
-**Rationale**: Since `audit` is the last module built (Phase 17) but needs to be called from every earlier module's write paths, avoiding a circular/heavy dependency is essential — a minimal utility function with no domain knowledge of any other module keeps this tractable and matches how a logging/telemetry utility is typically structured in a modular codebase.
+**Rationale**: Since `audit` is the last module built (Phase 16) but needs to be called from every earlier module's write paths, avoiding a circular/heavy dependency is essential — a minimal utility function with no domain knowledge of any other module keeps this tractable and matches how a logging/telemetry utility is typically structured in a modular codebase.
 
 **Alternatives considered**: `audit` module polling/subscribing to database change events (e.g., triggers or CDC) to build its log without requiring other modules to call it explicitly (rejected as unnecessary infrastructure complexity for the MVP — an explicit, tiny function call at each write site is simpler, more visible in code review, and sufficient at this project's scale).
 
 ## Decision: `GET /baseline` is a direct pass-through to Phase 4's `baseline` module's own service function
 
-**Decision**: `baseline_passthrough.py` calls Phase 4's `snapshot_service.get_current_snapshot()` (or `get_snapshot(snapshot_id)`) directly and returns its result unchanged — `audit`'s `/baseline` endpoint exists purely to give this a documented, expected location per MVP_CONTEXT.md Phase 17's naming, without introducing a second baseline computation or cache.
+**Decision**: `baseline_passthrough.py` calls Phase 4's `snapshot_service.get_current_snapshot()` (or `get_snapshot(snapshot_id)`) directly and returns its result unchanged — `audit`'s `/baseline` endpoint exists purely to give this a documented, expected location per MVP_CONTEXT.md Phase 16's naming, without introducing a second baseline computation or cache.
 
 **Rationale**: Spec FR-003/SC-003 explicitly require parity with Phase 4's own `GET /baseline` and forbid a second independently-computed baseline — a direct pass-through is the only implementation that structurally guarantees this (there's no code path where the two could diverge, since they're the same function call).
 

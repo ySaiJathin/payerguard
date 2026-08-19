@@ -20,8 +20,8 @@ risk dataset, so `risk_dataset_version` here is a SHA-256 hash of the
 rows' own content (each row's JSON representation, sorted by
 `window_id`) -- a stable, non-invasive versioning key computed without
 modifying Phase 8 (spec FR-009): identical rows always hash identically
-regardless of how they were loaded, and any real content change (Phase 15
-adding data, or a label recompute) changes the hash.
+regardless of how they were loaded, and any real content change (new
+data being loaded, or a label recompute) changes the hash.
 """
 
 import hashlib

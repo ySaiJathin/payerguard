@@ -6,7 +6,7 @@
 
 ## Summary
 
-Produce the Phase 16 coverage map (every named scenario → citation or new test), implement the genuinely new tests (Anomaly model-stability, Risk drift-sensitivity, LLM evidence-grounding checks), implement the cross-module integration tests (HITL round-trips, Ingestion large/malformed/repeated scenarios), and consolidate the Data-category suite by reference — all living in `backend/tests/`, not a new `app/` module, since this feature adds no production code.
+Produce the Phase 15 coverage map (every named scenario → citation or new test), implement the genuinely new tests (Anomaly model-stability, Risk drift-sensitivity, LLM evidence-grounding checks), implement the cross-module integration tests (HITL round-trips, Ingestion large/malformed/repeated scenarios), and consolidate the Data-category suite by reference — all living in `backend/tests/`, not a new `app/` module, since this feature adds no production code.
 
 ## Technical Context
 
@@ -14,11 +14,11 @@ Produce the Phase 16 coverage map (every named scenario → citation or new test
 
 **Primary Dependencies**: pytest, pytest's fixture/parametrize machinery for the consolidated Data suite; httpx/TestClient for real (non-mocked) integration tests against FastAPI's test app
 
-**Storage**: `docs/testing/phase16_coverage_map.md` (the FR-001 artifact) plus the test files themselves — no new application data store
+**Storage**: `docs/testing/phase15_coverage_map.md` (the FR-001 artifact) plus the test files themselves — no new application data store
 
 **Testing**: This feature *is* tests — its own "testing" is the coverage-map completeness check (FR-001/SC-001) and confirming every new/integration test actually executes and reports a real pass/fail/limitation
 
-**Target Platform**: Same test environment as all prior phases (pytest run locally and in CI once Phase 20 exists)
+**Target Platform**: Same test environment as all prior phases (pytest run locally and in CI once Phase 19 exists)
 
 **Project Type**: Test suite only — no new backend module; organized under `backend/tests/integration/` and `backend/tests/coverage_map/`
 
@@ -63,7 +63,7 @@ specs/015-testing-suite/
 ```text
 docs/
 └── testing/
-    └── phase16_coverage_map.md    # FR-001 — the CoverageMapEntry list, human-reviewable
+    └── phase15_coverage_map.md    # FR-001 — the CoverageMapEntry list, human-reviewable
 
 backend/
 └── tests/

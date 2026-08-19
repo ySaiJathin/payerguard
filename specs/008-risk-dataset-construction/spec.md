@@ -61,7 +61,7 @@ As the implementer of Phase 9, I need the risk dataset's rows to carry their win
 - What happens if Phase 7's `anomaly_count` enrichment hasn't been run yet when this feature executes? The risk dataset construction MUST fail fast with a clear error (missing prerequisite) rather than assembling rows with a fabricated or silently-zeroed anomaly signal.
 - What happens to the investigation-risk label for a window with zero claims? The label derivation MUST explicitly define the behavior for this case (e.g., not investigation-worthy by definition, since there's nothing to investigate) rather than leaving it undefined or erroring.
 - What happens if the three input signals (quality-failure rate, anomaly frequency, deviation) disagree strongly (e.g., high anomaly frequency but perfect quality)? The documented formula MUST still produce a deterministic label — the point of documenting the formula explicitly is that this kind of disagreement is resolved by the formula, not by ad hoc judgment at row-assembly time.
-- What happens when this feature is re-run after Phase 15 adds new historical batches? The risk dataset MUST be regenerable from the (now larger) upstream data without manual intervention, and previously-labeled historical rows MUST remain reproducible (same formula applied to the same historical inputs yields the same label).
+- What happens when this feature is re-run after new historical batches are loaded (the continuous-ingestion phase was removed 2026-08-18)? The risk dataset MUST be regenerable from the (now larger) upstream data without manual intervention, and previously-labeled historical rows MUST remain reproducible (same formula applied to the same historical inputs yields the same label).
 - What happens if the label derivation formula's chosen thresholds produce a heavily imbalanced label distribution (e.g., 99% not-investigation-worthy)? This MUST be surfaced as a reportable characteristic of the dataset (informing Phase 9's evaluation-metric choice, which already prioritizes recall + PR-AUC specifically because of class imbalance concerns) rather than silently rebalanced or hidden.
 
 ## Requirements *(mandatory)*
@@ -77,7 +77,7 @@ As the implementer of Phase 9, I need the risk dataset's rows to carry their win
 - **FR-007**: System MUST carry a chronological ordering field on every row, consistent with Phase 6's `TemporalSplit` date boundaries, so rows can be unambiguously assigned to train/validation/test without re-deriving chronology.
 - **FR-008**: System MUST fail fast with a clear error if Phase 7's `anomaly_count` enrichment has not been completed, rather than assembling rows with a fabricated or assumed anomaly signal.
 - **FR-009**: System MUST report the resulting label distribution (count/percentage investigation-worthy vs. not) as part of this feature's output, so downstream consumers (Phase 9) are aware of any class imbalance.
-- **FR-010**: System MUST support regenerating the risk dataset from updated upstream data (Phase 15 continuous ingestion) without code changes, and MUST reproduce identical historical labels when re-run against unmodified historical inputs.
+- **FR-010**: System MUST support regenerating the risk dataset from updated upstream data loaded as further batches (the continuous-ingestion phase was removed 2026-08-18) without code changes, and MUST reproduce identical historical labels when re-run against unmodified historical inputs.
 
 ### Key Entities
 

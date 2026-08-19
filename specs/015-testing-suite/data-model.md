@@ -5,11 +5,11 @@
 | Field | Type | Notes |
 |---|---|---|
 | `category` | enum | `Data`, `Anomaly`, `Risk`, `LLM`, `HITL`, `Ingestion` |
-| `scenario` | string | The exact named scenario from MVP_CONTEXT.md Phase 16 |
+| `scenario` | string | The exact named scenario from MVP_CONTEXT.md Phase 15 |
 | `status` | enum | `covered_by_prior_phase`, `new_test_added`, `limitation_documented` |
 | `reference` | string | e.g., `"Phase 9 SC-001 (leakage isolation)"` or `"backend/tests/anomaly/test_model_stability.py"` |
 
-**Validation rules**: Every scenario listed in MVP_CONTEXT.md Phase 16's description has exactly one `CoverageMapEntry` (spec FR-001, SC-001). `status: "limitation_documented"` always pairs with a non-empty explanation in `reference` (spec FR-008).
+**Validation rules**: Every scenario listed in MVP_CONTEXT.md Phase 15's description has exactly one `CoverageMapEntry` (spec FR-001, SC-001). `status: "limitation_documented"` always pairs with a non-empty explanation in `reference` (spec FR-008).
 
 ## IntegrationTestScenario
 

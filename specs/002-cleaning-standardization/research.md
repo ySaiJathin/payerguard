@@ -38,4 +38,4 @@
 
 **Rationale**: This is the simplest way to guarantee SC-004 (byte-identical output across repeated runs on unmodified input) — incremental/patch-based approaches risk accumulating stale or duplicate audit entries, which FR-009 explicitly forbids.
 
-**Alternatives considered**: Incremental append-only audit log (rejected for this MVP — reintroduces exactly the "duplicate/accumulating audit entries" failure mode the spec's idempotency requirement rules out; could be revisited once Phase 15's continuous-ingestion batching needs incremental processing, at which point batch identity, not full-file identity, becomes the idempotency key).
+**Alternatives considered**: Incremental append-only audit log (rejected for this MVP — reintroduces exactly the "duplicate/accumulating audit entries" failure mode the spec's idempotency requirement rules out; could be revisited if incremental batch processing is ever needed (the continuous-ingestion phase was removed 2026-08-18), at which point batch identity, not full-file identity, becomes the idempotency key).

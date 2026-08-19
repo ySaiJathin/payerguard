@@ -26,8 +26,8 @@
 
 ## Decision: Benchmark results are versioned by `(risk_dataset_version, split_id)` pair
 
-**Decision**: Each `RiskBenchmarkResult` set is tagged with the Phase 8 dataset version and Phase 6 split ID it was computed against, so re-running the benchmark after Phase 15 adds data produces a new, distinguishable result set rather than overwriting the prior one.
+**Decision**: Each `RiskBenchmarkResult` set is tagged with the Phase 8 dataset version and Phase 6 split ID it was computed against, so re-running the benchmark after new data is loaded (the continuous-ingestion phase was removed 2026-08-18) produces a new, distinguishable result set rather than overwriting the prior one.
 
 **Rationale**: Spec FR-009 requires re-runnability with distinguishable versioning as the dataset grows over time — this is the minimal versioning key needed to satisfy that without over-engineering a full model-registry system for the MVP.
 
-**Alternatives considered**: No versioning, always overwrite (rejected — makes it impossible to compare "how did the benchmark change as more historical data arrived," which Phase 22's future monitoring work would want).
+**Alternatives considered**: No versioning, always overwrite (rejected — makes it impossible to compare "how did the benchmark change as more historical data arrived," which Phase 21's future monitoring work would want).

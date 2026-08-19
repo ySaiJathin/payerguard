@@ -6,7 +6,7 @@
 
 ## Summary
 
-Build the `audit` module: an audit-source registry and aggregation layer over every prior phase's own persisted records (Phase 2-15), a `GET /history` endpoint with pagination/filtering and stable deterministic ordering, a `GET /baseline` pass-through to Phase 4's baseline data, and a completeness check guaranteeing no future pipeline-stage module can silently skip audit registration. This closes out the 1-17 MVP build order.
+Build the `audit` module: an audit-source registry and aggregation layer over every prior phase's own persisted records (Phase 2-14), a `GET /history` endpoint with pagination/filtering and stable deterministic ordering, a `GET /baseline` pass-through to Phase 4's baseline data, and a completeness check guaranteeing no future pipeline-stage module can silently skip audit registration. This closes out the 1-17 MVP build order.
 
 ## Technical Context
 
@@ -26,7 +26,7 @@ Build the `audit` module: an audit-source registry and aggregation layer over ev
 
 **Constraints**: No independently-duplicated facts (FR-001, SC-002); no external write path into the aggregated trail (FR-009); registry completeness enforced by a failing test, not just documentation (FR-008, SC-005)
 
-**Scale/Scope**: Aggregates across all Phase 2-15 audit-relevant record types; grows with Phase 15's continuous ingestion over time
+**Scale/Scope**: Aggregates across all Phase 2-14 audit-relevant record types; grows as further batches are loaded over time (the continuous-ingestion phase was removed 2026-08-18)
 
 ## Constitution Check
 

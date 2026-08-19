@@ -40,4 +40,4 @@ Full endpoint contracts: [contracts/api.md](./contracts/api.md). Entity definiti
 
 ---
 
-This closes out the Phase 1-17 MVP build order (Phases 18-22 remain explicitly deferred per MVP_CONTEXT.md Section 5).
+This closes out the Phase 1-16 MVP build order (Phases 17-21 remain explicitly deferred per MVP_CONTEXT.md Section 5).

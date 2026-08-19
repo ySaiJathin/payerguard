@@ -18,7 +18,7 @@ Build the `data_engineering` module's cleaning capability: validate the schema a
 
 **Testing**: pytest, with a synthetic fixture containing an injected duplicate row, an injected negative amount, a malformed date string, and a missing cell, asserting each produces exactly the expected `QualityIssueRecord`
 
-**Target Platform**: Linux container (Docker Compose) / local dev, same as Phase 1 — containerization validation itself remains deferred to Phase 19
+**Target Platform**: Linux container (Docker Compose) / local dev, same as Phase 1 — containerization validation itself remains deferred to Phase 18
 
 **Project Type**: Backend module, same `backend/app/data_engineering/` package as Phase 1, adding cleaning-specific files rather than a new module (constitution Principle VI: one module per domain, not one file per phase)
 
