@@ -1,10 +1,10 @@
 # PayerGuard — MVP Context Document
 
-Status: Planning / pre-implementation (v2 — revised after reconciling the original scaffolding against a detailed requirements pass; see Section 8 for the full changelog)
+Status: In progress (v3 — 12 of 16 active specs implemented; see Section 9 for a condensed shareable status snapshot, Section 8 for the full changelog)
 Last updated: 2026-08-18
 Owner: AAT2
 
-This document is the single source of truth for the PayerGuard MVP. Any human or AI agent picking up this project should be able to read this file top to bottom and understand what the project is, what data it uses, what the target architecture is, what is explicitly in and out of scope for the MVP, and the order in which work should be done. No implementation has started yet — this file, the repo skeleton, the Docker scaffolding, and the vendored speckit setup are the only artifacts that exist so far. Everything downstream (backend logic, ML training, LLM integration, frontend) is future work to be picked up from here via spec-driven development (`/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`).
+This document is the single source of truth for the PayerGuard MVP. Any human or AI agent picking up this project should be able to read this file top to bottom and understand what the project is, what data it uses, what the target architecture is, what is explicitly in and out of scope for the MVP, the order in which work should be done, and — as of v3 — exactly how much of it is actually done vs. still open (Section 9). Backend implementation is well underway via spec-driven development (`/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`); the frontend and deployment phases are not. If you only have time to read one section, read Section 9.
 
 ---
 
@@ -238,7 +238,7 @@ Each module owns its own database models, Pydantic schemas, service logic, and A
 `claims`, `claim_batches`, `baseline_metrics`, `quality_results`, `anomaly_results`, `features`, `risk_predictions`, `incidents`, `llm_investigations`, `human_feedback`, `remediations`, `revalidation_results`, `stream_windows` (repurposed as ingestion/processing windows, not live-stream windows), `audit_logs`.
 
 ### Cloud target (post-MVP, not built yet)
-CloudFront → ALB → ECS/Fargate running two containers (frontend, backend) → RDS PostgreSQL + S3 (claims/models/logs) → ECR (both images) → CloudWatch (monitoring) → managed secrets store for `MISTRAL_API_KEY` / `DATABASE_URL`. The frontend is containerized the same way as the backend (its own Dockerfile, its own image in ECR) rather than shipped as a static S3/CloudFront bundle. This is documented for planning purposes only; no cloud resources are provisioned as part of the MVP, and AWS deployment does not start until the Docker validation step in Phase 19 is complete (see that phase for the sequencing note).
+CloudFront → ALB → ECS/Fargate running two containers (frontend, backend) → RDS PostgreSQL + S3 (claims/models/logs) → ECR (both images) → CloudWatch (monitoring) → managed secrets store for `MISTRAL_API_KEY` / `DATABASE_URL`. The frontend is containerized the same way as the backend (its own Dockerfile, its own image in ECR) rather than shipped as a static S3/CloudFront bundle. This is documented for planning purposes only; no cloud resources are provisioned as part of the MVP, and AWS deployment does not start until the Docker validation step in Phase 18 is complete (see that phase for the sequencing note).
 
 ---
 
@@ -266,68 +266,87 @@ CloudFront → ALB → ECS/Fargate running two containers (frontend, backend) �
 
 **Explicitly deferred / out of scope for this MVP pass:**
 - No live claims-stream ingestion API/socket — this is replaced by manual + continuous file-based ingestion.
-- No frontend implementation yet — folder placeholder only; pages/UX to be specified later by the user.
-- No CI/CD pipeline, no cloud deployment, no container registry push — infra planning only, documented for later phases. AWS deployment specifically does not start until local Docker validation is complete (Phase 19/21).
+- No frontend implementation yet — see the frontend reality-check below; a UI shell exists but has no real source code and no backend wiring.
+- No CI/CD pipeline, no cloud deployment, no container registry push — infra planning only, documented for later phases. AWS deployment specifically does not start until local Docker validation is complete (Phase 18/20).
 - No production secrets, no real Mistral API key committed anywhere (use `.env`, gitignored).
 - Gemini is fully replaced by Mistral throughout — no dual-LLM support needed.
 - No second dataset (outpatient, carrier, DME, etc.) — single-file scope only for now.
 - No SLA-breach modeling of any kind — the dataset does not support it (Section 2.4); do not reintroduce it without a new, verified source field.
 
+**Spec 015-continuous-ingestion removed (2026-08-18).** The user decided a live/continuous ingestion pipeline is out of scope and had this spec folder deleted; specs `016-*`→`015-*` and `017-*`→`016-*` were renumbered down to close the gap (see Section 8 changelog). This leaves an open question, flagged rather than assumed: `backend/app/ingestion/router.py` is still an unimplemented placeholder, and no spec currently exists for it. It is unclear whether the deleted spec's content was entirely about live streaming (in which case nothing in-scope was lost) or also covered the still-in-scope "manual + repeated batch upload" ingestion flow described above (in which case that capability now has no spec and needs a new one, e.g. a re-scoped `017-batch-ingestion`). **Needs a decision before Phase 13+ implementation planning treats ingestion as covered.**
+
+### 4.1 Frontend reality-check (2026-08-18)
+
+A `frontend/` folder exists (package name `cognizant` in `package.json`) with a real `package.json`/`index.html`/config scaffold (React 19, Vite 8, Tailwind CSS 4, React Router 7, lucide-react) and a **pre-built, minified `dist/` bundle**, but no `frontend/src/` — it was never committed to git and does not exist on disk. Findings from inspecting the compiled bundle directly (no source, no sourcemap, so this is reverse-engineered from strings, not read from real code):
+
+- **8 routes exist**: `/dashboard`, `/incidents`, `/investigation/:id`, `/upload`, `/history`, `/simulator`, `/stream`, `/settings`.
+- **Zero API integration.** No `fetch`-to-backend calls, no `axios`, no `import.meta.env`/`VITE_API_*` usage, no `Authorization`/`Bearer` handling found anywhere in the bundle. Every incident, auditor, payer, and batch shown when the UI is run is hardcoded mock data baked into the JS — not wired to any backend, real or otherwise.
+- **Route-to-backend readiness**, checked against the actual implemented routers:
+  - Backend-ready today: `/dashboard` (would aggregate `quality`/`anomaly`/`risk` endpoints), `/incidents` (incidents CRUD + HITL), `/investigation/:id` (`llm` router).
+  - Backend not implemented yet: `/upload` (ingestion), `/history` (audit), `/simulator` (simulation) — all placeholder routers, specs 013/014/015/016 not done.
+  - **Conflicts with a scope decision already made**: `/stream` implies live streaming, which was explicitly ruled out (see 015-continuous-ingestion removal above). This page needs to be dropped or reinterpreted as repeated-batch ingestion, not built as designed.
+- **Reusable as-is**: the route/page list, the Tailwind dark theme (slate-950/cyan-500) and fonts already wired in `index.html`, the icon set.
+- **Not reusable**: any component code (no source exists to recover) or any of the mock data (fake, not a real data contract).
+
+No frontend implementation work has started as a result of this finding — this is a documentation-only update, per explicit instruction, pending the user's review and go-ahead.
+
 ---
 
 ## 5. High-level task breakdown (build order)
 
+**Status legend used below: ✅ Implemented and complete · ⚠️ Implemented, one item pending · 🔲 Not started.**
+
 **Phase 0 — Environment & repo (delivered)**
 Repo structure, Docker Compose (backend + Postgres) scaffolding, `.env.example`, `requirements.txt`, `data/` folder convention, `inpatient.csv` placed under `data/raw/`, speckit vendored under `.specify/` and `.claude/skills/`.
 
-**Phase 1 — Data engineering foundation**
+**Phase 1 — Data engineering foundation** ✅ Implemented (spec `001-data-profiling-foundation`, 002-cleaning-standardization — all tasks complete)
 1.1 Full data profiling of `inpatient.csv` (row/col counts, dtypes, missingness, cardinality, duplicates, numeric/categorical distributions, date columns) → written report.
 1.2 Column categorization (identifiers / dates / numerical / categorical / diagnosis-procedure codes) confirmed against the real columns above.
 1.3 Sampling strategy for fast local iteration (keep raw file intact under `data/raw/`, generate a working sample under `data/sampled/`).
 
-**Phase 2 — Cleaning & standardization**
+**Phase 2 — Cleaning & standardization** ✅ Implemented (spec `002-cleaning-standardization`, 18/18 tasks)
 Schema validation → dtype conversion → missing-value handling → duplicate detection → invalid-value detection → date standardization (`DD-Mon-YYYY` → ISO). Preserve `original_value` / `cleaned_value` / `quality_issue` for every correction.
 
-**Phase 3 — Great Expectations quality layer**
+**Phase 3 — Great Expectations quality layer** ✅ Implemented (spec `003-quality-validation-layer`, 24/24 tasks)
 Define expectation suites per column category (completeness, uniqueness on `CLM_ID`, validity of amounts ≥ 0, dtype checks, range checks, valid code-set checks, date validity, freshness). Compute the 0–100 composite quality score using the MissingRate/DuplicateRate formulas and PASS/WARNING/CRITICAL bands from Section 3.1.
 
-**Phase 4 — Historical baseline**
+**Phase 4 — Historical baseline** ✅ Implemented (spec `004-historical-baseline`, 25/25 tasks)
 Compute baseline statistics (claim volume per window, amount mean/median/std/percentiles, missingness rates, duplicate rate, status distribution) from the cleaned historical data — all real, computed values. (Processing-time distribution is dropped from this list — see Section 2.4 on why no genuine processing-time field exists; length-of-stay, from `CLM_ADMSN_DT`→`NCH_BENE_DSCHRG_DT`, is tracked instead where a duration baseline is needed.)
 
-**Phase 5 — Feature engineering**
+**Phase 5 — Feature engineering** ✅ Implemented (spec `005-feature-engineering`, 30/30 tasks)
 Claim-level features (amount ratios, length-of-stay, date-derived features, encoded categoricals, provider frequency) and window-level features (claim count, amount stats, missingness %, duplicate %, invalid-status %, volume/amount deviation vs baseline, anomaly count per window).
 
-**Phase 6 — Feature selection**
+**Phase 6 — Feature selection** ✅ Implemented (spec `006-feature-selection`, 20/20 tasks)
 Stage 1 (drop constant/near-constant/duplicate/raw-ID/high-missingness/leakage columns — several already identified above), Stage 2 (correlation, mutual information, variance, cardinality, missingness thresholds), Stage 3 (XGBoost importance, permutation importance, RFE if needed). Feature selection is fit on training/validation data only — never on test data.
 
-**Phase 7 — Anomaly detection benchmark**
+**Phase 7 — Anomaly detection benchmark** ⚠️ Implemented, 28/29 tasks — **T028 still open**: run `specs/007-anomaly-detection-benchmark/quickstart.md`'s manual end-to-end verification (benchmark → results → selection-matches-F1 check → enrich-windows → idempotency diff) against a running backend and fix any contract/implementation drift found. Needs a running backend + real dependencies, which this planning environment cannot provide — do this from wherever the backend actually runs.
 Implement IQR baseline, HBOS, Isolation Forest, LOF using the train/validate/test discipline in Section 3.2. Build an anomaly-injection harness (missing-value spike, amount spike, duplicate spike, volume drop, distribution shift) applied only to validation/test copies. Evaluate precision/recall/F1/FPR/detection latency/execution time. Select production model empirically (expected HBOS, but only if the benchmark confirms it).
 
-**Phase 8 — Risk dataset construction**
+**Phase 8 — Risk dataset construction** ✅ Implemented (spec `008-risk-dataset-construction`, 24/24 tasks)
 Build incident/window-grain rows (GX failure count, anomaly score, affected-claim %, volume deviation, amount deviation, historical quality-failure rate, anomaly frequency, claim count). Define and document the **investigation-risk label** derivation explicitly, per Section 2.4: this dataset has no genuine SLA/processing-turnaround field, so the target is built from quality-failure rate + anomaly frequency + volume/amount deviation rather than a fabricated timing-based label.
 
-**Phase 9 — Risk model benchmark**
+**Phase 9 — Risk model benchmark** ✅ Implemented (spec `009-risk-model-benchmark`, 23/23 tasks)
 Logistic Regression (baseline) vs Random Forest vs XGBoost. Temporal 70/15/15 train/val/test split (no random shuffling — this is time-dependent data spanning 2015–2022). Evaluate accuracy/precision/recall/F1/ROC-AUC/PR-AUC/calibration/false-negative rate, prioritizing recall + PR-AUC. Select production model empirically.
 
-**Phase 10 — Severity, Business Impact, and Priority scoring**
+**Phase 10 — Severity, Business Impact, and Priority scoring** ✅ Implemented (spec `010-severity-impact-priority-scoring`, 19/19 tasks)
 Compute Severity using the formula in Section 3.3 (quality-failure severity + anomaly magnitude + materiality). Compute Business Impact only from measurable claim-amount fields, explicitly marking any non-computable component (e.g. member-harm impact) as unavailable. Combine Quality + Anomaly + Risk + Severity + Business Impact into Final Incident Priority (`0.40×Severity + 0.30×Risk + 0.20×Business Impact + 0.10×Affected Claims Score`, weights configurable).
 
-**Phase 11 — LLM investigation (Mistral)**
+**Phase 11 — LLM investigation (Mistral)** ✅ Implemented (spec `011-llm-investigation`, 21/21 tasks)
 Structured incident → Mistral → incident summary, likely root cause, evidence, business impact, recommended fix, prevention recommendation. LLM has read-only access to structured evidence; it never executes remediation. If evidence is insufficient, it must say so explicitly ("Insufficient evidence to determine the root cause") rather than guess.
 
-**Phase 12 — Incident management & HITL**
+**Phase 12 — Incident management & HITL** ✅ Implemented (spec `012-incident-management-hitl`, 28/28 tasks)
 Incident CRUD, accept/reject endpoints, feedback capture on reject, recalculation loop. Human feedback is stored for future retraining but never triggers automatic retraining from a single event.
 
-**Phase 13 — Remediation engine**
+**Phase 13 — Remediation engine** 🔲 Not started (spec `013-remediation-engine`, 0/33 tasks — spec/plan/tasks exist, no implementation yet)
 Deterministic handlers only: duplicate flagging, approved imputation, approved status mapping. Anything unhandled → "Manual Action Required." No LLM-invented fixes.
 
-**Phase 14 — Revalidation**
+**Phase 14 — Revalidation** 🔲 Not started (spec `014-revalidation`, spec/plan stage only — no `tasks.md` yet)
 Re-run GX + anomaly + risk on affected claims after remediation; produce before/after comparison using real recomputed values; mark incident Resolved or Reopened.
 
-**Phase 15 — Continuous ingestion (not live streaming)**
-Support repeated manual uploads / a watched-folder pattern that processes new batches through the same windowing and pipeline logic used for the historical baseline comparison — explicitly not a live socket/stream API.
+**Phase 15 — Continuous ingestion — REMOVED (2026-08-18)**
+~~Support repeated manual uploads / a watched-folder pattern...~~ Deleted per the user's explicit decision: no live/continuous pipeline is in scope. The spec folder (`015-continuous-ingestion`) was removed and later specs renumbered down to close the gap (see Section 4.1 and Section 8). **Open gap, not yet resolved:** basic ingestion (`POST /claims/upload` and repeated batch upload, which Section 4 still lists as in-scope) has no active spec and no implementation — `backend/app/ingestion/router.py` is still a placeholder. This phase number is intentionally left retired rather than reused, so history stays traceable; a replacement ingestion spec should get the next free number when scoped.
 
-**Phase 16 — Testing**
+**Phase 15 — Testing** 🔲 Not started (spec `015-testing-suite`, renumbered from `016-testing-suite` — spec/plan stage only, no `tasks.md` yet)
 Broken out explicitly per category (previously bundled into one line):
 - *Data:* missing values, duplicates, invalid types/values/dates, missing columns, empty files.
 - *Anomaly:* injected-anomaly detection accuracy, false positives, false negatives, detection latency, model stability.
@@ -336,22 +355,21 @@ Broken out explicitly per category (previously bundled into one line):
 - *HITL:* accept → fix → revalidate; reject → feedback → recalculate → re-review.
 - *Ingestion:* large files, malformed batches, repeated/continuous uploads.
 
-**Phase 17 — Audit & history**
+**Phase 16 — Audit & history** 🔲 Not started (spec `016-audit-history`, renumbered from `017-audit-history` — spec/plan stage only, no `tasks.md` yet)
 Full audit log across every pipeline stage; `/history` and `/baseline` read endpoints.
 
-**Phase 18 — Frontend (deferred)**
-Not started. Pages and UX to be specified by the user after backend completion. Placeholder `frontend/` folder only. When built, it gets its own Dockerfile and is added to `docker-compose.yml` as a `frontend` service — same containerized-deployment pattern as the backend, confirmed by the user.
+**Phase 17 — Frontend (deferred)** 🔲 Not started for real, but not a blank slate either — see Section 4.1's frontend reality-check: a UI scaffold + compiled mockup bundle exists with no source and no backend wiring. When implementation starts, it gets its own Dockerfile and is added to `docker-compose.yml` as a `frontend` service — same containerized-deployment pattern as the backend, confirmed by the user.
 
-**Phase 19 — Dockerization & local dev**
-The `Dockerfile` and `docker-compose.yml` already in the repo (Phase 0) are structural scaffolding only — empty-service skeletons with no application code running yet. Actual containerization work (build the image, run it, verify DB/API connectivity, verify model loading, verify Mistral integration end-to-end) happens only after the backend pipeline (Phases 1–14) is functionally complete and tested locally without Docker. Do not treat the existing Docker files as "containerization done." A `frontend` service and Dockerfile are added to the same Compose file once Phase 18 produces real frontend code.
+**Phase 18 — Dockerization & local dev**
+The `Dockerfile` and `docker-compose.yml` already in the repo (Phase 0) are structural scaffolding only — empty-service skeletons with no application code running yet. Actual containerization work (build the image, run it, verify DB/API connectivity, verify model loading, verify Mistral integration end-to-end) happens only after the backend pipeline (Phases 1–14) is functionally complete and tested locally without Docker. Do not treat the existing Docker files as "containerization done." A `frontend` service and Dockerfile are added to the same Compose file once Phase 17 produces real frontend code.
 
-**Phase 20 — CI/CD (deferred)**
+**Phase 19 — CI/CD (deferred)**
 GitHub Actions pipeline (lint → unit tests → ML tests → build → scan → push → deploy) — documented, not implemented yet.
 
-**Phase 21 — AWS backend deployment (deferred)**
-Starts only after Phase 19's local Docker validation is complete. Covers: Docker image, AWS compute/service selection (ECS/Fargate), database (RDS PostgreSQL), storage (S3), environment variables, secrets management, networking, logging (CloudWatch), health checks, and basic scaling considerations. Frontend deployment is not part of this phase. Cloud architecture target documented in Section 3; not provisioned yet.
+**Phase 20 — AWS backend deployment (deferred)**
+Starts only after Phase 18's local Docker validation is complete. Covers: Docker image, AWS compute/service selection (ECS/Fargate), database (RDS PostgreSQL), storage (S3), environment variables, secrets management, networking, logging (CloudWatch), health checks, and basic scaling considerations. Frontend deployment is not part of this phase. Cloud architecture target documented in Section 3; not provisioned yet.
 
-**Phase 22 — Model & data monitoring, retraining (deferred)**
+**Phase 21 — Model & data monitoring, retraining (deferred)**
 Broken out explicitly per the three signal groups:
 - *Anomaly model:* anomaly rate, false-positive rate, detection latency, score distribution.
 - *Risk model:* precision, recall, F1, PR-AUC, calibration, false-negative rate.
@@ -408,3 +426,79 @@ This section records what changed from the first version of this document and wh
 7. **Monitoring phase (22) broken out by the three signal groups** (anomaly / risk / data) with their specific metrics, instead of one summary sentence.
 8. **Docker sequencing clarified.** Phase 19 now states explicitly that the existing `Dockerfile`/`docker-compose.yml` are scaffolding only, not a validated build — actual containerization happens after the backend pipeline works locally.
 9. **Filename discrepancy noted.** Section 2.1 — some circulated planning material says `inpatients.csv`; the real, profiled file is `inpatient.csv`. No data was renamed.
+
+**v3 (2026-08-18) — implementation-status sync:**
+10. **Spec 015-continuous-ingestion removed.** Live/continuous pipeline confirmed out of scope by the user; the spec folder was deleted and `016-testing-suite`→`015-testing-suite`, `017-audit-history`→`016-audit-history` renumbered to close the gap. Phase numbering in Section 5 updated to match, with the retired Phase 15 slot left visibly marked rather than silently reused. See Section 4.1 for the open ingestion-coverage question this left behind.
+11. **Section 5 annotated with real implementation status** per spec (✅/⚠️/🔲), read directly from each spec's `tasks.md` — specs 001–012 complete (28/29 for 007, see next item), specs 013–016 not started.
+12. **T028 flagged as the one open item in an otherwise-complete spec.** `specs/007-anomaly-detection-benchmark/tasks.md` T028 (manual `quickstart.md` end-to-end verification against a running backend) is still unchecked — needs a real running backend + dependencies to execute, which isn't available from this planning environment.
+13. **Section 4.1 (new) — frontend reality-check.** The `frontend/` folder has a real scaffold (Vite/React 19/Tailwind 4/React Router 7) and a compiled `dist/` bundle, but no `src/` — never committed, doesn't exist on disk. Reverse-engineered from the compiled bundle's strings: 8 routes exist, but zero API integration of any kind was found, and all visible data is hardcoded mock content. One route (`/stream`) conflicts with the continuous-ingestion removal above and needs to be dropped or reinterpreted. Section 9 (new) gives a shareable status snapshot including this.
+
+---
+
+## 9. MVP status snapshot & completion plan (shareable handoff doc)
+
+**Purpose of this section:** everything above (Sections 1–8) is the full, detailed spec history. This section is a self-contained condensed version — if you hand *only this section* to another person or LLM, they should know what the project is, what data it uses, the architecture, what's actually done vs. still open, and a concrete task list to close out the MVP. No implementation should start from this section alone without reading Sections 3.1/3.2/3.3 (the exact formulas) and the relevant spec's `data-model.md`/`contracts/api.md` first — this is an orientation doc, not a replacement for the specs.
+
+### 9.1 What is the project
+
+PayerGuard is a healthcare claims quality and risk monitoring system. It ingests raw insurance claims, deterministically validates their data quality (Great Expectations), scores statistical anomalies (benchmarked unsupervised models) and operational risk (benchmarked supervised models — specifically, likelihood a claim/window needs human investigation), escalates high-risk findings into structured "incidents" with a computed Severity/Risk/Business-Impact/Priority, has an LLM (Mistral) investigate each incident (root cause, evidence, impact, recommended fix — read-only, never auto-executes), puts a human in the loop to accept/reject that recommendation, runs a constrained deterministic remediation engine only on acceptance, revalidates before/after, and keeps a full audit trail of every step. The governing principle (see `.specify/memory/constitution.md`): **no fabricated values, ever** — every threshold, score, and label is computed from the real dataset or explicitly marked unavailable; models are chosen empirically by benchmark, never assumed in advance.
+
+### 9.2 Dataset and proposed architecture
+
+**Dataset:** exactly one file, `data/raw/inpatient.csv` — CMS Medicare Inpatient Claims (RIF format), pipe-delimited (`sep="|"`), 58,066 claim-line rows / 197 columns / 20,867 unique claims / 5,699 beneficiaries, spanning 01-Apr-2015 to 31-Oct-2022. No other dataset is in scope. Full measured profile: Section 2.2. Manual upload is the ingestion mechanism; there is no live streaming source (see 9.4 on why "continuous ingestion" was removed as a live-pipeline concept but manual/repeated-batch upload remains in scope and is a gap — see Section 4.1).
+
+**Proposed full architecture (target state, not all built yet):**
+- **Backend:** modular Python/FastAPI service, one module per domain (`ingestion`, `data_engineering`, `quality`, `baseline`, `features`, `anomaly`, `risk`, `llm`, `incidents`, `hitl`, `remediation`, `revalidation`, `simulation`, `audit`) — each owns its own models/schemas/service/router. `app/main.py` only wires routers together.
+- **Data layer:** Postgres for relational state (incidents, feedback, audit log); flat files (`data/raw` → `sampled` → `processed` → `baseline` → `features`) for the pipeline stages; trained model artifacts under `ml/artifacts/` (gitignored).
+- **ML:** Great Expectations for deterministic quality (always-on floor); IQR/HBOS/Isolation Forest/LOF benchmarked for anomaly detection; Logistic Regression/Random Forest/XGBoost benchmarked for risk (temporal 70/15/15 split, never random shuffle — this is time-series data). Production model for each = whichever wins its benchmark on this actual data, not a preset choice.
+- **LLM:** Mistral only (Gemini fully replaced), structured-output investigation, read-only access to evidence, never writes to the database.
+- **Frontend:** its own Docker container (own Dockerfile, added as a `docker-compose.yml` service), same containerized-deployment pattern as the backend — not a separately-hosted static bundle. Current state: scaffold + mockup only, no real implementation (Section 4.1).
+- **Deployment target (post-MVP, not provisioned):** CloudFront → ALB → ECS/Fargate (frontend + backend containers) → RDS PostgreSQL + S3 → ECR → CloudWatch, secrets via a managed secrets store.
+- **Dev environment:** Docker Compose (backend + Postgres) for local dev; speckit (`.specify/` + `.claude/skills/speckit-*`) for spec-driven development of every phase.
+
+### 9.3 What's included in this MVP
+
+In scope, per Section 4: the full pipeline above end-to-end on `inpatient.csv` only — profiling → cleaning → GX quality scoring → historical baseline → feature engineering/selection → anomaly benchmark+scoring → risk dataset+benchmark+scoring → severity/business-impact/priority → LLM investigation → incident management/HITL → constrained remediation → revalidation → audit trail. Manual + repeated-batch file ingestion (not live streaming). Backend containerized with Docker Compose. Repo/speckit scaffolding.
+
+Explicitly out of scope for this MVP pass: live claims-stream ingestion (any socket/streaming API), a finished frontend, CI/CD, cloud deployment, a second dataset, and any SLA-breach-timing model (the data doesn't support one — Section 2.4).
+
+### 9.4 Current implementation status (as of 2026-08-18)
+
+| Spec | Phase | Status |
+|---|---|---|
+| 001-data-profiling-foundation | 1 | ✅ 17/17 |
+| 002-cleaning-standardization | 2 | ✅ 18/18 |
+| 003-quality-validation-layer | 3 | ✅ 24/24 |
+| 004-historical-baseline | 4 | ✅ 25/25 |
+| 005-feature-engineering | 5 | ✅ 30/30 |
+| 006-feature-selection | 6 | ✅ 20/20 |
+| 007-anomaly-detection-benchmark | 7 | ⚠️ 28/29 — **T028 open** (manual quickstart verification against a running backend) |
+| 008-risk-dataset-construction | 8 | ✅ 24/24 |
+| 009-risk-model-benchmark | 9 | ✅ 23/23 |
+| 010-severity-impact-priority-scoring | 10 | ✅ 19/19 |
+| 011-llm-investigation | 11 | ✅ 21/21 |
+| 012-incident-management-hitl | 12 | ✅ 28/28 |
+| 013-remediation-engine | 13 | 🔲 0/33 — spec/plan/tasks exist, nothing implemented |
+| 014-revalidation | 14 | 🔲 spec/plan only, no tasks.md |
+| 015-testing-suite | 15 | 🔲 spec/plan only, no tasks.md |
+| 016-audit-history | 16 | 🔲 spec/plan only, no tasks.md |
+| *(015-continuous-ingestion)* | *(retired)* | Deleted — live pipeline out of scope; left an open ingestion-coverage gap, see below |
+| Frontend | 17 | 🔲 Scaffold + compiled mockup only, no real source, zero backend wiring (Section 4.1) |
+| Dockerization/CI-CD/AWS/Monitoring | 18–21 | 🔲 Not started — deliberately deferred until the backend pipeline is functionally complete |
+
+**12 of 16 active specs fully complete, 1 partially complete (28/29), 3 not started, plus a frontend that's visually designed but has zero real implementation.**
+
+### 9.5 High-level tasks to finish by tomorrow (for review before any building starts)
+
+This is a priority-ordered task list, not a promise every item fits in one day — use it to decide what actually gets attempted. Nothing here should be built until reviewed and approved.
+
+1. **Close out spec 007.** Run T028 (`specs/007-anomaly-detection-benchmark/quickstart.md`'s manual end-to-end verification) against a real running backend; fix any drift found. This is the only thing blocking a clean "12/12 core-pipeline specs done."
+2. **Resolve the ingestion gap.** Decide whether `013+` implementation can proceed with `ingestion` still a placeholder, or whether a re-scoped ingestion spec (manual + repeated-batch upload only, explicitly not live streaming) needs to be written first, since Section 4 still lists that capability as in-scope.
+3. **Implement spec 013 (remediation engine)** — 33 tasks, 0 done. Deterministic-only handlers (duplicate flagging, approved imputation, approved status mapping); anything unmapped becomes "Manual Action Required."
+4. **Run `/speckit.plan` + `/speckit.tasks` for spec 014 (revalidation)** — currently spec-only, needs a plan and task breakdown before implementation. Then implement: re-run GX + anomaly + risk on affected claims post-remediation, before/after comparison, Resolved/Reopened status.
+5. **Run `/speckit.plan` + `/speckit.tasks` for spec 015 (testing suite)** — then implement the six test categories in Section 5 Phase 15 (data, anomaly, risk incl. leakage/temporal-split tests, LLM, HITL, ingestion).
+6. **Run `/speckit.plan` + `/speckit.tasks` for spec 016 (audit & history)** — then implement the full audit log + `/history`/`/baseline` read endpoints.
+7. **Decide on the frontend's fate before doing anything with it**: the existing `frontend/` folder is a mockup, not a partial implementation (Section 4.1). Decide whether to rebuild it from scratch against real endpoints (reusing its route list and Tailwind theme only), and resolve the `/stream` route conflict with the continuous-ingestion removal, before any frontend coding starts.
+8. **Only after 1–6 are functionally complete locally (no Docker):** validate `docker compose up --build` actually works end-to-end (Phase 18) — this has never been build-tested in this project so far.
+
+**Revisit after this MVP pass (do not pull forward without a separate decision):** CI/CD pipeline, AWS deployment, a second CMS dataset (outpatient/carrier/DME), model/data monitoring + retraining loop, and a real frontend build. All are already marked deferred in Section 4/5 — listed here again because they're the items most likely to get scope-crept into "the MVP" if this snapshot is shared without the rest of the document.
