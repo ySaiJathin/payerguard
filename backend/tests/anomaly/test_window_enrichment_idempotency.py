@@ -62,14 +62,17 @@ def _patch(monkeypatch, run_result, claim_window_map, store):
     monkeypatch.setattr(window_enrichment, "load_claim_window_map", lambda: claim_window_map)
     monkeypatch.setattr(window_enrichment, "read_window_features", lambda: store)
 
-    def _update(window_id: str, anomaly_count: int):
-        for i, w in enumerate(store):
-            if w.window_id == window_id:
-                store[i] = w.model_copy(update={"anomaly_count": anomaly_count})
-                return store[i]
-        raise KeyError(window_id)
+    def _update_many(counts: dict[str, int]):
+        by_id = {w.window_id: i for i, w in enumerate(store)}
+        unknown = set(counts) - set(by_id)
+        if unknown:
+            raise KeyError(sorted(unknown))
+        for window_id, anomaly_count in counts.items():
+            i = by_id[window_id]
+            store[i] = store[i].model_copy(update={"anomaly_count": anomaly_count})
+        return len(counts)
 
-    monkeypatch.setattr(window_enrichment, "update_window_anomaly_count", _update)
+    monkeypatch.setattr(window_enrichment, "update_window_anomaly_counts", _update_many)
 
 
 def test_enrichment_fills_every_window_and_is_idempotent(monkeypatch, tmp_path):

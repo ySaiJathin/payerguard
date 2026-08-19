@@ -6,6 +6,7 @@ persisted file.
 """
 
 import json
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -59,7 +60,17 @@ def write_window_features(rows: list[WindowFeatures], out_dir: Path | None = Non
     for record in records:
         record["amount_stats"] = json.dumps(record["amount_stats"])
         record["amount_deviation"] = json.dumps(record["amount_deviation"])
-    pd.DataFrame(records).to_csv(path, index=False)
+
+    # Written via a temp file and then swapped into place. A direct
+    # `to_csv(path)` truncates first, so an interrupted write leaves a
+    # half-written or empty file behind -- which is exactly what happened
+    # when an enrichment run was cancelled mid-pass: the next reader hit
+    # `EmptyDataError: No columns to parse from file`. os.replace is atomic
+    # on both POSIX and Windows, so a reader sees either the old file or the
+    # new one, never a partial one.
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    pd.DataFrame(records).to_csv(tmp_path, index=False)
+    os.replace(tmp_path, path)
     return path
 
 
@@ -78,6 +89,8 @@ def read_window_features(out_dir: Path | None = None) -> list[WindowFeatures]:
 
 
 def update_window_anomaly_count(window_id: str, anomaly_count: int, out_dir: Path | None = None) -> WindowFeatures:
+    """Single-window update. Fine for one-off edits, but note it rewrites the
+    whole file -- use `update_window_anomaly_counts` when setting many at once."""
     rows = read_window_features(out_dir)
     for i, row in enumerate(rows):
         if row.window_id == window_id:
@@ -86,3 +99,34 @@ def update_window_anomaly_count(window_id: str, anomaly_count: int, out_dir: Pat
             write_window_features(rows, out_dir)
             return updated
     raise KeyError(f"No WindowFeatures row found for window_id={window_id!r}")
+
+
+def update_window_anomaly_counts(
+    counts: dict[str, int], out_dir: Path | None = None
+) -> int:
+    """Set `anomaly_count` for many windows in one read/write cycle.
+
+    Calling the single-window version in a loop is quadratic: each call
+    re-reads, re-parses and rewrites the entire window-features file, so
+    enriching N windows costs N full file rewrites (2,928 of them, on the
+    real dataset). This applies every update against one in-memory pass and
+    writes once. Same precedent as the bulk `append_entries` path Phase 16
+    added to the audit module for the same reason.
+
+    Returns the number of rows actually updated. Unknown window ids raise,
+    matching the single-window function rather than silently skipping.
+    """
+    rows = read_window_features(out_dir)
+    known = {row.window_id for row in rows}
+    unknown = set(counts) - known
+    if unknown:
+        raise KeyError(f"No WindowFeatures row found for window_id(s)={sorted(unknown)!r}")
+
+    updated_count = 0
+    for i, row in enumerate(rows):
+        if row.window_id in counts:
+            rows[i] = row.model_copy(update={"anomaly_count": counts[row.window_id]})
+            updated_count += 1
+
+    write_window_features(rows, out_dir)
+    return updated_count

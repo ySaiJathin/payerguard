@@ -489,7 +489,71 @@
       "prevention_recommendation": "Add upstream validation for provider number format.",
       "model_version": "mistral-small-latest",
       "generated_at": "2026-08-19T01:14:19.779892Z"
+    },
+    {
+      "investigation_id": "9c74fdfe-8270-4a60-b6f8-b8ca51ae2282",
+      "incident_id": "097ed28a-e1dd-43d0-9957-d5cbf96e74b4",
+      "evidence_snapshot_id": "f2163f0165ae14e78fe92f40ce1c6b74501aa21be5e6c11a6f733d14c59091bd",
+      "summary": "A data-quality incident occurred on 2021-01-09, characterized by critical missing data rates and low completeness scores in key claim fields, resulting in a high business impact and elevated risk/anomaly scores.",
+      "likely_root_cause": "Insufficient evidence to determine the root cause. Additional evidence needed: system logs for data ingestion pipelines during the incident window, ETL job execution records, and source system availability data.",
+      "insufficient_evidence": true,
+      "evidence": "The incident window is identified as 2021-01-09. Key failing checks include completeness warnings for PRVDR_NUM (4.89%), ICD_DGNS_CD6 (2.74%), CLM_POA_IND_SW6 (2.74%), ICD_DGNS_CD7 (3.93%), and CLM_POA_IND_SW7 (3.93%). A critical missing rate of 33.97% was observed. The composite quality score was 88.75, anomaly score 85.0 (98.5th percentile), risk score 78.4, and severity/business impact scores were 48.2 and 95.0 respectively, with 0.42% of claims affected. No affected claims sample was provided.",
+      "business_impact_narrative": "This incident represents a high-risk data-quality failure with critical missing data rates (33.97%) and low completeness in provider and diagnosis code fields. The business impact is severe, with a 95.0 business impact score and 0.42% of claims affected. Such gaps could lead to claim denials, compliance violations, and operational disruptions in claims processing, directly impacting revenue cycle management and payer-provider relationships.",
+      "recommended_fix": "Manual Action Required: Investigate the critical missing rate (33.97%) and failing completeness checks for PRVDR_NUM, ICD_DGNS_CD6/7, and CLM_POA_IND_SW6/7. No automated fix can be confidently recommended without determining the root cause (e.g., source system outage, ETL failure, or schema mismatch).",
+      "prevention_recommendation": "Implement automated data completeness monitoring with alerts for critical thresholds (e.g., >5% missing rate). Add validation checks in ETL pipelines to reject claims with missing required fields (PRVDR_NUM, ICD_DGNS_CD6/7, CLM_POA_IND_SW6/7). Schedule regular audits of data ingestion processes and maintain a runbook for incident response to address missing data proactively.",
+      "model_version": "mistral-small-latest",
+      "generated_at": "2026-08-19T02:53:34.625680Z"
+    },
+    {
+      "investigation_id": "a78a3dd4-17ab-43a0-ac3d-f8340cdf1a11",
+      "incident_id": "d4ce83f9-7594-4e98-98af-1f282bccad4f",
+      "evidence_snapshot_id": "9e4e5e0f57f73e0bccb57174f8f45a35583bc99b5215bdab17017fde6c48cc07",
+      "summary": "A single quality check in the PayerGuard system returned a WARNING band during the 2021-01-20 window, while all other 49 checks passed. Despite the isolated quality issue, the anomaly score percentile (99.3) and risk score (81.2) indicate elevated risk exposure.",
+      "likely_root_cause": "Insufficient evidence to determine the root cause. The evidence shows only that one of many checks produced a WARNING band, but it does not include the check\u2019s name, rule logic, input data, or any contextual details that would explain why this particular check failed.",
+      "insufficient_evidence": true,
+      "evidence": "\u2022 Incident context: incident_id = d4ce83f9-7594-4e98-98af-1f282bccad4f, window_id = 2021-01-20\n\u2022 Quality evidence: 50 total checks; 49 returned PASS, 1 returned WARNING\n\u2022 Anomaly evidence: anomaly_score_percentile = 0.993 (99.3rd percentile)\n\u2022 Risk evidence: risk_score = 81.2\n\u2022 Severity & business impact: severity = 52.79, quality_failure_severity = 0.83, anomaly_magnitude_score = 93.0, materiality_score = 76.27, business_impact = 97.53; dollar_exposure = 97.53; member_harm_impact and provider_reputation_impact are marked unavailable\n\u2022 Affected claims sample: empty list (no claims provided for review)",
+      "business_impact_narrative": "The incident represents a high-risk scenario with a 99.3rd-percentile anomaly score and a risk score of 81.2, driven primarily by a dollar-exposure impact of 97.53. Because member-harm and provider-reputation components are unavailable, the full business impact cannot be quantified, but the available data suggests significant financial exposure requiring immediate attention.",
+      "recommended_fix": "Manual Action Required \u2013 Identify the specific quality check that returned the WARNING band, retrieve its rule definition and input data, and determine whether the failure is a false positive or indicates a genuine compliance or data-quality issue. No automated remediation can be recommended without this context.",
+      "prevention_recommendation": "Implement automated alerting and logging for every quality check that produces a WARNING band, including the check\u2019s identifier, timestamp, rule logic, and input sample. Store these records for at least 90 days to enable rapid root-cause analysis in future incidents. Additionally, enhance the business-impact model to capture member-harm and provider-reputation metrics so that future investigations can quantify all risk dimensions.",
+      "model_version": "mistral-small-latest",
+      "generated_at": "2026-08-19T02:55:52.720944Z"
     }
   ],
-  "failures": []
+  "failures": [
+    {
+      "failure_id": "a614e7d8-9475-42f3-9938-db6d6e4cb650",
+      "incident_id": "097ed28a-e1dd-43d0-9957-d5cbf96e74b4",
+      "failure_type": "api_error",
+      "error_detail": "MISTRAL_API_KEY is not set in the environment -- see .env.example.",
+      "occurred_at": "2026-08-19T02:44:40.240090Z"
+    },
+    {
+      "failure_id": "3f8e7eb0-6d99-4066-8887-5004aa4f6490",
+      "incident_id": "afd8c16b-38bd-4b86-b77c-6147c3bdaa70",
+      "failure_type": "api_error",
+      "error_detail": "MISTRAL_API_KEY is not set in the environment -- see .env.example.",
+      "occurred_at": "2026-08-19T02:44:40.343126Z"
+    },
+    {
+      "failure_id": "c1d35fdc-8635-4868-9edb-85ff759d940b",
+      "incident_id": "75ccf99b-5f61-49c3-98a7-008322ce1b75",
+      "failure_type": "api_error",
+      "error_detail": "MISTRAL_API_KEY is not set in the environment -- see .env.example.",
+      "occurred_at": "2026-08-19T02:44:40.924672Z"
+    },
+    {
+      "failure_id": "82b1a87c-4fff-4577-9ac8-125d73a0a422",
+      "incident_id": "097ed28a-e1dd-43d0-9957-d5cbf96e74b4",
+      "failure_type": "api_error",
+      "error_detail": "MISTRAL_API_KEY is not set in the environment -- see .env.example.",
+      "occurred_at": "2026-08-19T02:45:11.002451Z"
+    },
+    {
+      "failure_id": "74a4511a-6fbf-44cd-84cc-787416b690e7",
+      "incident_id": "097ed28a-e1dd-43d0-9957-d5cbf96e74b4",
+      "failure_type": "api_error",
+      "error_detail": "MISTRAL_API_KEY is not set in the environment -- see .env.example.",
+      "occurred_at": "2026-08-19T02:50:07.255385Z"
+    }
+  ]
 }

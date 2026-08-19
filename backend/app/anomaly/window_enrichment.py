@@ -17,7 +17,7 @@ from app.anomaly.benchmark import read_benchmark_run_result
 from app.anomaly.data_loading import load_benchmark_inputs, load_claim_window_map
 from app.anomaly.schemas import EnrichWindowsResult
 from app.data_engineering.paths import models_dir
-from app.features.features_log import read_window_features, update_window_anomaly_count
+from app.features.features_log import read_window_features, update_window_anomaly_counts
 
 
 class NoProductionModelSelectedError(RuntimeError):
@@ -58,11 +58,28 @@ def enrich_windows(matrix: pd.DataFrame | None = None, model_out_dir: Path | Non
     scores = detector.score(real_matrix)
     flagged = pd.Series(scores > threshold, index=real_matrix.index)
 
-    windows_enriched = 0
-    for window in read_window_features():
-        claim_ids = [cid for cid, wid in claim_window_map.items() if wid == window.window_id and cid in flagged.index]
-        anomaly_count = int(flagged.loc[claim_ids].sum()) if claim_ids else 0
-        update_window_anomaly_count(window.window_id, anomaly_count)
-        windows_enriched += 1
+    # Invert the claim -> window map once. Scanning all 58k entries per
+    # window (2,928 of them) meant ~170M comparisons per run; grouping first
+    # makes it a single pass. Only claims that were actually scored are
+    # counted, so a claim missing from the feature matrix is excluded here
+    # rather than silently counted as "not anomalous".
+    scored_claims = set(flagged.index)
+    claims_by_window: dict[str, list[str]] = {}
+    for claim_id, window_id in claim_window_map.items():
+        if claim_id in scored_claims:
+            claims_by_window.setdefault(window_id, []).append(claim_id)
+
+    counts = {
+        window.window_id: int(flagged.loc[claims_by_window[window.window_id]].sum())
+        if window.window_id in claims_by_window
+        else 0
+        for window in read_window_features()
+    }
+
+    # One write for the whole pass. Calling the single-window updater in a
+    # loop rewrote the entire features file per window, which is both
+    # quadratic and -- because each rewrite truncates before writing -- a
+    # window in which an interrupted run corrupts the file.
+    windows_enriched = update_window_anomaly_counts(counts)
 
     return EnrichWindowsResult(windows_enriched=windows_enriched, model_used=artifact["model_type"])
