@@ -22,10 +22,10 @@ Returns the most recent `BaselineSnapshot`.
 
 ## `GET /baseline/history`
 
-Lists prior `BaselineSnapshot` provenance records (`snapshot_id`, `source_file`, `source_row_count`, `computed_at`) — supports Phase 15's recomputation-over-time and Phase 22's future drift comparisons.
+Lists prior `BaselineSnapshot` provenance records (`snapshot_id`, `source_file`, `source_row_count`, `computed_at`) — supports recomputation over time as further batches are loaded (the continuous-ingestion phase was removed 2026-08-18) and Phase 21's future drift comparisons.
 
 **Response `200 OK`**: `BaselineSnapshot[]` (provenance fields only, not full statistics, to keep the listing response light).
 
 ## Notes
 
-- `/baseline` and `/history` and `/baseline` read endpoints named in MVP_CONTEXT.md Phase 17 ("`/history` and `/baseline` read endpoints") are the audit-facing counterparts to these; Phase 17's feature is responsible for exposing the full historical/audit view, while this module owns computing and storing the snapshots themselves.
+- `/baseline` and `/history` and `/baseline` read endpoints named in MVP_CONTEXT.md Phase 16 ("`/history` and `/baseline` read endpoints") are the audit-facing counterparts to these; Phase 16's feature is responsible for exposing the full historical/audit view, while this module owns computing and storing the snapshots themselves.

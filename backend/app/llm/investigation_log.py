@@ -60,6 +60,13 @@ def read_investigation_history(
         for entry in data["failures"]
         if entry["incident_id"] == incident_id
     ]
-    investigations.sort(key=lambda i: i.generated_at, reverse=True)
-    failures.sort(key=lambda f: f.occurred_at, reverse=True)
+    # Sort key includes the append-order index alongside the timestamp:
+    # `generated_at`/`occurred_at` alone aren't a reliable tiebreaker since
+    # the host clock's resolution can be coarse enough for two investigations
+    # of the same incident, generated moments apart, to share an identical
+    # timestamp -- a plain `sort(reverse=True)` is stable and would then
+    # leave the tied pair in their original (oldest-first) append order
+    # instead of the newest-first order this function promises.
+    investigations = [i for _, i in sorted(enumerate(investigations), key=lambda pair: (pair[1].generated_at, pair[0]), reverse=True)]
+    failures = [f for _, f in sorted(enumerate(failures), key=lambda pair: (pair[1].occurred_at, pair[0]), reverse=True)]
     return investigations, failures

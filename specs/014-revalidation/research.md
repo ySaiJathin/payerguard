@@ -28,6 +28,6 @@
 
 **Decision**: `POST /revalidation/{incident_id}/run` is called explicitly (by a reviewer action or an orchestration script), not automatically fired the instant Phase 13's remediation completes.
 
-**Rationale**: Spec Assumptions explicitly defer the exact trigger mechanism to later phases/frontend UX; an explicit endpoint keeps this feature's own scope minimal and testable in isolation, while still being trivially wireable to an automatic trigger later (Phase 12's `hitl` module or Phase 18's frontend could call this endpoint immediately after remediation without any change to this feature).
+**Rationale**: Spec Assumptions explicitly defer the exact trigger mechanism to later phases/frontend UX; an explicit endpoint keeps this feature's own scope minimal and testable in isolation, while still being trivially wireable to an automatic trigger later (Phase 12's `hitl` module or Phase 17's frontend could call this endpoint immediately after remediation without any change to this feature).
 
 **Alternatives considered**: An automatic in-process call from `remediation_service.py` directly into `recompute_service.py` (rejected — would couple the `remediation` and `revalidation` modules' internals together, violating the modular-boundary principle; an explicit HTTP call between modules keeps the boundary clean, matching how every other cross-module reference in this build order has been handled).

@@ -39,7 +39,7 @@ As a reviewer, I need a clear before/after comparison of Quality/Anomaly/Risk/Se
 
 1. **Given** an incident's original (pre-remediation) Quality/Anomaly/Risk/Severity/Priority scores, **When** the before/after comparison is generated, **Then** it pairs each with its genuine post-remediation counterpart from Story 1, computing the real delta for each.
 2. **Given** a remediation that didn't actually improve one of the signals (e.g., risk score stayed the same or got worse), **When** the comparison is generated, **Then** it reports that honestly — the comparison logic never assumes or forces an improvement narrative.
-3. **Given** the comparison, **When** persisted, **Then** it remains permanently linked to the specific `RemediationRun` it evaluates, supporting the full audit trail (Phase 17).
+3. **Given** the comparison, **When** persisted, **Then** it remains permanently linked to the specific `RemediationRun` it evaluates, supporting the full audit trail (Phase 16).
 
 ---
 
@@ -103,4 +103,4 @@ As a reviewer, I need the incident automatically marked "Resolved" when revalida
 
 - "Documented resolution criteria" (FR-007) is a configurable rule (e.g., no remaining CRITICAL quality checks for the affected claims, anomaly score back within the Section 3.1 NORMAL band, risk score below the configured investigation-worthy threshold) — this spec requires such criteria to exist and be applied consistently, not a single fixed numeric formula, mirroring how other phases (6, 7, 9) leave exact thresholds to the plan/implementation while fixing the requirement that they be documented.
 - This feature extends Phase 12's incident status enum with "Resolved"/"Reopened" (already reserved per Phase 12's FR-008) rather than introducing a separate status model — the `hitl` module's state machine (Phase 12) is updated by this feature to include the transition rules into/out of these two states.
-- This feature is triggered after Phase 13's remediation completes (either automatically, or via an explicit reviewer action) — the exact trigger mechanism (automatic vs. manual "revalidate" button) is an implementation/UX choice for later phases (Phase 18 frontend), not fixed here; this spec only requires the capability to exist and be callable.
+- This feature is triggered after Phase 13's remediation completes (either automatically, or via an explicit reviewer action) — the exact trigger mechanism (automatic vs. manual "revalidate" button) is an implementation/UX choice for later phases (Phase 17 frontend), not fixed here; this spec only requires the capability to exist and be callable.

@@ -31,6 +31,6 @@
 
 ## Notes
 
-- MVP_CONTEXT.md Section 1's closing promise, Section 3's module list, Section 5 Phase 17, and constitution Principle V gave a complete basis. No clarification markers needed.
-- This is the final phase in the 1-17 MVP build order (Phases 18-22 explicitly deferred) — see spec Assumptions.
+- MVP_CONTEXT.md Section 1's closing promise, Section 3's module list, Section 5 Phase 16, and constitution Principle V gave a complete basis. No clarification markers needed.
+- This is the final phase in the 1-17 MVP build order (Phases 17-21 explicitly deferred) — see spec Assumptions.
 - All checklist items pass on first validation pass.

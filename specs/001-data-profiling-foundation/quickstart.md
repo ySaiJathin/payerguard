@@ -6,7 +6,7 @@ Validates that profiling, categorization, and sampling work end-to-end against t
 
 - `data/raw/inpatient.csv` present (already delivered per Phase 0 scaffolding).
 - Backend dependencies installed (`pandas`, `numpy` at minimum) per `requirements.txt`.
-- Run from the `backend/` app context (or via `docker-compose run backend ...` once Phase 19 containerization is validated — not required for this local check).
+- Run from the `backend/` app context (or via `docker-compose run backend ...` once Phase 18 containerization is validated — not required for this local check).
 
 ## Run profiling
 

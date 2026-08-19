@@ -28,4 +28,4 @@ Returns the most recent benchmark's results, or a specific versioned run.
 
 ## Notes
 
-- Consistent with Phase 8, re-running `POST /risk/benchmark` after Phase 15 adds data produces a new versioned result set (spec FR-009) rather than silently overwriting prior results.
+- Consistent with Phase 8, re-running `POST /risk/benchmark` after new data is loaded (the continuous-ingestion phase was removed 2026-08-18) produces a new versioned result set (spec FR-009) rather than silently overwriting prior results.

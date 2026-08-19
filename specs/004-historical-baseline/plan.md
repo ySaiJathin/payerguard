@@ -6,7 +6,7 @@
 
 ## Summary
 
-Build the `baseline` module: compute volume-per-window, amount distribution, data-health (missingness/duplicate/status-distribution), and length-of-stay baselines from Phase 2's cleaned historical data (cross-checked against Phase 3's quality results for missingness/duplicate figures), persist them as a versioned `BaselineSnapshot` with source-data provenance, and expose recomputation without code changes as data grows (Phase 15). This is the "what does normal look like" reference that Phase 5 (window-level deviation features) and Phase 7 (anomaly detection) read from.
+Build the `baseline` module: compute volume-per-window, amount distribution, data-health (missingness/duplicate/status-distribution), and length-of-stay baselines from Phase 2's cleaned historical data (cross-checked against Phase 3's quality results for missingness/duplicate figures), persist them as a versioned `BaselineSnapshot` with source-data provenance, and expose recomputation without code changes as data grows (the continuous-ingestion phase was removed 2026-08-18). This is the "what does normal look like" reference that Phase 5 (window-level deviation features) and Phase 7 (anomaly detection) read from.
 
 ## Technical Context
 
@@ -26,7 +26,7 @@ Build the `baseline` module: compute volume-per-window, amount distribution, dat
 
 **Constraints**: Must not fabricate any statistic (FR-009); must not resurrect a processing-time/SLA field (FR-006, SC-005); must record source-data provenance on every snapshot (FR-007, SC-006)
 
-**Scale/Scope**: Full 58,066-row historical file today; must remain correct as Phase 15 adds more batches (FR-008)
+**Scale/Scope**: Full 58,066-row historical file today; must remain correct as more batches are loaded (FR-008; the continuous-ingestion phase was removed 2026-08-18)
 
 ## Constitution Check
 

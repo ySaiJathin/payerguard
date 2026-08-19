@@ -31,5 +31,5 @@
 
 ## Notes
 
-- This feature's scope was interpreted (and documented in User Story 1's rationale) as gap-filling against constitution "Development Workflow," which already requires per-phase tests written alongside each phase's implementation — Phase 16 therefore closes named gaps and adds cross-module integration coverage rather than re-testing what Phases 1-15 already specify.
+- This feature's scope was interpreted (and documented in User Story 1's rationale) as gap-filling against constitution "Development Workflow," which already requires per-phase tests written alongside each phase's implementation — Phase 15 therefore closes named gaps and adds cross-module integration coverage rather than re-testing what Phases 1-14 already specify.
 - All checklist items pass on first validation pass.

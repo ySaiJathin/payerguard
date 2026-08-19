@@ -1,0 +1,16 @@
+# Duplicate-flagging rule table (spec FR-001).
+#
+# Duplicate flagging needs no field-level precondition beyond Phase 2's
+# `is_duplicate` flag already computed for the affected claim
+# (data_engineering/duplicate_detection.py's full-row duplicate check) --
+# `precondition: {}` matches any claim whose `is_duplicate` is true.
+# `precedence_rank: 1` is the lowest (most non-invasive) of the three
+# handler types per research.md: flagging a known duplicate is
+# non-destructive and easily reversible, so it takes priority over
+# status mapping or imputation when more than one handler could apply.
+
+version: "1.0.0"
+rules:
+  - rule_id: dup-001
+    precondition: {}
+    precedence_rank: 1

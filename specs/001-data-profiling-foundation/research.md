@@ -24,7 +24,7 @@ No [NEEDS CLARIFICATION] markers were left in the Technical Context — MVP_CONT
 
 **Rationale**: The dataset's grain is claim-line, not claim (mean 2.82 lines/claim, MVP_CONTEXT.md 2.2). Sampling individual rows would frequently split claims across included/excluded rows, breaking any downstream logic that aggregates by claim. Sampling by `CLM_ID` guarantees claim consistency (FR-009, SC-004) and a fixed seed guarantees reproducibility (FR-011, SC-005).
 
-**Alternatives considered**: Row-level random sampling (rejected — breaks claim consistency); time-windowed sampling (rejected for this phase — Phase 15's continuous-ingestion windowing is the right place for time-based batching; this sample's only job is fast local iteration, not temporal representativeness).
+**Alternatives considered**: Row-level random sampling (rejected — breaks claim consistency); time-windowed sampling (rejected for this phase — continuous-ingestion windowing would have been the right place for time-based batching (the continuous-ingestion phase was removed 2026-08-18); this sample's only job is fast local iteration, not temporal representativeness).
 
 ## Decision: Report artifacts as Markdown + JSON pair
 

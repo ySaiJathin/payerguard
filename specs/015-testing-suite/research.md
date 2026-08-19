@@ -2,7 +2,7 @@
 
 ## Decision: The coverage map is a checked-in Markdown table, generated once and manually maintained, with a test asserting its completeness
 
-**Decision**: `docs/testing/phase16_coverage_map.md` is a hand-authored (during this feature's implementation) Markdown table with columns `Category | Scenario | Status | Reference`, and `test_coverage_map_completeness.py` parses it to assert every MVP_CONTEXT.md Phase 16-named scenario (hardcoded as the expected list, sourced directly from Section 5) appears with a non-empty `Reference`.
+**Decision**: `docs/testing/phase15_coverage_map.md` is a hand-authored (during this feature's implementation) Markdown table with columns `Category | Scenario | Status | Reference`, and `test_coverage_map_completeness.py` parses it to assert every MVP_CONTEXT.md Phase 15-named scenario (hardcoded as the expected list, sourced directly from Section 5) appears with a non-empty `Reference`.
 
 **Rationale**: FR-001/SC-001 require both a human-reviewable document and a verifiable completeness guarantee — a test that parses the checked-in table is simpler than generating the table dynamically from spec files (which would require parsing every prior spec.md's Success Criteria programmatically, a fragile approach given specs are free-form Markdown, not structured data).
 
@@ -22,7 +22,7 @@
 
 **Rationale**: This directly operationalizes "drift sensitivity" as "the model isn't frozen/insensitive to genuinely different input" — a concrete, testable property, and reuses Phase 7's already-designed distribution-shift injection concept rather than inventing a new drift-simulation approach from scratch.
 
-**Alternatives considered**: Testing drift sensitivity via a formal statistical drift-detection algorithm (e.g., population stability index) — noted as a valuable future enhancement for Phase 22's actual production monitoring, but out of scope for this feature, which only needs to prove the *model* responds to drift, not implement a full drift-*detection* system (that's explicitly Phase 22's job).
+**Alternatives considered**: Testing drift sensitivity via a formal statistical drift-detection algorithm (e.g., population stability index) — noted as a valuable future enhancement for Phase 21's actual production monitoring, but out of scope for this feature, which only needs to prove the *model* responds to drift, not implement a full drift-*detection* system (that's explicitly Phase 21's job).
 
 ## Decision: LLM evidence-grounding check cross-references cited claim IDs/values against the actual `StructuredIncidentPayload`
 

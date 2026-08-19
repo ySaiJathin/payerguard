@@ -18,7 +18,7 @@ Build the `data_engineering` module's profiling capability: read `data/raw/inpat
 
 **Testing**: pytest, with fixture-driven tests (a small synthetic pipe-delimited CSV fixture plus one test asserting real-file statistics match MVP_CONTEXT.md Section 2.2 ground truth)
 
-**Target Platform**: Linux container (via Docker Compose per repo scaffolding) and local Windows/macOS/Linux dev execution before containerization (Phase 19 sequencing — containerization is not validated yet)
+**Target Platform**: Linux container (via Docker Compose per repo scaffolding) and local Windows/macOS/Linux dev execution before containerization (Phase 18 sequencing — containerization is not validated yet)
 
 **Project Type**: Backend module within the single modular-monolith service (`backend/app/data_engineering/`) — no frontend or second service involved
 
@@ -26,7 +26,7 @@ Build the `data_engineering` module's profiling capability: read `data/raw/inpat
 
 **Constraints**: Must never modify, move, or delete `data/raw/inpatient.csv`; sampling must be deterministic/reproducible given the same seed and configuration; no statistic may be hardcoded (constitution Principle II)
 
-**Scale/Scope**: 197 columns, 58,066 rows today; profiling logic must not assume this exact row/column count is permanent (Phase 15 adds continuous ingestion of further batches), only that the schema shape is CMS Inpatient RIF-like
+**Scale/Scope**: 197 columns, 58,066 rows today; profiling logic must not assume this exact row/column count is permanent (further batches may still be loaded; the continuous-ingestion phase was removed 2026-08-18), only that the schema shape is CMS Inpatient RIF-like
 
 ## Constitution Check
 
@@ -86,7 +86,7 @@ data/
 └── reports/               # profiling_report.md + profiling_report.json + column_categories.json
 ```
 
-**Structure Decision**: Single backend service (Option 1 pattern), with this feature living entirely inside a new `data_engineering` module per constitution Principle VI. No frontend involvement (Phase 18 is deferred). Report artifacts land under `data/reports/` so later phases (baseline, quality) and human reviewers can read them without hitting an API.
+**Structure Decision**: Single backend service (Option 1 pattern), with this feature living entirely inside a new `data_engineering` module per constitution Principle VI. No frontend involvement (Phase 17 is deferred). Report artifacts land under `data/reports/` so later phases (baseline, quality) and human reviewers can read them without hitting an API.
 
 ## Complexity Tracking
 

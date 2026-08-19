@@ -1,0 +1,24 @@
+# Approved status-mapping rule table (spec FR-001).
+#
+# `stat-001` is an illustrative starter entry, not a clinical-equivalence
+# claim: it corrects a leading-zero formatting variant of the discharge
+# status code column ("01" vs the canonical "1"), matching research.md's
+# note that a status-mapping table might correct a known-equivalent
+# PTNT_DSCHRG_STUS_CD variant. Real production entries -- especially any
+# that assert clinical/coding equivalence between distinct codes, not
+# just a formatting variant -- require the config-management/clinical
+# review the spec's Assumptions section explicitly places outside this
+# feature's own scope; this file's contents are that review's output,
+# not this feature's decision to make unilaterally.
+#
+# `precedence_rank: 2` sits between duplicate flagging (1, least
+# invasive) and imputation (3, most invasive) per research.md.
+
+version: "1.0.0"
+rules:
+  - rule_id: stat-001
+    precondition:
+      column: PTNT_DSCHRG_STUS_CD
+      from_value: "01"
+    to_value: "1"
+    precedence_rank: 2

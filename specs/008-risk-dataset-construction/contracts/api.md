@@ -31,4 +31,4 @@ Returns the current `InvestigationRiskLabelFormula` document (also available as 
 
 ## Notes
 
-- `POST /risk/dataset/build` is safe to re-run after Phase 15 adds new historical batches; historical rows reproduce identically (spec FR-010, SC-006) while new windows are added.
+- `POST /risk/dataset/build` is safe to re-run after new historical batches are loaded (the continuous-ingestion phase was removed 2026-08-18); historical rows reproduce identically (spec FR-010, SC-006) while new windows are added.

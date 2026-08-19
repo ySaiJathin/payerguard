@@ -1,6 +1,10 @@
 # PayerGuard — MVP Context Document
 
+<<<<<<< HEAD
 Status: In progress (v3 — 12 of 16 active specs implemented; see Section 9 for a condensed shareable status snapshot, Section 8 for the full changelog)
+=======
+Status: In progress (v3 — 15 of 16 active specs implemented; see Section 9 for a condensed shareable status snapshot, Section 8 for the full changelog)
+>>>>>>> 3a49386689a0694ee7836bac466ac4928f6b095f
 Last updated: 2026-08-18
 Owner: AAT2
 
@@ -337,6 +341,7 @@ Structured incident → Mistral → incident summary, likely root cause, evidenc
 **Phase 12 — Incident management & HITL** ✅ Implemented (spec `012-incident-management-hitl`, 28/28 tasks)
 Incident CRUD, accept/reject endpoints, feedback capture on reject, recalculation loop. Human feedback is stored for future retraining but never triggers automatic retraining from a single event.
 
+<<<<<<< HEAD
 **Phase 13 — Remediation engine** 🔲 Not started (spec `013-remediation-engine`, 0/33 tasks — spec/plan/tasks exist, no implementation yet)
 Deterministic handlers only: duplicate flagging, approved imputation, approved status mapping. Anything unhandled → "Manual Action Required." No LLM-invented fixes.
 
@@ -348,6 +353,19 @@ Re-run GX + anomaly + risk on affected claims after remediation; produce before/
 
 **Phase 15 — Testing** 🔲 Not started (spec `015-testing-suite`, renumbered from `016-testing-suite` — spec/plan stage only, no `tasks.md` yet)
 Broken out explicitly per category (previously bundled into one line):
+=======
+**Phase 13 — Remediation engine** ✅ Implemented (spec `013-remediation-engine`, 33/33 tasks)
+Deterministic handlers only: duplicate flagging, approved imputation, approved status mapping. Anything unhandled → "Manual Action Required." No LLM-invented fixes.
+
+**Phase 14 — Revalidation** ✅ Implemented (spec `014-revalidation`, 26/26 tasks)
+Re-run GX + anomaly + risk on affected claims after remediation; produce before/after comparison using real recomputed values; mark incident Resolved or Reopened.
+
+**Phase 15 (retired number) — Continuous ingestion — REMOVED (2026-08-18)**
+~~Support repeated manual uploads / a watched-folder pattern...~~ Deleted per the user's explicit decision: no live/continuous pipeline is in scope. The spec folder (`015-continuous-ingestion`) was removed and later specs renumbered down to close the gap (see Section 4.1 and Section 8). **Open gap, not yet resolved:** basic ingestion (`POST /claims/upload` and repeated batch upload, which Section 4 still lists as in-scope) has no active spec and no implementation — `backend/app/ingestion/router.py` is still a placeholder. This phase number is intentionally left retired rather than reused, so history stays traceable; a replacement ingestion spec should get the next free number when scoped.
+
+**Phase 15 — Testing** ✅ Implemented (spec `015-testing-suite`, 19/19 tasks; renumbered from `016-testing-suite`)
+Broken out explicitly per category (previously bundled into one line). Coverage against these named scenarios is tracked in `docs/testing/phase15_coverage_map.md`, which `backend/tests/coverage_map/` parses to assert none goes unaccounted for — 13 covered by prior phases, 8 new tests, 3 (the Ingestion row below) recorded as documented limitations because the pipeline they need was retired with the phase above:
+>>>>>>> 3a49386689a0694ee7836bac466ac4928f6b095f
 - *Data:* missing values, duplicates, invalid types/values/dates, missing columns, empty files.
 - *Anomaly:* injected-anomaly detection accuracy, false positives, false negatives, detection latency, model stability.
 - *Risk:* data-leakage test (verify no test/validation information reached training), temporal-split-correctness test (verify chronological ordering was respected), false negatives, model calibration, drift sensitivity.
@@ -433,6 +451,18 @@ This section records what changed from the first version of this document and wh
 12. **T028 flagged as the one open item in an otherwise-complete spec.** `specs/007-anomaly-detection-benchmark/tasks.md` T028 (manual `quickstart.md` end-to-end verification against a running backend) is still unchecked — needs a real running backend + dependencies to execute, which isn't available from this planning environment.
 13. **Section 4.1 (new) — frontend reality-check.** The `frontend/` folder has a real scaffold (Vite/React 19/Tailwind 4/React Router 7) and a compiled `dist/` bundle, but no `src/` — never committed, doesn't exist on disk. Reverse-engineered from the compiled bundle's strings: 8 routes exist, but zero API integration of any kind was found, and all visible data is hardcoded mock content. One route (`/stream`) conflicts with the continuous-ingestion removal above and needs to be dropped or reinterpreted. Section 9 (new) gives a shareable status snapshot including this.
 
+<<<<<<< HEAD
+=======
+**v4 (2026-08-19) — spec renumbering completed repo-wide; 013/014/015 implemented:**
+
+14. **Statuses corrected for specs 013, 014, and 015.** All three are implemented and passing (33/33, 26/26, 19/19), not "not started" as v3 recorded — v3's entry 11 was accurate when written and is left as-is rather than rewritten. Section 5, Section 9.4's table, and Section 9.5's task list now reflect the real state. Backend suite: 362 passed / 3 skipped.
+15. **v3's renumbering propagated into every artifact it had missed.** v3 renumbered Section 5's phase headings but not the ~33 spec/doc/source files that referenced the old numbers. All forward references were remapped in a single pass (16→15, 17→16, 18→17, 19→18, 20→19, 21→20, 22→21), including ranges (`Phase 1-17`→`1-16`, `Phases 18-22`→`17-21`).
+16. **Empty deferred-phase spec folders renumbered to match.** `018-frontend`→`017-frontend`, `019-dockerization-local-dev`→`018-…`, `020-cicd`→`019-cicd`, `021-aws-backend-deployment`→`020-…`, `022-model-data-monitoring-retraining`→`021-…`. Spec directory numbers now map 1:1 onto Section 5's phase numbers with no gaps.
+17. **References to the retired Phase 15 annotated, not renumbered.** ~30 sites across specs 001–004/007/008/009/012/016 and a few `backend/app/` docstrings referred to the removed continuous-ingestion phase (e.g. "as Phase 15 adds more batches"). Renumbering them would have pointed at Testing; each was reworded to keep its design rationale while stating the descoping explicitly.
+18. **One unsatisfiable requirement dropped.** `016-audit-history` FR-001 required aggregating `Phase 15`'s `IngestedBatch` record into the audit trail. That record type died with the retired ingestion phase, so the requirement could never be met; it was removed from the list rather than left as a spec demanding a module read a record that will never exist.
+19. **Two pre-existing test failures fixed** (both unrelated to the above, both confirmed present before spec 014's commit): pandas 3.x's default string dtype was coercing genuine `None` into a float `NaN` in `date_standardization.py`, and `investigation_log.py`'s "newest first" ordering had no tiebreaker for entries sharing a timestamp at the host clock's resolution.
+
+>>>>>>> 3a49386689a0694ee7836bac466ac4928f6b095f
 ---
 
 ## 9. MVP status snapshot & completion plan (shareable handoff doc)
@@ -478,26 +508,45 @@ Explicitly out of scope for this MVP pass: live claims-stream ingestion (any soc
 | 010-severity-impact-priority-scoring | 10 | ✅ 19/19 |
 | 011-llm-investigation | 11 | ✅ 21/21 |
 | 012-incident-management-hitl | 12 | ✅ 28/28 |
+<<<<<<< HEAD
 | 013-remediation-engine | 13 | 🔲 0/33 — spec/plan/tasks exist, nothing implemented |
 | 014-revalidation | 14 | 🔲 spec/plan only, no tasks.md |
 | 015-testing-suite | 15 | 🔲 spec/plan only, no tasks.md |
+=======
+| 013-remediation-engine | 13 | ✅ 33/33 |
+| 014-revalidation | 14 | ✅ 26/26 |
+| 015-testing-suite | 15 | ✅ 19/19 — see `docs/testing/phase15_coverage_map.md`; 3 Ingestion scenarios are `limitation_documented`, not tested (retired pipeline) |
+>>>>>>> 3a49386689a0694ee7836bac466ac4928f6b095f
 | 016-audit-history | 16 | 🔲 spec/plan only, no tasks.md |
 | *(015-continuous-ingestion)* | *(retired)* | Deleted — live pipeline out of scope; left an open ingestion-coverage gap, see below |
 | Frontend | 17 | 🔲 Scaffold + compiled mockup only, no real source, zero backend wiring (Section 4.1) |
 | Dockerization/CI-CD/AWS/Monitoring | 18–21 | 🔲 Not started — deliberately deferred until the backend pipeline is functionally complete |
 
+<<<<<<< HEAD
 **12 of 16 active specs fully complete, 1 partially complete (28/29), 3 not started, plus a frontend that's visually designed but has zero real implementation.**
+=======
+**15 of 16 active specs fully complete, 1 partially complete (007 at 28/29), 1 not started (016-audit-history), plus a frontend that's visually designed but has zero real implementation.** The backend test suite runs 362 passed / 3 skipped (the 3 skips are a deliberate hand-off between two complementary HITL state-machine tests, not gaps).
+>>>>>>> 3a49386689a0694ee7836bac466ac4928f6b095f
 
 ### 9.5 High-level tasks to finish by tomorrow (for review before any building starts)
 
 This is a priority-ordered task list, not a promise every item fits in one day — use it to decide what actually gets attempted. Nothing here should be built until reviewed and approved.
 
+<<<<<<< HEAD
 1. **Close out spec 007.** Run T028 (`specs/007-anomaly-detection-benchmark/quickstart.md`'s manual end-to-end verification) against a real running backend; fix any drift found. This is the only thing blocking a clean "12/12 core-pipeline specs done."
 2. **Resolve the ingestion gap.** Decide whether `013+` implementation can proceed with `ingestion` still a placeholder, or whether a re-scoped ingestion spec (manual + repeated-batch upload only, explicitly not live streaming) needs to be written first, since Section 4 still lists that capability as in-scope.
 3. **Implement spec 013 (remediation engine)** — 33 tasks, 0 done. Deterministic-only handlers (duplicate flagging, approved imputation, approved status mapping); anything unmapped becomes "Manual Action Required."
 4. **Run `/speckit.plan` + `/speckit.tasks` for spec 014 (revalidation)** — currently spec-only, needs a plan and task breakdown before implementation. Then implement: re-run GX + anomaly + risk on affected claims post-remediation, before/after comparison, Resolved/Reopened status.
 5. **Run `/speckit.plan` + `/speckit.tasks` for spec 015 (testing suite)** — then implement the six test categories in Section 5 Phase 15 (data, anomaly, risk incl. leakage/temporal-split tests, LLM, HITL, ingestion).
 6. **Run `/speckit.plan` + `/speckit.tasks` for spec 016 (audit & history)** — then implement the full audit log + `/history`/`/baseline` read endpoints.
+=======
+1. **Close out spec 007.** Run T028 (`specs/007-anomaly-detection-benchmark/quickstart.md`'s manual end-to-end verification) against a real running backend; fix any drift found. Still open — it needs a running backend with real dependencies, which the planning environment can't provide.
+2. **Resolve the ingestion gap.** Partly answered in practice: specs 013–015 were implemented successfully with `ingestion` still a placeholder, so it is not a hard blocker. But the gap is real and now has a visible cost — three Phase 15 Ingestion test scenarios could not be written at all (see `docs/testing/phase15_coverage_map.md`), and Section 4 still lists manual + repeated-batch upload as in-scope. A re-scoped ingestion spec (manual/repeated-batch only, explicitly not live streaming) should get the next free spec number when scoped.
+3. ~~**Implement spec 013 (remediation engine)**~~ ✅ **Done** — 33/33 tasks. Deterministic-only handlers (duplicate flagging, approved imputation, approved status mapping); anything unmapped becomes "Manual Action Required."
+4. ~~**Plan/tasks/implement spec 014 (revalidation)**~~ ✅ **Done** — 26/26 tasks. Re-runs GX + anomaly + risk on affected claims post-remediation, honest before/after comparison (deltas are never clamped to look favourable), Resolved/Reopened status.
+5. ~~**Plan/tasks/implement spec 015 (testing suite)**~~ ✅ **Done** — 19/19 tasks. Two scope conflicts were found and resolved rather than papered over: the Ingestion category's three scenarios are recorded as `limitation_documented` (the pipeline they test was retired with the old Phase 15), and the reject→feedback→recalculate→re-review round-trip is cited to Phase 12's existing test rather than duplicated. Coverage is tracked in `docs/testing/phase15_coverage_map.md`.
+6. **Run `/speckit.plan` + `/speckit.tasks` for spec 016 (audit & history)** — the last unimplemented backend spec. Then implement the full audit log + `/history`/`/baseline` read endpoints. Note its FR-001 previously required aggregating a `Phase 15 IngestedBatch` record; that record type died with the retired ingestion phase and has been dropped from the requirement.
+>>>>>>> 3a49386689a0694ee7836bac466ac4928f6b095f
 7. **Decide on the frontend's fate before doing anything with it**: the existing `frontend/` folder is a mockup, not a partial implementation (Section 4.1). Decide whether to rebuild it from scratch against real endpoints (reusing its route list and Tailwind theme only), and resolve the `/stream` route conflict with the continuous-ingestion removal, before any frontend coding starts.
 8. **Only after 1–6 are functionally complete locally (no Docker):** validate `docker compose up --build` actually works end-to-end (Phase 18) — this has never been build-tested in this project so far.
 

@@ -60,7 +60,7 @@ As the implementer of Phase 10 (Severity/Business Impact/Priority scoring), I ne
 - What happens if Phase 8's label distribution is heavily imbalanced (as Phase 8's own edge cases anticipate)? The benchmark MUST report class balance alongside results and MUST use metrics/evaluation approaches appropriate to imbalance (PR-AUC, not relying on accuracy alone) — this is exactly why MVP_CONTEXT.md prioritizes recall + PR-AUC here.
 - What happens if two models tie on the recall+PR-AUC-prioritized ranking? The selection MUST apply a documented, non-arbitrary tie-breaking rule (e.g., prefer better calibration, then lower false-negative rate).
 - What happens if the validation-range data is too small to reliably tune hyperparameters (given the modest total window count from Phase 4/5's window definition)? This MUST be surfaced as a reportable data-scale limitation rather than silently proceeding with an unstable tuning result.
-- What happens when this benchmark is re-run after Phase 15 adds new historical data (extending Phase 8's dataset)? The benchmark MUST be re-runnable against the updated dataset and Phase 6's correspondingly-recomputed split, without requiring code changes, and previous results MUST remain distinguishable (versioned) from new results.
+- What happens when this benchmark is re-run after new historical data is loaded (the continuous-ingestion phase was removed 2026-08-18) (extending Phase 8's dataset)? The benchmark MUST be re-runnable against the updated dataset and Phase 6's correspondingly-recomputed split, without requiring code changes, and previous results MUST remain distinguishable (versioned) from new results.
 - What happens if none of the three models exceeds a reasonable minimum bar (e.g., barely better than a majority-class baseline) given how few windows currently exist in the historical data? This MUST be reported honestly, and production selection MUST proceed with whichever model is genuinely best (or flag that the dataset scale is currently insufficient for a confident production choice) rather than overstating confidence.
 
 ## Requirements *(mandatory)*
@@ -75,7 +75,7 @@ As the implementer of Phase 10 (Severity/Business Impact/Priority scoring), I ne
 - **FR-006**: System MUST select whichever model actually wins on the documented criteria — MUST NOT default to XGBoost without the benchmark confirming it (constitution Principle I).
 - **FR-007**: System MUST apply a documented, non-arbitrary tie-breaking rule when models tie on the primary selection criteria.
 - **FR-008**: System MUST report the risk dataset's label distribution (class balance) alongside benchmark results.
-- **FR-009**: System MUST support re-running the benchmark against an updated (larger) risk dataset as Phase 15 adds data, without code changes, with results versioned so prior and new benchmark runs remain distinguishable.
+- **FR-009**: System MUST support re-running the benchmark against an updated (larger) risk dataset as new data is loaded (the continuous-ingestion phase was removed 2026-08-18), without code changes, with results versioned so prior and new benchmark runs remain distinguishable.
 - **FR-010**: System MUST NOT fabricate or assume any benchmark metric or selection outcome — every value is computed from the actual train/validation/test data and actual model runs (constitution Principle II).
 
 ### Key Entities

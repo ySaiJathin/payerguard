@@ -26,7 +26,7 @@ Build the `incidents` and `hitl` modules: `Incident` CRUD backed by Phase 10 sco
 
 **Constraints**: Reject always requires feedback (FR-003); invalid transitions always rejected explicitly (FR-007); zero automatic retraining trigger (FR-006, SC-005)
 
-**Scale/Scope**: Incident volume scales with Phase 10's Priority-flagged findings — modest at current data scale (tens of windows), designed to remain correct as Phase 15 adds more historical batches
+**Scale/Scope**: Incident volume scales with Phase 10's Priority-flagged findings — modest at current data scale (tens of windows), designed to remain correct as more historical batches are loaded (the continuous-ingestion phase was removed 2026-08-18)
 
 ## Constitution Check
 
