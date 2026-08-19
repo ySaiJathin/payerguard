@@ -1,6 +1,7 @@
 """Shared DB session builder for `tests/incidents/`, `tests/hitl/`,
-`tests/remediation/`, and `tests/revalidation/` -- not a test module
-itself (no `test_` prefix, so pytest doesn't collect it).
+`tests/remediation/`, `tests/revalidation/`, `tests/audit/`, and
+`tests/ingestion/` -- not a test module itself (no `test_` prefix, so
+pytest doesn't collect it).
 
 Builds a fresh, isolated `sqlite:///:memory:` engine per call -- no
 Docker/Postgres needed to test the real SQLAlchemy models (012's Setup
@@ -17,6 +18,7 @@ from sqlalchemy.pool import StaticPool
 import app.audit.models  # noqa: F401 -- registers AuditLog on Base.metadata
 import app.hitl.models  # noqa: F401 -- registers HumanFeedback/IncidentStatusTransition on Base.metadata
 import app.incidents.models  # noqa: F401 -- registers Incident on Base.metadata
+import app.ingestion.models  # noqa: F401 -- registers IngestedBatchORM on Base.metadata
 import app.remediation.models  # noqa: F401 -- registers RemediationRun/RemediationAction/ManualActionRequired on Base.metadata
 import app.revalidation.models  # noqa: F401 -- registers RevalidationRun on Base.metadata
 from app.core.database import init_db

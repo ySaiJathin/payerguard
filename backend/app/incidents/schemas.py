@@ -36,6 +36,12 @@ class EvidenceBundle(BaseModel):
     risk_score: float | None = None
     baseline_amount_percentiles: Percentiles | None = None
     weights: ScoreWeightsInput | None = None
+    # Additive, optional: the producing pipeline's own record of *why* this
+    # incident exists -- which window, which detected anomaly type, the ten
+    # risk sub-scores, and the rendered Root Cause / Investigation /
+    # Recommended Fix text. Carried on the evidence snapshot so the incident
+    # is self-describing wherever it is read, without a second endpoint.
+    analysis_context: dict | None = None
 
 
 class IncidentCreate(BaseModel):

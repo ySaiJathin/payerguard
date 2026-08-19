@@ -42,15 +42,22 @@ async function readDetail(response: Response): Promise<string> {
   }
 }
 
+/** An explicitly empty Content-Type means "let the browser decide" (multipart). */
+function buildHeaders(overrides?: HeadersInit): HeadersInit {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...((overrides as Record<string, string>) ?? {}),
+  };
+  if (headers['Content-Type'] === '') delete headers['Content-Type'];
+  return headers;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response;
   try {
     response = await fetch(`${BASE_URL}${path}`, {
       ...init,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(init?.headers ?? {}),
-      },
+      headers: buildHeaders(init?.headers),
     });
   } catch (cause) {
     // Network-level failure: backend down, wrong port, CORS preflight refused.
@@ -82,6 +89,17 @@ export function apiPost<T>(path: string, body?: unknown): Promise<T> {
     method: 'POST',
     body: body === undefined ? undefined : JSON.stringify(body),
   });
+}
+
+/**
+ * Multipart upload. `Content-Type` is deliberately not set: the browser has
+ * to write it itself so it can include the multipart boundary, and setting
+ * it here would produce a header with no boundary and a 422 from FastAPI.
+ */
+export function apiUpload<T>(path: string, file: File): Promise<T> {
+  const form = new FormData();
+  form.append('file', file);
+  return request<T>(path, { method: 'POST', body: form, headers: { 'Content-Type': '' } });
 }
 
 export { BASE_URL };

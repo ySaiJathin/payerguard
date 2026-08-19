@@ -16,10 +16,12 @@ from app.baseline.router import router as baseline_router
 from app.core.config import get_settings
 from app.core.database import init_db
 from app.data_engineering.router import router as data_engineering_router
+from app.demo.router import router as demo_router
 from app.features.router import router as features_router
 from app.features.selection.router import router as selection_router
 from app.hitl.router import router as hitl_router
 from app.incidents.router import router as incidents_router
+from app.ingestion.router import router as ingestion_router
 from app.llm.router import router as llm_router
 from app.quality.router import router as quality_router
 from app.remediation.router import router as remediation_router
@@ -67,10 +69,14 @@ for r in (
     remediation_router,
     revalidation_router,
     audit_router,
+    demo_router,
+    ingestion_router,
 ):
     app.include_router(r)
 
-# `ingestion` and `simulation` have no routers wired in: the
-# continuous-ingestion feature that would have built them was removed
-# 2026-08-18 (commit 6dd9ad2) and both remain Phase-0 placeholders. They
-# are not pending work on any current spec.
+# `simulation` has no router wired in and remains a Phase-0 placeholder --
+# out of scope (constitution "Scope Discipline"; see
+# app/ingestion/watcher.py). `ingestion` (this module, spec
+# 017-batch-file-ingestion) now owns manual + repeated-batch upload of the
+# raw claims schema at /claims/upload, distinct from `app/demo`'s
+# /demo/upload for the cleaned/synthetic schema.

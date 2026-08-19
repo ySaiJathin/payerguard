@@ -67,13 +67,18 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    // If matches incident ID format
-    if (searchQuery.toUpperCase().startsWith('INC-')) {
-      navigate(`/investigation/${searchQuery.trim().toUpperCase()}`);
-    } else if (searchQuery.toUpperCase().startsWith('CLM-')) {
-      navigate(`/investigation/INC-8921`); // fallback demo drilldown
+    /*
+     * Incident ids are UUIDs, so anything that looks like one goes straight
+     * to its detail view; everything else becomes a search on History, which
+     * is where incidents live now that the standalone Incidents page is gone.
+     * The previous version routed unrecognised `CLM-` input to a hardcoded
+     * `INC-8921`, an id no backend ever produced.
+     */
+    const term = searchQuery.trim();
+    if (/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(term)) {
+      navigate(`/investigation/${term}`);
     } else {
-      navigate(`/incidents?search=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/history?search=${encodeURIComponent(term)}`);
     }
   };
 
@@ -205,12 +210,12 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
               <div className="p-2 border-t border-slate-800 bg-slate-950/40 text-center">
                 <button
                   onClick={() => {
-                    navigate('/incidents');
+                    navigate('/history');
                     setShowNotifications(false);
                   }}
                   className="text-xs text-cyan-400 hover:text-cyan-300 font-medium inline-flex items-center gap-1 py-1"
                 >
-                  View all incidents & alerts <ExternalLink className="w-3 h-3" />
+                  View incident history <ExternalLink className="w-3 h-3" />
                 </button>
               </div>
             </div>
@@ -251,13 +256,13 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
               <div className="space-y-0.5 text-xs">
                 <button
                   onClick={() => {
-                    navigate('/settings');
+                    navigate('/simulator');
                     setShowProfileMenu(false);
                   }}
                   className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white text-left transition-colors"
                 >
                   <Shield className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Quality Rules</span>
+                  <span>Ingestion Simulator</span>
                 </button>
                 <button
                   onClick={() => {
@@ -267,7 +272,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
                   className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white text-left transition-colors"
                 >
                   <Layers className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Batch History & Logs</span>
+                  <span>Incident History</span>
                 </button>
               </div>
             </div>

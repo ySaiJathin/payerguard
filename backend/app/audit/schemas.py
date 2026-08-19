@@ -27,12 +27,12 @@ class PipelineStage(str, Enum):
     human_feedback = "human_feedback"
     remediation = "remediation"
     revalidation = "revalidation"
-    # `ingestion` is deliberately absent. data-model.md lists it, but the
-    # continuous-ingestion feature was removed 2026-08-18 (commit 6dd9ad2)
-    # and `app/ingestion/` is still an unimplemented Phase-0 placeholder --
-    # there is no write path to instrument, so a stage nothing can ever
-    # emit would be a permanently dead enum member. See registry.py's
-    # EXPECTED_AUDITED_MODULES comment for the full record.
+    # `ingestion` was deliberately absent through Phase 16 (continuous
+    # ingestion was removed 2026-08-18 and `app/ingestion/` had no write
+    # path to instrument). Spec 017-batch-file-ingestion built a real one
+    # -- `app.ingestion.batch_service` now emits this stage for every
+    # accepted and rejected upload -- so it is re-added here.
+    ingestion = "ingestion"
 
 
 class AuditTrailEntry(BaseModel):

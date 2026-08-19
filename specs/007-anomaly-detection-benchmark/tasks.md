@@ -112,7 +112,7 @@ Backend module: `backend/app/anomaly/`. Tests: `backend/tests/anomaly/`. Reuses 
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T028 Run quickstart.md's manual verification steps end-to-end against a running backend (benchmark → results → selection-matches-F1 check → enrich-windows → idempotency diff) and fix any drift between the contracts and the implementation
+- [x] T028 Run quickstart.md's manual verification steps end-to-end against a running backend (benchmark → results → selection-matches-F1 check → enrich-windows → idempotency diff) and fix any drift between the contracts and the implementation — **done 2026-08-20**, run for real via `TestClient` against `app.main:app` with real `data/raw/inpatient.csv`. Zero drift found: all 4 models produced, all 5 injection types present, selection (`iqr`, F1 0.1111) matches best-F1 with no tie-break, enrich-windows enriched all 2,928 windows with zero nulls and was verified idempotent (identical output on a second run). See MVP_CONTEXT.md v10 changelog for full detail.
 - [x] T029 [P] Review all `backend/app/anomaly/*.py` docstrings for consistency with the repo's per-file rationale-comment convention (see `stage1_structural.py`/`temporal_split.py` for the pattern)
 
 ---

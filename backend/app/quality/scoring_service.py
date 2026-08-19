@@ -168,12 +168,25 @@ def run_category_suites(
     return records
 
 
-def run_validation(weights: dict[str, float] | None = None) -> QualityScoreResult:
+def run_validation(
+    weights: dict[str, float] | None = None, batch_path: Path | None = None
+) -> QualityScoreResult:
     """Full orchestrator (FR-001 through FR-011): loads Phase 1/2 outputs,
     builds and executes the category suites, computes file-level
     MissingRate/DuplicateRate and freshness, folds everything into the
     composite score, and persists both the score and every contributing
     check result.
+
+    `batch_path` overrides which cleaned batch is validated -- it defaults
+    to the shared `cleaned_dir() / CLEANED_OUTPUT_FILENAME` (today's exact
+    behavior, unchanged for every existing caller) but lets
+    `app.ingestion.pipeline_runner` (spec 017-batch-file-ingestion) point
+    it at a specific uploaded batch's own cleaned output instead, so two
+    batches processed close together never race on reading the same
+    shared file (spec 017 Pre-Implementation Finding 1). The composite
+    score is still persisted to the shared `data/reports/quality_results.json`
+    (unchanged) so `GET /quality/results` keeps reflecting whichever batch
+    was most recently validated, real or ingested.
 
     Raises `QualityInputUnavailableError` if Phase 2's cleaned batch (or
     Phase 1's profiling report / column categories) hasn't been produced
@@ -187,7 +200,7 @@ def run_validation(weights: dict[str, float] | None = None) -> QualityScoreResul
             "No profiling report found -- run POST /data-engineering/profile (Phase 1) first."
         )
 
-    batch_path = cleaned_dir() / CLEANED_OUTPUT_FILENAME
+    batch_path = batch_path or (cleaned_dir() / CLEANED_OUTPUT_FILENAME)
     cleaned_df = load_cleaned_batch(batch_path, categories)  # raises QualityInputUnavailableError
 
     raw_df = load_source_csv(raw_inpatient_csv(), expected_column_count=None)

@@ -1,0 +1,172 @@
+{
+  "runs": [
+    {
+      "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+      "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501",
+      "run_result": {
+        "benchmark_results": [
+          {
+            "model_type": "logistic_regression",
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0,
+            "calibration_brier_score": 8.712327591294598e-21,
+            "false_negative_rate": 0.0,
+            "label_distribution_context": {
+              "total_rows": 2928,
+              "investigation_worthy_count": 791,
+              "investigation_worthy_pct": 27.01502732240437,
+              "not_investigation_worthy_count": 2137,
+              "not_investigation_worthy_pct": 72.98497267759562,
+              "zero_claim_window_count": 14
+            },
+            "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+            "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501"
+          },
+          {
+            "model_type": "random_forest",
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0,
+            "calibration_brier_score": 1.4893617021276616e-05,
+            "false_negative_rate": 0.0,
+            "label_distribution_context": {
+              "total_rows": 2928,
+              "investigation_worthy_count": 791,
+              "investigation_worthy_pct": 27.01502732240437,
+              "not_investigation_worthy_count": 2137,
+              "not_investigation_worthy_pct": 72.98497267759562,
+              "zero_claim_window_count": 14
+            },
+            "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+            "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501"
+          },
+          {
+            "model_type": "xgboost",
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0,
+            "calibration_brier_score": 1.2788707408617483e-06,
+            "false_negative_rate": 0.0,
+            "label_distribution_context": {
+              "total_rows": 2928,
+              "investigation_worthy_count": 791,
+              "investigation_worthy_pct": 27.01502732240437,
+              "not_investigation_worthy_count": 2137,
+              "not_investigation_worthy_pct": 72.98497267759562,
+              "zero_claim_window_count": 14
+            },
+            "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+            "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501"
+          }
+        ],
+        "production_model_selection": {
+          "selected_model": "logistic_regression",
+          "ranking_rule": "PR-AUC floor gate (= test label base rate), then rank by recall, Brier score tie-break, FNR final tie-break",
+          "pr_auc_floor_used": 0.39361702127659576,
+          "tie_break_applied": true,
+          "benchmark_result_ids": [
+            "logistic_regression",
+            "random_forest",
+            "xgboost"
+          ],
+          "selected_at": "2026-08-19T04:53:37.944666Z"
+        },
+        "data_scale_warning": null
+      }
+    },
+    {
+      "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+      "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501",
+      "run_result": {
+        "benchmark_results": [
+          {
+            "model_type": "logistic_regression",
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0,
+            "calibration_brier_score": 8.712327591294598e-21,
+            "false_negative_rate": 0.0,
+            "label_distribution_context": {
+              "total_rows": 2928,
+              "investigation_worthy_count": 791,
+              "investigation_worthy_pct": 27.01502732240437,
+              "not_investigation_worthy_count": 2137,
+              "not_investigation_worthy_pct": 72.98497267759562,
+              "zero_claim_window_count": 14
+            },
+            "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+            "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501"
+          },
+          {
+            "model_type": "random_forest",
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0,
+            "calibration_brier_score": 1.4893617021276616e-05,
+            "false_negative_rate": 0.0,
+            "label_distribution_context": {
+              "total_rows": 2928,
+              "investigation_worthy_count": 791,
+              "investigation_worthy_pct": 27.01502732240437,
+              "not_investigation_worthy_count": 2137,
+              "not_investigation_worthy_pct": 72.98497267759562,
+              "zero_claim_window_count": 14
+            },
+            "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+            "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501"
+          },
+          {
+            "model_type": "xgboost",
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0,
+            "calibration_brier_score": 1.2788707408617483e-06,
+            "false_negative_rate": 0.0,
+            "label_distribution_context": {
+              "total_rows": 2928,
+              "investigation_worthy_count": 791,
+              "investigation_worthy_pct": 27.01502732240437,
+              "not_investigation_worthy_count": 2137,
+              "not_investigation_worthy_pct": 72.98497267759562,
+              "zero_claim_window_count": 14
+            },
+            "risk_dataset_version": "ac4a74cc3db10c8277c2fba81b83b7269c2a4c21e3ae067cccca5dcea97c760c",
+            "split_id": "448ec5cb-1455-4979-aadb-f62cb3161501"
+          }
+        ],
+        "production_model_selection": {
+          "selected_model": "logistic_regression",
+          "ranking_rule": "PR-AUC floor gate (= test label base rate), then rank by recall, Brier score tie-break, FNR final tie-break",
+          "pr_auc_floor_used": 0.39361702127659576,
+          "tie_break_applied": true,
+          "benchmark_result_ids": [
+            "logistic_regression",
+            "random_forest",
+            "xgboost"
+          ],
+          "selected_at": "2026-08-19T04:55:48.033252Z"
+        },
+        "data_scale_warning": null
+      }
+    }
+  ]
+}

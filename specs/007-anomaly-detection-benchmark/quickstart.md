@@ -5,9 +5,9 @@
 - Phase 6's `TemporalSplit` and `SelectedFeatureSet` are available.
 
 ## Run the benchmark
+curl -X POST http://localhost:8000/anomaly/benchmark
 
 ```bash
-curl -X POST http://localhost:8000/anomaly/benchmark
 ```
 
 **Expected outcome**: `200 OK` with 4 `BenchmarkResult` entries and a `ProductionModelSelection`.

@@ -8,9 +8,12 @@
  * with no prefix at all.
  */
 
-import { apiGet, apiPost } from './apiClient';
+import { apiGet, apiPost, apiUpload } from './apiClient';
 import type {
   AcceptRequest,
+  BatchManifestEntry,
+  PipelineRunResult,
+  SimulationStatus,
   AnomalyBenchmarkRunResult,
   BaselineSnapshot,
   HistoryQueryResult,
@@ -98,4 +101,26 @@ export const auditApi = {
       params
     ),
   baseline: () => apiGet<BaselineSnapshot>('/audit/baseline'),
+};
+
+// --- demo: synthetic batches, pipeline, simulator, upload ---
+
+export const demoApi = {
+  batches: () => apiGet<BatchManifestEntry[]>('/demo/batches'),
+  regenerateBatches: () => apiPost<BatchManifestEntry[]>('/demo/batches/regenerate', {}),
+  /** Synchronous full-pipeline run, no chunked ingestion. */
+  runPipeline: (batchId: string, injectAnomalies: boolean) =>
+    apiPost<PipelineRunResult>(
+      `/demo/pipeline/run?batch_id=${encodeURIComponent(batchId)}&inject_anomalies=${injectAnomalies}`
+    ),
+  /** Every pipeline run ever performed -- batches, simulations and uploads. */
+  runs: (limit = 25) => apiGet<PipelineRunResult[]>('/demo/pipeline/runs', { limit }),
+  startSimulation: (batchId: string, injectAnomalies: boolean) =>
+    apiPost<SimulationStatus>('/demo/simulation/start', {
+      batch_id: batchId,
+      inject_anomalies: injectAnomalies,
+    }),
+  simulationStatus: (runId: string) =>
+    apiGet<SimulationStatus>('/demo/simulation/' + encodeURIComponent(runId)),
+  upload: (file: File) => apiUpload<PipelineRunResult>('/demo/upload', file),
 };

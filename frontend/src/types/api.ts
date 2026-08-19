@@ -236,6 +236,7 @@ export interface EvidenceBundle {
   affected_claims_amounts: number[];
   risk_score: number | null;
   baseline_amount_percentiles: Percentiles | null;
+  analysis_context?: IncidentAnalysisContext | null;
 }
 
 export interface Incident {
@@ -355,4 +356,167 @@ export interface HistoryQueryResult {
   total_count: number;
   /** False only when the entity has no history at all -- not for an empty page. */
   found: boolean;
+}
+
+// --- demo: synthetic batches, pipeline runs, simulator (app/demo/schemas.py) ---
+
+export interface InjectionPlanSummary {
+  rates: Partial<Record<InjectionType, number>>;
+  clusters: { name: string; rates: Partial<Record<InjectionType, number>>; density: number }[];
+  background_density: number;
+}
+
+export interface BatchSpec {
+  batch_id: string;
+  label: string;
+  description: string;
+  claim_count: number;
+  start_date: string;
+  end_date: string;
+  seed: number;
+  amount_scale: number;
+  amount_spread: number;
+  extra_missing_pct: number;
+  duplicate_rate: number;
+  injection_plan: InjectionPlanSummary;
+}
+
+export interface BatchManifestEntry {
+  batch_id: string;
+  label: string;
+  description: string;
+  file: string;
+  ground_truth_file: string;
+  rows: number;
+  claims: number;
+  injected_rows: number;
+  injected_counts: Record<string, number>;
+  date_from: string;
+  date_to: string;
+  clm_pmt_amt_sum: number;
+  clm_pmt_amt_median: number;
+  duplicate_rows: number;
+  missing_cell_pct: number;
+  generated_at: string;
+  spec: BatchSpec;
+}
+
+/** The ten distinct risk signal types the XGBoost model consumes. */
+export interface SubScores {
+  missing_data_risk: number;
+  null_risk: number;
+  duplicate_risk: number;
+  sla_timeliness_risk: number;
+  range_risk: number;
+  dtype_risk: number;
+  validity_risk: number;
+  uniqueness_risk: number;
+  freshness_risk: number;
+  anomaly_risk: number;
+}
+
+export interface AnomalyEvaluation {
+  model_type: string;
+  train_rows: number;
+  eval_rows: number;
+  injected_eval_rows: number;
+  precision: number;
+  recall: number;
+  f1: number;
+  fpr: number;
+  per_injection_type: Record<string, { precision: number; recall: number; f1: number }>;
+  threshold: number;
+  detection_latency_ms: number;
+  execution_time_s: number;
+  feature_columns: string[];
+  parameters: Record<string, unknown>;
+}
+
+export interface WindowRiskAssessment {
+  window_id: string;
+  window_start: string;
+  window_end: string;
+  claim_count: number;
+  sub_scores: SubScores;
+  risk_score: number;
+  severity_band: string;
+  anomaly_claim_count: number;
+  dominant_injection_type: string | null;
+  affected_claim_pct: number;
+  affected_claims_amounts: number[];
+  anomaly_score_percentile: number;
+  quality_check_bands: string[];
+  deviation_pct: number;
+}
+
+export interface PipelineRunResult {
+  run_id: string;
+  source: string;
+  batch_id: string;
+  batch_label: string;
+  injection_applied: boolean;
+  rows: number;
+  claims: number;
+  quality_run_id: string;
+  quality_composite_score: number;
+  quality_band_counts: Record<string, number>;
+  quality_type_band_counts: Record<string, Record<string, number>>;
+  anomaly: AnomalyEvaluation;
+  risk_model_type: string;
+  windows: WindowRiskAssessment[];
+  incident_ids: string[];
+  incident_severity_counts: Record<string, number>;
+  started_at: string;
+  completed_at: string;
+}
+
+export type SimulationState = 'queued' | 'ingesting' | 'analyzing' | 'complete' | 'failed';
+
+export interface SimulationStatus {
+  run_id: string;
+  batch_id: string;
+  batch_label: string;
+  inject_anomalies: boolean;
+  state: SimulationState;
+  chunk_index: number;
+  chunk_total: number;
+  chunk_interval_seconds: number;
+  claims_ingested: number;
+  claims_total: number;
+  current_window: string | null;
+  message: string;
+  started_at: string;
+  updated_at: string;
+  result: PipelineRunResult | null;
+  error: string | null;
+}
+
+/**
+ * What the demo pipeline records on an incident's `evidence_snapshot`:
+ * which window, which detected anomaly type, the ten risk sub-scores, and
+ * the rendered narrative. Optional because incidents created by other
+ * producers (or before this feature) do not carry it.
+ */
+export interface IncidentAnalysisContext {
+  batch_id: string;
+  batch_label: string;
+  source: string;
+  injection_applied: boolean;
+  window_start: string;
+  window_end: string;
+  claim_count: number;
+  anomaly_claim_count: number;
+  detected_anomaly_type: string | null;
+  deviation_pct: number;
+  risk_model: string;
+  risk_score: number;
+  severity_band: string;
+  sub_scores: SubScores;
+  narrative: {
+    risk_summary: string;
+    root_cause: string;
+    investigation: string;
+    recommended_fix: string;
+    prevention: string;
+  };
 }

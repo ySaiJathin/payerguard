@@ -140,10 +140,10 @@ export const Investigation: React.FC = () => {
           <Button
             variant="outline"
             size="xs"
-            onClick={() => navigate('/incidents')}
+            onClick={() => navigate('/history')}
             leftIcon={<ArrowLeft className="w-3.5 h-3.5" />}
           >
-            Back to Incidents
+            Back to History
           </Button>
           <span className="font-mono text-sm font-bold text-cyan-400">{id.slice(0, 8)}</span>
           {incident.data && (

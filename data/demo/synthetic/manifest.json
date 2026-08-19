@@ -1,0 +1,208 @@
+[
+  {
+    "batch_id": "batch-1",
+    "label": "Steady state",
+    "description": "Reference batch: the source amount distribution, no structural degradation, and three incident clusters of decreasing severity so every band on the dashboard is populated on first load.",
+    "file": "batch-1.csv",
+    "ground_truth_file": "batch-1_ground_truth.csv",
+    "rows": 3061,
+    "claims": 2972,
+    "injected_rows": 390,
+    "injected_counts": {
+      "missing_value_spike": 120,
+      "amount_spike": 96,
+      "distribution_shift": 84,
+      "duplicate_spike": 78,
+      "volume_drop": 12
+    },
+    "date_from": "2026-01-05",
+    "date_to": "2026-03-29",
+    "clm_pmt_amt_sum": 107383318.47,
+    "clm_pmt_amt_median": 2424.435,
+    "duplicate_rows": 88,
+    "missing_cell_pct": 35.39867035257713,
+    "generated_at": "2026-08-19T07:08:53.349654Z",
+    "spec": {
+      "batch_id": "batch-1",
+      "label": "Steady state",
+      "description": "Reference batch: the source amount distribution, no structural degradation, and three incident clusters of decreasing severity so every band on the dashboard is populated on first load.",
+      "claim_count": 3000,
+      "start_date": "2026-01-05",
+      "end_date": "2026-03-29",
+      "seed": 101,
+      "amount_scale": 1.0,
+      "amount_spread": 1.0,
+      "extra_missing_pct": 0.0,
+      "duplicate_rate": 0.004,
+      "injection_plan": {
+        "rates": {
+          "missing_value_spike": 0.004,
+          "duplicate_spike": 0.004,
+          "volume_drop": 0.004
+        },
+        "clusters": [
+          {
+            "name": "severe-multi-failure",
+            "rates": {
+              "missing_value_spike": 0.02,
+              "duplicate_spike": 0.016,
+              "amount_spike": 0.02,
+              "distribution_shift": 0.016
+            },
+            "density": 1.0
+          },
+          {
+            "name": "truncated-replay",
+            "rates": {
+              "missing_value_spike": 0.016,
+              "duplicate_spike": 0.014
+            },
+            "density": 1.0
+          },
+          {
+            "name": "payment-and-shift",
+            "rates": {
+              "amount_spike": 0.012,
+              "distribution_shift": 0.012
+            },
+            "density": 0.8
+          },
+          {
+            "name": "short-delivery",
+            "rates": {
+              "volume_drop": 0.014
+            },
+            "density": 0.6
+          }
+        ],
+        "background_density": 0.5
+      }
+    }
+  },
+  {
+    "batch_id": "batch-2",
+    "label": "Data quality degradation",
+    "description": "High volume with a real missingness increase and duplicate rate across the whole batch; clusters skewed to missing-value and duplicate spikes.",
+    "file": "batch-2.csv",
+    "ground_truth_file": "batch-2_ground_truth.csv",
+    "rows": 5099,
+    "claims": 4688,
+    "injected_rows": 721,
+    "injected_counts": {
+      "missing_value_spike": 299,
+      "duplicate_spike": 248,
+      "distribution_shift": 75,
+      "amount_spike": 50,
+      "volume_drop": 49
+    },
+    "date_from": "2026-03-30",
+    "date_to": "2026-06-21",
+    "clm_pmt_amt_sum": 45042005.75,
+    "clm_pmt_amt_median": 2179.18,
+    "duplicate_rows": 383,
+    "missing_cell_pct": 42.97179799363467,
+    "generated_at": "2026-08-19T07:08:57.395533Z",
+    "spec": {
+      "batch_id": "batch-2",
+      "label": "Data quality degradation",
+      "description": "High volume with a real missingness increase and duplicate rate across the whole batch; clusters skewed to missing-value and duplicate spikes.",
+      "claim_count": 4800,
+      "start_date": "2026-03-30",
+      "end_date": "2026-06-21",
+      "seed": 202,
+      "amount_scale": 0.85,
+      "amount_spread": 0.9,
+      "extra_missing_pct": 9.0,
+      "duplicate_rate": 0.035,
+      "injection_plan": {
+        "rates": {
+          "missing_value_spike": 0.015,
+          "amount_spike": 0.01,
+          "volume_drop": 0.01,
+          "distribution_shift": 0.015
+        },
+        "clusters": [
+          {
+            "name": "extract-truncation",
+            "rates": {
+              "missing_value_spike": 0.045,
+              "duplicate_spike": 0.03
+            },
+            "density": 1.0
+          },
+          {
+            "name": "replayed-batch",
+            "rates": {
+              "duplicate_spike": 0.02
+            },
+            "density": 0.8
+          }
+        ],
+        "background_density": 0.6
+      }
+    }
+  },
+  {
+    "batch_id": "batch-3",
+    "label": "Payment anomaly surge",
+    "description": "Lower volume, a heavier and wider payment distribution, and clusters skewed to amount spikes and distribution shifts.",
+    "file": "batch-3.csv",
+    "ground_truth_file": "batch-3_ground_truth.csv",
+    "rows": 1823,
+    "claims": 1811,
+    "injected_rows": 285,
+    "injected_counts": {
+      "amount_spike": 124,
+      "distribution_shift": 95,
+      "volume_drop": 37,
+      "missing_value_spike": 19,
+      "duplicate_spike": 10
+    },
+    "date_from": "2026-06-22",
+    "date_to": "2026-08-16",
+    "clm_pmt_amt_sum": 2412667245.78,
+    "clm_pmt_amt_median": 5229.5,
+    "duplicate_rows": 12,
+    "missing_cell_pct": 34.67787520431263,
+    "generated_at": "2026-08-19T07:08:58.393268Z",
+    "spec": {
+      "batch_id": "batch-3",
+      "label": "Payment anomaly surge",
+      "description": "Lower volume, a heavier and wider payment distribution, and clusters skewed to amount spikes and distribution shifts.",
+      "claim_count": 1900,
+      "start_date": "2026-06-22",
+      "end_date": "2026-08-16",
+      "seed": 303,
+      "amount_scale": 1.9,
+      "amount_spread": 1.45,
+      "extra_missing_pct": 0.5,
+      "duplicate_rate": 0.001,
+      "injection_plan": {
+        "rates": {
+          "amount_spike": 0.02,
+          "distribution_shift": 0.02,
+          "duplicate_spike": 0.005
+        },
+        "clusters": [
+          {
+            "name": "mapping-fault",
+            "rates": {
+              "amount_spike": 0.045,
+              "distribution_shift": 0.03,
+              "missing_value_spike": 0.01
+            },
+            "density": 1.0
+          },
+          {
+            "name": "late-delivery",
+            "rates": {
+              "volume_drop": 0.02
+            },
+            "density": 0.7
+          }
+        ],
+        "background_density": 0.6
+      }
+    }
+  }
+]

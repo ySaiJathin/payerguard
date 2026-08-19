@@ -17,7 +17,7 @@ from app.baseline.snapshot_log import read_baseline_history_snapshots
 from app.hitl.models import IncidentStatusTransition
 from app.incidents.models import Incident as IncidentORM
 from app.incidents.schemas import EvidenceBundle, Incident, IncidentCreate, IncidentUpdate
-from app.llm import payload_builder
+from app.llm import investigation_log, payload_builder
 from app.llm.errors import MalformedResponseError, MistralAPIError
 from app.llm.investigation_service import investigate
 from app.risk.scoring import priority as priority_module
@@ -59,7 +59,21 @@ def _resolve_baseline_snapshot_id(evidence: EvidenceBundle) -> str | None:
     return None
 
 
-def create_incident(db: Session, payload: IncidentCreate, mistral_client_override=None) -> Incident:
+def create_incident(
+    db: Session,
+    payload: IncidentCreate,
+    mistral_client_override=None,
+    investigation_builder=None,
+) -> Incident:
+    """`investigation_builder`, when supplied, replaces the Mistral call with
+    a caller-provided factory `(incident_id, llm_payload) -> LLMInvestigation`.
+    It exists for producers that already hold the full, structured evidence
+    for an incident and generate the investigation deterministically from it
+    (the demo pipeline's per-anomaly-type templates) -- the record is written
+    through the same investigation log and the incident reaches the same
+    `ready_for_review` state, so nothing downstream can tell the difference in
+    shape, only in `model_version`.
+    """
     evidence: EvidenceBundle = payload.evidence
 
     severity_result = compute_severity(
@@ -97,7 +111,13 @@ def create_incident(db: Session, payload: IncidentCreate, mistral_client_overrid
     investigation_id = None
     status = "pending_investigation"
     try:
-        investigation = investigate(incident_id, llm_payload, mistral_client_override=mistral_client_override)
+        if investigation_builder is not None:
+            investigation = investigation_builder(incident_id, llm_payload)
+            investigation_log.append_investigation(investigation)
+        else:
+            investigation = investigate(
+                incident_id, llm_payload, mistral_client_override=mistral_client_override
+            )
         investigation_id = investigation.investigation_id
         status = "ready_for_review"
     except (MistralAPIError, MalformedResponseError):

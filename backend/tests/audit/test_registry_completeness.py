@@ -56,15 +56,14 @@ def _drive_cleaning(db, tmp_path):
     db.commit()
 
 
-def test_ingestion_is_deliberately_absent_from_the_expected_list():
-    """Recorded as an assertion, not just a comment: the omission is a
-    decision (the continuous-ingestion phase was removed 2026-08-18 and
-    `app/ingestion/` has no write path), and if someone re-adds ingestion
-    they should have to see this test and the reasoning behind it."""
-    assert "ingestion" not in EXPECTED_AUDITED_MODULES, (
-        "`ingestion` has no implementation to instrument. Re-add it here and in "
-        "app/audit/registry.py only once a real ingestion write path exists."
-    )
+def test_ingestion_is_present_now_that_a_real_write_path_exists():
+    """Through Phase 16 this test asserted `ingestion`'s *absence* (the
+    continuous-ingestion phase had been removed and `app/ingestion/` had
+    no write path). Spec 017-batch-file-ingestion (2026-08-20) built one --
+    `app.ingestion.batch_service` appends an entry for every accepted and
+    rejected upload -- so the assertion is flipped, not merely deleted, to
+    keep the reasoning visible for whoever reads this test next."""
+    assert "ingestion" in EXPECTED_AUDITED_MODULES
 
 
 def test_data_engineering_is_deliberately_present():
@@ -89,12 +88,13 @@ def test_cleaning_registers_data_engineering(tmp_path):
 
 
 def test_every_expected_module_registers_when_its_stage_runs(monkeypatch, tmp_path):
-    """The positive half of SC-005, across all ten modules."""
+    """The positive half of SC-005, across all eleven modules."""
     db = make_test_session()
 
     run_full_incident_lifecycle(db, monkeypatch)
     _drive_cleaning(db, tmp_path)
     _drive_batch_routers(db, monkeypatch, tmp_path)
+    _drive_ingestion(db, monkeypatch)
 
     gaps = unregistered_modules(db)
     assert not gaps, (
@@ -190,3 +190,25 @@ def _drive_batch_routers(db, monkeypatch, tmp_path):
     assert client.post("/anomaly/benchmark").status_code == 200
     assert client.post("/risk/benchmark").status_code == 200
     assert client.post("/quality/validate").status_code == 200
+
+
+def _drive_ingestion(db, monkeypatch):
+    """`ingestion.batch_service.create_batch` appends its audit entry the
+    moment an upload is accepted, before `pipeline_runner.run` does any
+    heavy work -- so stubbing `pipeline_runner.run` to a no-op still
+    exercises the append call under test, matching `_drive_batch_routers`'
+    pattern of stubbing the model-fitting behind a router, not the append
+    itself."""
+    from app.ingestion import pipeline_runner
+    from app.ingestion.router import router as ingestion_router
+
+    monkeypatch.setattr(pipeline_runner, "run", lambda *args, **kwargs: None)
+
+    app = FastAPI()
+    app.include_router(ingestion_router)
+    app.dependency_overrides[get_db] = lambda: db
+    client = TestClient(app)
+
+    content = CLEAN_FIXTURE.read_bytes()
+    response = client.post("/claims/upload", files={"file": ("inpatient_sample.csv", content, "text/csv")})
+    assert response.status_code in (201, 422), response.text

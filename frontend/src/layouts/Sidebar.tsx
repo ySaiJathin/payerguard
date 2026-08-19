@@ -2,10 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
-  UploadCloud,
-  AlertOctagon,
+  PlayCircle,
   History as HistoryIcon,
-  Settings as SettingsIcon,
   ShieldCheck,
   X
 } from 'lucide-react';
@@ -21,8 +19,16 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
-  incidentCount = 4,
+  incidentCount = 0,
 }) => {
+  /*
+   * Three destinations. Upload Claims, Incidents and Settings were removed:
+   * upload now lives on the Simulator page, incident history is the History
+   * page, and Settings configured nothing the backend reads.
+   *
+   * The incident badge is the real open-incident count passed in by the
+   * layout, not a placeholder.
+   */
   const navigationItems = [
     {
       name: 'Dashboard',
@@ -31,29 +37,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
       badge: null,
     },
     {
-      name: 'Upload Claims',
-      path: '/upload',
-      icon: UploadCloud,
-      badge: 'Pending',
-    },
-    {
-      name: 'Incidents',
-      path: '/incidents',
-      icon: AlertOctagon,
-      badge: incidentCount > 0 ? `${incidentCount}` : null,
-      badgeDanger: incidentCount > 0,
+      name: 'Simulator',
+      path: '/simulator',
+      icon: PlayCircle,
+      badge: null,
     },
     {
       name: 'History',
       path: '/history',
       icon: HistoryIcon,
-      badge: null,
-    },
-    {
-      name: 'Settings',
-      path: '/settings',
-      icon: SettingsIcon,
-      badge: null,
+      badge: incidentCount > 0 ? `${incidentCount}` : null,
+      badgeDanger: incidentCount > 0,
     },
   ];
 

@@ -16,16 +16,16 @@ from app.audit.models import AuditLog
 from app.audit.schemas import AuditSourceRegistryEntry
 
 # Every module producing a decision/score/action, mapped to the record
-# types it contributes. Two deliberate departures from research.md's list,
-# both decided explicitly rather than drifted into:
+# types it contributes. Two deliberate departures from research.md's
+# original list, both decided explicitly rather than drifted into:
 #
-# 1. `ingestion` is ABSENT. research.md lists it, but the
-#    continuous-ingestion feature was removed 2026-08-18 (commit 6dd9ad2)
-#    and `app/ingestion/` remains an unimplemented Phase-0 placeholder --
-#    there is no write path to instrument. Keeping it here would make the
-#    completeness check fail permanently, which trains readers to ignore a
-#    red test and thereby destroys the very guarantee FR-008 is buying.
-#    Re-add this line when ingestion is re-scoped and built.
+# 1. `ingestion` is PRESENT. Through Phase 16 it was absent -- continuous
+#    ingestion was removed 2026-08-18 and `app/ingestion/` had no write
+#    path to instrument, so keeping it would have failed permanently and
+#    trained readers to ignore a red test. Spec 017-batch-file-ingestion
+#    (2026-08-20) built a real one: `app.ingestion.batch_service` appends
+#    one entry per accepted or rejected upload, so this is re-added now
+#    that a genuine write path exists.
 #
 # 2. `data_engineering` is PRESENT. research.md's list omits it, but
 #    FR-001 explicitly names "Phase 2's QualityIssueRecord" as an
@@ -46,6 +46,7 @@ EXPECTED_AUDITED_MODULES: dict[str, list[str]] = {
     "hitl": ["IncidentStatusTransition", "HumanFeedback"],
     "remediation": ["RemediationAction", "ManualActionRequired"],
     "revalidation": ["RevalidationRun"],
+    "ingestion": ["IngestedBatch"],
 }
 
 

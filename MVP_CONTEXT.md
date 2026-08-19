@@ -1,7 +1,7 @@
 # PayerGuard — MVP Context Document
 
-Status: In progress (v7 — all 16 active specs implemented, CORS resolved, real frontend source merged into `frontend/` with SLA and EDI/NPI/NCCI concepts marked for removal (Section 4.1). See Section 9 for a condensed shareable status snapshot, Section 8 for the full changelog)
-Last updated: 2026-08-19
+Status: In progress (v10 — spec 007 T028 closed and the v8-flagged anomaly-benchmark discrepancy resolved: a real end-to-end run confirms `iqr` as the production anomaly model, F1 0.1111, matching the earlier PPT screenshot rather than the stale isolation_forest-only file. v9 implemented spec 017-batch-file-ingestion for real (`POST /claims/upload`). v8's SLA reintroduction (Phase 8b/9b, Section 2.4.1/3.1/3.3) remains untouched by both passes. See Section 5.1 for everything still open, Section 9 for the condensed shareable snapshot, Section 8 for the full changelog)
+Last updated: 2026-08-20
 Owner: AAT2
 
 This document is the single source of truth for the PayerGuard MVP. Any human or AI agent picking up this project should be able to read this file top to bottom and understand what the project is, what data it uses, what the target architecture is, what is explicitly in and out of scope for the MVP, the order in which work should be done, and — as of v3 — exactly how much of it is actually done vs. still open (Section 9). Backend implementation is well underway via spec-driven development (`/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`); the frontend and deployment phases are not. If you only have time to read one section, read Section 9.
@@ -88,7 +88,16 @@ An earlier draft of this document proposed deriving an SLA-breach label from "pr
 1. `FI_CLM_PROC_DT` is 100% null (see Section 2.2) — nothing can be derived from an entirely empty column.
 2. `NCH_WKLY_PROC_DT`, the other candidate, looked promising (0% missing) but turns out to be a fixed weekly batch-cutoff date, not a real operational timestamp. Computing `NCH_WKLY_PROC_DT − CLM_THRU_DT` across all 58,066 rows produces a delay of exactly 1–7 days in every row, and `NCH_WKLY_PROC_DT` itself falls on a Friday in 100% of rows with zero exceptions. This is CMS's weekly claims-processing cadence, not a signal of how long any individual claim took to adjudicate — it carries no information about claim complexity, quality, or risk.
 
-Conclusion: **this dataset has no genuine claims-adjudication-turnaround / SLA field.** Per the project's no-fabrication principle, the risk target is therefore **not** an "SLA-breach" label. Instead, the risk model's target is reframed as **investigation-worthy risk**: whether a claim or processing window shows signs (quality-check failures, anomaly score, volume/amount deviation from baseline) that would warrant a human reviewing it. This is a defensible alternative built entirely from fields that exist and are populated, and it is what "Risk Score" refers to everywhere else in this document — the term "SLA Risk" is retired.
+Conclusion: **this dataset has no genuine claims-adjudication-turnaround / SLA field.** Per the project's no-fabrication principle, the risk target is therefore **not** an "SLA-breach" label built from a fabricated timestamp. Instead, the risk model's primary target remains **investigation-worthy risk**: whether a claim or processing window shows signs (quality-check failures, anomaly score, volume/amount deviation from baseline) that would warrant a human reviewing it. This is a defensible alternative built entirely from fields that exist and are populated, and it is what "Risk Score" refers to everywhere else in this document.
+
+### 2.4.1 SLA reintroduced as an explicit, honestly-scoped proxy (v8)
+
+The original PPT pitch (`team AgentForge.pdf`) names "SLA risk"/"SLA Breach (0/1)" as a first-class output. The user decided (2026-08-20) to bring SLA back rather than leave it retired — but the empirical finding above still holds: there is no field in `inpatient.csv` that records real per-claim adjudication turnaround. Two ways to reconcile that were weighed:
+
+- **Option A (not chosen) — length-of-stay-based SLA.** Redefine "SLA" around `CLM_ADMSN_DT`→`NCH_BENE_DSCHRG_DT` (a real, populated duration). Defensible, but answers a different question (clinical-duration outlier) relabeled as SLA.
+- **Option B (chosen) — batch-cutoff-cadence SLA.** Use `NCH_WKLY_PROC_DT − CLM_THRU_DT` directly, but document explicitly, everywhere this appears in code and this doc, that it measures **"did the claim clear before the next weekly CMS batch cutoff,"** not real adjudication turnaround.
+
+**SLA is therefore un-retired, but redefined, not restored to its original PPT meaning.** Formulas: Section 3.1. Model: Section 3.3 / Phase 8b–9b (Section 5). The term "SLA Risk" below refers to this batch-cutoff-cadence proxy specifically, never to real per-claim processing time — that field does not exist in this dataset and no amount of re-scoping SLA changes that.
 
 ---
 
@@ -168,6 +177,42 @@ DuplicateRate = (DuplicateRecords / TotalRecords) × 100
 ```
 Quality Score (0–100) is computed dynamically from the weighted proportion of PASS/WARNING/CRITICAL results across all Great Expectations checks — never a hardcoded number. Weights per check category are configurable.
 
+**Composite Data Quality Score bands (added v8, sourced from `team AgentForge.pdf` slide 8 — MVP_CONTEXT.md previously defined the composite score itself but never banded the resulting 0–100 number):**
+```
+90–100  → Good
+75–89   → Warning
+50–74   → Poor
+< 50    → Critical
+```
+
+**Simple metrics / feature-generation formulas (added v8, sourced from `team AgentForge.pdf` slide 10 — previously implied but never spelled out in this doc):**
+```
+Volume deviation (%) = (Current − Baseline) / Baseline × 100
+Affected rate (%)     = AffectedClaims / TotalClaims × 100
+```
+These match what Phase 5/8 already describe in prose ("volume/amount deviation vs baseline," "affected-claim %") — this is the exact formula backing that language, not a new metric.
+
+`Processing delay = ProcessingTime − ArrivalTime` (the PPT's third formula on the same slide) is **not** adopted in that literal form — no `ProcessingTime`/`ArrivalTime` fields exist in this dataset. It is superseded by the SLA formula set below, which applies the same idea to a field that actually exists.
+
+**SLA (batch-cutoff-cadence proxy — added v8, see Section 2.4.1 for why this is a redefinition, not the PPT's original SLA):**
+```
+SLA_Delay (days) = NCH_WKLY_PROC_DT − CLM_THRU_DT
+
+SLA_Breach_Threshold = 95th percentile of SLA_Delay,
+                        computed from the historical baseline
+                        (same calibration convention as the HBOS
+                        95th/99th bands below — configurable, not
+                        a fixed constant; revisit once the SLA risk
+                        model in Phase 8b/9b has real output to check
+                        this against)
+
+SLA_Breach (0/1) = 1 if SLA_Delay > SLA_Breach_Threshold else 0
+
+SLA_Risk_Score (0–100) = percentile rank of this claim/window's SLA_Delay
+                          within the baseline SLA_Delay distribution
+```
+`SLA_Breach` is the label the dedicated SLA risk model (Phase 8b/9b) is trained against — it is not derived from or blended with the existing investigation-risk label.
+
 **Anomaly detection — IQR baseline:**
 ```
 IQR = Q3 - Q1
@@ -213,19 +258,22 @@ Four distinct, non-overlapping signals feed the Priority formula. Each measures 
 
 - **Quality Score (0–100):** batch-level data soundness (Great Expectations).
 - **Anomaly Score (0–100):** how statistically unusual this specific claim/window is (HBOS).
-- **Risk Score (0–100):** the model's predicted probability that this incident is investigation-worthy (XGBoost or the empirically-selected winner — see 2.4 for why this replaced "SLA Risk").
+- **Risk Score (0–100):** the model's predicted probability that this incident is investigation-worthy (XGBoost or the empirically-selected winner — see 2.4 for background on why this was originally the sole replacement for "SLA Risk"; as of v8, SLA Risk exists again as its own separate signal, below, not folded back into this one).
+- **SLA Risk Score (0–100), added v8:** the *dedicated* SLA risk model's output (Phase 8b/9b) — the probability, per the empirically-selected winner of a Logistic Regression/Random Forest/XGBoost benchmark trained specifically on the `SLA_Breach` label (Section 3.1/2.4.1), that this claim/window breaches the batch-cutoff-cadence threshold. This is deliberately **not** the general Risk Score relabeled — reusing that score under the name "SLA Risk" would mean measuring something else and calling it SLA, which the project's no-fabrication principle rules out. Until Phase 8b/9b is implemented, this signal is unavailable and must be reported as such, never defaulted to 0 or to the general Risk Score.
 - **Severity (0–100), newly defined here:** the magnitude of the incident itself — how bad this specific finding is, independent of whether it turns out to be a true risk or what it costs. Computed as:
   ```
   Severity = wq × QualityFailureSeverity + wa × AnomalyMagnitudeScore + wm × MaterialityScore
   ```
-  where `QualityFailureSeverity` weights the Great Expectations checks that failed for the affected claim(s) (CRITICAL=100, WARNING=50, PASS=0 per check, averaged), `AnomalyMagnitudeScore` maps the HBOS percentile onto 0–100 using the same 95th/99th-percentile calibration as Section 3.1 (so severity scales continuously with how extreme the anomaly is, not a flat yes/no), and `MaterialityScore` measures the actual scale of the incident — percentage of claims affected within the window and/or the dollar-amount percentile of `CLM_PMT_AMT`/`CLM_TOT_CHRG_AMT` for affected claims relative to baseline. Initial illustrative weights: `wq=0.4, wa=0.4, wm=0.2` — configurable, to be revisited once real incidents are running through the pipeline.
+  where `QualityFailureSeverity` weights the Great Expectations checks that failed for the affected claim(s) (CRITICAL=100, WARNING=50, PASS=0 per check, averaged), `AnomalyMagnitudeScore` maps the HBOS percentile onto 0–100 using the same 95th/99th-percentile calibration as Section 3.1 (so severity scales continuously with how extreme the anomaly is, not a flat yes/no), and `MaterialityScore` measures the actual scale of the incident — percentage of claims affected within the window and/or the dollar-amount percentile of `CLM_PMT_AMT`/`CLM_TOT_CHRG_AMT` for affected claims relative to baseline. Weights: `wq=0.4, wa=0.4, wm=0.2`.
 - **Business Impact (0–100):** dollar/operational consequence, computed **only** from measurable fields — claim-amount-based components (total charge, payment amount, affected-claim dollar exposure) are computable from this dataset; components like member-harm or provider-reputation impact are **not** present in the data and must be explicitly marked unavailable rather than fabricated, per the project's no-fabrication principle.
 
-Priority formula (unchanged from the original plan, now with all four inputs precisely defined):
+**Weight provenance (clarified v8) — read this before treating any weight below as calibrated.** `wq/wa/wm` and every Priority weight are hardcoded literals in `backend/app/risk/scoring/weight_config.py` (`SEVERITY_DEFAULT_WEIGHTS`, `PRIORITY_DEFAULT_WEIGHTS`). They are **not** fit by regression, not cross-validated, not optimized against any labeled outcome — the code only enforces two structural rules (the weight-set keys match what the formula expects, and the values sum to 1.0 within 1e-6, else `WeightConfigError` is raised rather than silently normalized). The values themselves are a manually-chosen rubric, picked at spec-writing time, not a data-derived result. Previous versions of this doc called them "illustrative... to be revisited once real incidents are running through the pipeline" — that revisiting has not happened. Treat them as a documented, deliberate starting rubric, not evidence of anything empirical, until an actual calibration process (e.g. regressing weights against real human-reviewer prioritization decisions, which don't exist yet at any scale) is run.
+
+Priority formula, reweighted (v8) to fold in SLA Risk as its own term, alongside the original four signals — inference, not an explicit instruction: SLA Risk is now a genuine model output with the same status as Severity/Risk/Business Impact, and the original PPT's architecture treats SLA Breach Probability as a peer output rather than a component of the existing Risk Score, so it gets its own weighted slot rather than being blended into Risk:
 ```
-Priority = 0.40 × Severity + 0.30 × Risk + 0.20 × Business Impact + 0.10 × Affected Claims Score
+Priority = 0.35 × Severity + 0.25 × Risk + 0.20 × Business Impact + 0.10 × SLA Risk + 0.10 × Affected Claims Score
 ```
-Weights are configurable.
+Weights are configurable, and per the provenance note above, these five numbers (like the four before them) are a manual rubric, not a fitted result — flagged here explicitly so nobody mistakes this reweighting for anything more rigorous than the original 0.40/0.30/0.20/0.10 split was. **This line is the one part of this edit most worth double-checking against what you actually intended** — if SLA Risk was meant to feed into the Risk Score itself (as an additional feature the existing investigation-risk classifier trains on) rather than sit as a fifth Priority term, this formula needs to change.
 
 ### Backend architecture (modular, not a monolith)
 Backend is a single deployable service for the MVP, but the codebase is split into one module per feature/domain (own files, own router, own service, own tests) rather than one large file. Target module boundaries:
@@ -252,9 +300,10 @@ CloudFront → ALB → ECS/Fargate running two containers (frontend, backend) �
 - Historical baseline computed from real cleaned data (no static/assumed baseline numbers).
 - Claim-level and window-level feature engineering, three-stage feature selection.
 - Anomaly detection benchmark: IQR baseline vs HBOS vs Isolation Forest vs LOF, with a proper train/validate/test split and leakage discipline (Section 3.2), synthetic anomaly injection restricted to validation/test copies, scored on precision/recall/F1/FPR/latency/runtime. Production model selected empirically.
-- Risk dataset built at incident/window grain with a derived, documented **investigation-risk** label (not an SLA-breach label — see Section 2.4 for why), temporal train/val/test split.
+- Risk dataset built at incident/window grain with a derived, documented **investigation-risk** label (see Section 2.4 for why this stayed the primary risk target even after SLA was reintroduced), temporal train/val/test split.
 - Risk model benchmark: Logistic Regression vs Random Forest vs XGBoost, evaluated primarily on recall + PR-AUC (false negatives are the costly error), production model selected empirically.
-- Severity, Business Impact, Risk, and Quality computed as four distinct, non-overlapping signals (Section 3.3), combined into a composite Priority score.
+- **SLA risk (added v8, in scope again — Section 2.4.1):** a batch-cutoff-cadence proxy (`SLA_Delay`/`SLA_Breach`/`SLA_Risk_Score`, Section 3.1), scored by its own dedicated Logistic Regression/Random Forest/XGBoost benchmark (Phase 8b/9b, Section 5) trained on the `SLA_Breach` label — not a relabeling of the investigation-risk score. Documented everywhere as measuring batch-cutoff cadence, not real per-claim adjudication turnaround, because that's genuinely what the underlying field measures.
+- Severity, Business Impact, Risk, SLA Risk, and Quality computed as five distinct, non-overlapping signals (Section 3.3), combined into a composite Priority score.
 - LLM investigation using **Mistral** (not Gemini) — root cause, evidence, impact, recommendation only; the LLM never executes fixes or touches the database directly.
 - Human-in-the-loop accept/reject flow, feedback capture for future retraining.
 - Constrained remediation engine (duplicate flagging, approved imputations, approved status mappings only; anything else becomes "Manual Action Required").
@@ -271,7 +320,7 @@ CloudFront → ALB → ECS/Fargate running two containers (frontend, backend) �
 - No production secrets, no real Mistral API key committed anywhere (use `.env`, gitignored).
 - Gemini is fully replaced by Mistral throughout — no dual-LLM support needed.
 - No second dataset (outpatient, carrier, DME, etc.) — single-file scope only for now.
-- No SLA-breach modeling of any kind — the dataset does not support it (Section 2.4); do not reintroduce it without a new, verified source field.
+- ~~No SLA-breach modeling of any kind~~ — **superseded v8.** SLA is back in scope as the honestly-redefined batch-cutoff-cadence proxy in Section 2.4.1/3.1, not the original PPT's per-claim turnaround concept (that field still doesn't exist — see Section 2.4). Left here, struck through rather than deleted, so the reasoning trail stays visible.
 
 **Spec 015-continuous-ingestion removed (2026-08-18).** The user decided a live/continuous ingestion pipeline is out of scope and had this spec folder deleted; specs `016-*`→`015-*` and `017-*`→`016-*` were renumbered down to close the gap (see Section 8 changelog). This leaves an open question, flagged rather than assumed: `backend/app/ingestion/router.py` is still an unimplemented placeholder, and no spec currently exists for it. It is unclear whether the deleted spec's content was entirely about live streaming (in which case nothing in-scope was lost) or also covered the still-in-scope "manual + repeated batch upload" ingestion flow described above (in which case that capability now has no spec and needs a new one, e.g. a re-scoped `017-batch-ingestion`). **Needs a decision before Phase 13+ implementation planning treats ingestion as covered.**
 
@@ -331,8 +380,14 @@ Claim-level features (amount ratios, length-of-stay, date-derived features, enco
 **Phase 6 — Feature selection** ✅ Implemented (spec `006-feature-selection`, 20/20 tasks)
 Stage 1 (drop constant/near-constant/duplicate/raw-ID/high-missingness/leakage columns — several already identified above), Stage 2 (correlation, mutual information, variance, cardinality, missingness thresholds), Stage 3 (XGBoost importance, permutation importance, RFE if needed). Feature selection is fit on training/validation data only — never on test data.
 
-**Phase 7 — Anomaly detection benchmark** ⚠️ Implemented, 28/29 tasks — **T028 still open**: run `specs/007-anomaly-detection-benchmark/quickstart.md`'s manual end-to-end verification (benchmark → results → selection-matches-F1 check → enrich-windows → idempotency diff) against a running backend and fix any contract/implementation drift found. Needs a running backend + real dependencies, which this planning environment cannot provide — do this from wherever the backend actually runs.
-Implement IQR baseline, HBOS, Isolation Forest, LOF using the train/validate/test discipline in Section 3.2. Build an anomaly-injection harness (missing-value spike, amount spike, duplicate spike, volume drop, distribution shift) applied only to validation/test copies. Evaluate precision/recall/F1/FPR/detection latency/execution time. Select production model empirically (expected HBOS, but only if the benchmark confirms it).
+**Phase 7 — Anomaly detection benchmark** ✅ Implemented, 29/29 tasks — **T028 closed (2026-08-20)**: `specs/007-anomaly-detection-benchmark/quickstart.md`'s full manual verification was run end-to-end against a real, live backend (`POST /anomaly/benchmark` → `GET /anomaly/results` → selection-matches-F1 check → `POST /anomaly/enrich-windows` ×2 → idempotency diff), all on the real `data/raw/inpatient.csv`. Every step matched its documented contract exactly — **zero drift found, nothing needed fixing.** Results: all 4 models (`iqr`, `hbos`, `isolation_forest`, `lof`) produced (benchmark run took ~66s); all 5 injection types present in `per_injection_type_breakdown`; production model `iqr` (F1 0.1111) correctly matches the best-F1 model with no tie-break needed; `enrich-windows` enriched all 2,928 windows with zero `null`s remaining, and a second run produced byte-identical output (true idempotency). Full backend suite re-run afterward with no regressions.
+Implement IQR baseline, HBOS, Isolation Forest, LOF using the train/validate/test discipline in Section 3.2. Build an anomaly-injection harness (missing-value spike, amount spike, duplicate spike, volume drop, distribution shift) applied only to validation/test copies. Evaluate precision/recall/F1/FPR/detection latency/execution time. Select production model empirically — **confirmed `iqr`, not the originally-expected HBOS** (`hbos` scored F1 0.0 in this real run); the benchmark result governs per constitution Principle I.
+
+**v8's flagged discrepancy is now resolved by this real run, not by more guessing.** The stale `isolation_forest`-only file v8 found on disk (F1 0.714, incomplete — missing `iqr`/`hbos`/`lof`) is superseded: a fresh, complete four-model run now persists `iqr` as production (F1 0.1111), which matches the `team AgentForge.pdf` slide 18 screenshot's number exactly. That screenshot was the trustworthy one; the isolation_forest-only file was the stale one. Section 6's anomaly-production row is updated accordingly — no longer "unconfirmed."
+
+**Phase 8b — SLA risk dataset construction** 🔲 Not started (new, v8). Mirrors Phase 8's structure but for the SLA target: build incident/window-grain rows carrying `SLA_Delay` and the derived `SLA_Breach` label (Section 3.1/2.4.1), computed from `NCH_WKLY_PROC_DT − CLM_THRU_DT` against the empirically-calibrated `SLA_Breach_Threshold`. Kept as a fully separate dataset from Phase 8's investigation-risk dataset — same temporal train/val/test discipline (Section 3.2's leakage rule applies here too: the threshold is calibrated on training data only).
+
+**Phase 9b — SLA risk model benchmark** 🔲 Not started (new, v8). Logistic Regression vs Random Forest vs XGBoost, benchmarked against the `SLA_Breach` label from Phase 8b — the same three-model comparison Phase 9 already does for investigation-risk, run again against a different target rather than reusing Phase 9's trained model or its probability output. Production model selected empirically, produces the real `SLA_Risk_Score` referenced in Section 3.3's reweighted Priority formula. Until this phase is implemented, `SLA_Risk_Score` must be reported as unavailable, not defaulted or approximated from the investigation-risk model.
 
 **Phase 8 — Risk dataset construction** ✅ Implemented (spec `008-risk-dataset-construction`, 24/24 tasks)
 Build incident/window-grain rows (GX failure count, anomaly score, affected-claim %, volume deviation, amount deviation, historical quality-failure rate, anomaly frequency, claim count). Define and document the **investigation-risk label** derivation explicitly, per Section 2.4: this dataset has no genuine SLA/processing-turnaround field, so the target is built from quality-failure rate + anomaly frequency + volume/amount deviation rather than a fabricated timing-based label.
@@ -370,7 +425,7 @@ Broken out explicitly per category (previously bundled into one line). Coverage 
 **Phase 16 — Audit & history** ✅ Implemented (spec `016-audit-history`, 31/31 tasks; renumbered from `017-audit-history`)
 Full audit log across every pipeline stage; `/history` and `/audit/baseline` read endpoints. Ten decision-producing modules call `audit.append_entry` at their own write sites, so the trail is built at write time rather than reconstructed retroactively; entries reference (never copy) the owning module's record. The baseline endpoint is a direct pass-through to Phase 4 and is mounted at `/audit/baseline` because Phase 4's router already owns `/baseline` — a duplicate would have been silently shadowed. `ingestion` is deliberately absent from the audit-source registry (its phase was retired; no write path exists).
 
-**Phase 17 — Batch/repeated-file ingestion** 🔲 In progress — spec `017-batch-file-ingestion` created (2026-08-19) to close the gap left by the removed continuous-ingestion phase (Phase 15 above). Scope, per the prompt this spec was written from: manual + repeated/batch upload of the same `inpatient.csv`-shaped file only — explicitly not live streaming, not a claims simulator. `spec.md` is currently still template scaffolding (generation was interrupted mid-run and not yet resumed) — no plan/tasks/implementation started. `backend/app/ingestion/router.py` remains the original Phase-0 placeholder until this lands.
+**Phase 17 — Batch/repeated-file ingestion** ✅ Implemented (spec `017-batch-file-ingestion`, 30/30 tasks, 2026-08-20) — closes the gap left by the removed continuous-ingestion phase (Phase 15 above). `POST /claims/upload` validates a raw, pipe-delimited, 197-column extract against Phase 1's own profiled schema *before* any pipeline stage runs, then drives the existing Phase 2-12 pipeline (`run_cleaning` → `run_validation` → `compute_features` → `enrich_windows` → `assemble_rows` + a new `risk.scoring.inference` call → `create_incident`) by calling each phase's own service functions — no re-implementation. Every upload, accepted or rejected, is persisted as its own `IngestedBatch` (new `ingested_batches` table) and audited (`ingestion` re-entered Phase 16's `EXPECTED_AUDITED_MODULES`/`PipelineStage`, both of which had been left with an explicit "re-add once built" comment for exactly this). `GET /claims/batches`/`GET /claims/batches/{batch_id}` list history including rejections. Distinct from `app/demo`'s `POST /demo/upload`, which validates the already-cleaned/synthetic schema for demo purposes only — the two coexist, neither supersedes the other. **One honest limitation, not a shortfall against spec:** downstream Phase 3/5/7 results are read/written through each phase's existing shared, single-current-batch state (Phase 7's anomaly enrichment has no per-batch override at all), so an `IngestedBatch`'s `quality_result_id`/`anomaly_result_id`/`risk_result_id` are reliable only until a later batch's run supersedes that shared state — see `specs/017-batch-file-ingestion/tasks.md`'s Post-Implementation Findings for the full reasoning. `backend/app/ingestion/router.py` is real; `watcher.py` remains a deliberate placeholder (continuous ingestion stays out of scope).
 
 **Phase 18 — Frontend (deferred)** 🔲 Not started for real, but not a blank slate either — see Section 4.1's frontend reality-check: a UI scaffold + compiled mockup bundle exists with no source and no backend wiring. When implementation starts, it gets its own Dockerfile and is added to `docker-compose.yml` as a `frontend` service — same containerized-deployment pattern as the backend, confirmed by the user. **CORS is now resolved** (2026-08-19, commit `57ccb0f`): `CORSMiddleware` was added to `backend/app/main.py`, origins configurable via `cors_allowed_origins` in `backend/app/core/config.py` (defaults `http://localhost:5173`, `http://localhost:3000`) — a browser-based frontend dev server can now call the API without a preflight block.
 
@@ -393,21 +448,45 @@ Escalation path on significant drift: model review → retraining candidate → 
 
 ---
 
+## 5.1 Remaining / open work (v8 snapshot)
+
+Everything below is either still open from before v8 or newly opened by this edit. This list exists so a returning reader doesn't have to re-derive "what's left" from the phase-by-phase prose above — cross-check against Section 9 (the older condensed snapshot) if the two ever disagree, since Section 9 has not been fully re-synced to v8 yet (see its own note).
+
+**Carried over from before v8:**
+1. ~~**Spec 007 T028**~~ ✅ **Done** (2026-08-20). Full manual verification run end-to-end against a real live backend, real data — zero drift found. See Phase 7, Section 5, and item 8 below (now also resolved).
+2. ~~**Spec 017 (batch-file ingestion)**~~ ✅ **Done** (2026-08-20, 30/30 tasks). `POST /claims/upload` is real. See Phase 17 in Section 5 for the full description and its one documented limitation.
+3. **Docker end-to-end validation (Phase 19)** — `docker compose up --build` has never actually been run/tested for this project.
+4. **CI/CD, AWS deployment, model/data monitoring (Phases 20–22)** — deliberately deferred, not urgent.
+5. **Three overlapping status documents** (`MVP_CONTEXT.md`, `CODEBASE_AUDIT_REPORT.md`, `PROJECT_MASTER_DOCUMENT.md`) exist untracked/unreconciled in the repo — worth merging into one source of truth at some point so they stop drifting independently.
+
+**Newly opened by v8 (SLA + formula reconciliation):**
+6. **Phase 8b — SLA risk dataset construction** — not started. See Section 5.
+7. **Phase 9b — SLA risk model benchmark** — not started, blocked on Phase 8b. See Section 5.
+8. ~~**Anomaly benchmark reconciliation**~~ ✅ **Resolved** (2026-08-20, alongside spec 007 T028). The full IQR/HBOS/Isolation-Forest/LOF comparison was re-run for real; `iqr` (F1 0.1111) is the confirmed, currently-persisted production model, matching the `team AgentForge.pdf` slide 18 screenshot — the isolation_forest-only file was the stale one. Section 6 updated.
+9. **Priority formula reweighting confirmation** — Section 3.3 now folds `SLA Risk` in as a fifth Priority term (`0.35/0.25/0.20/0.10/0.10`) based on an explicit inference, not a direct instruction. Needs a sanity check against what was actually intended before backend code implements it — the alternative (SLA Risk as a feature inside the existing Risk classifier rather than its own Priority term) is a materially different implementation.
+10. **`SLA_Breach_Threshold` percentile** — defaulted to the 95th percentile (matching the existing HBOS convention) in Section 3.1. Not explicitly requested at that exact value; open to being moved once Phase 8b/9b produces real output to check it against.
+11. **Weight calibration** — explicitly *not* attempted in this edit. `wq/wa/wm` and all Priority weights (including the new SLA term) remain a manually-set rubric, documented as such (Section 3.3's provenance note) rather than fit to any labeled outcome. Left open as a distinct future decision, not something this edit silently resolved.
+12. **Frontend wiring completeness** — `Dashboard.tsx` is confirmed wired to the real `api.ts` service layer; `History.tsx`/`Investigation.tsx`/`Simulator.tsx` import `api.ts` but haven't been section-by-section confirmed as fully live vs. partially still mocked.
+13. **PayerC.ipynb** — confirmed *not* a feature-selection notebook; it only reaches a basic (unweighted, less rigorous than the already-implemented Phase 3) Great Expectations data-quality score. No action taken on it in this edit; still open whether to build a real feature-selection notebook mirroring Phase 6, or leave the notebook as an informal exploratory artifact outside the spec chain.
+
+---
+
 ## 6. Final ML stack (target, pending benchmark confirmation)
 
 | Problem | Method | Status |
 |---|---|---|
 | Data quality | Great Expectations | Deterministic, always on |
 | Anomaly baseline | IQR / percentile | Benchmark baseline |
-| Anomaly candidate | Isolation Forest | Benchmarked |
-| Anomaly candidate | LOF | Benchmarked |
-| **Anomaly production** | **HBOS (pending benchmark)** | Selected only if validated on this data |
+| Anomaly candidate | Isolation Forest | Benchmarked — F1 0.1072 in the confirmed 2026-08-20 run, did not win |
+| Anomaly candidate | LOF | Benchmarked — F1 0.1072, tied with Isolation Forest, did not win |
+| **Anomaly production** | **`iqr` — confirmed by a real, complete 4-model run (2026-08-20, spec 007 T028)** | F1 0.1111 (precision 1.0, recall 0.0588, FPR 0.0), beats HBOS (F1 0.0), Isolation Forest, and LOF on the real data — not the originally-expected HBOS; constitution Principle I governs, the benchmark decides |
 | Risk baseline | Logistic Regression | Benchmarked |
 | Risk candidate | Random Forest | Benchmarked |
 | **Risk production** | **XGBoost (pending benchmark)** | Selected only if validated on this data; target is investigation-risk, not SLA-breach (Section 2.4) |
+| **SLA risk (added v8)** | **Logistic Regression / Random Forest / XGBoost (pending Phase 8b/9b)** | Separate benchmark, separate target (`SLA_Breach`, Section 2.4.1/3.1) — not built yet |
 | Root cause / recommendation | **Mistral** (replaces Gemini) | Investigation only, no execution |
 
-No model is hard-selected in advance. Selection happens after Phases 7 and 9 run on the real `inpatient.csv`-derived datasets.
+No model is hard-selected in advance. Selection happens after Phases 7, 9, and (as of v8) 9b run on the real `inpatient.csv`-derived datasets.
 
 ---
 
@@ -475,9 +554,39 @@ This section records what changed from the first version of this document and wh
 30. **Page-by-page real-data mapping recorded for all 8 routes**, including two mismatches worth remembering: the Investigation page's Root Cause tab is real Mistral output but the Audit Trail tab on the same page is unrelated to Mistral (it's the system action log); and the frontend's "History" page and the backend's real audit/history module are different concepts that happen to share a name (batch-upload summaries vs. a general per-entity action log) — resolving that naming collision is still an open task, not yet decided.
 31. **Frontend source relocated from a separately-connected folder into this repo**, overwriting the placeholder scaffold that used to be at `frontend/`. `frontend/node_modules` and `frontend/dist` are stale leftovers from the old placeholder and need a clean `npm install` + rebuild before use; the original separate folder is now redundant and safe to remove once the merge is confirmed.
 
+**v8 (2026-08-20) — SLA reintroduced against `team AgentForge.pdf`'s original pitch; PPT-vs-doc formula reconciliation; anomaly-benchmark discrepancy flagged:**
+32. **SLA un-retired via an explicit, honestly-scoped redefinition, not restored to its original meaning.** The PPT names "SLA risk" as a core output; Section 2.4's empirical finding (no real per-claim turnaround field exists) still holds. Two options were weighed (length-of-stay-based vs. batch-cutoff-cadence); the user chose batch-cutoff-cadence (`NCH_WKLY_PROC_DT − CLM_THRU_DT`), documented as measuring cadence against CMS's weekly batch, never real adjudication time. New Section 2.4.1.
+33. **SLA formulas added to Section 3.1**: `SLA_Delay`, `SLA_Breach_Threshold` (95th percentile, calibrated off the baseline, same convention as HBOS), `SLA_Breach` (0/1), `SLA_Risk_Score`.
+34. **Composite Data Quality Score bands added to Section 3.1** (90–100 Good / 75–89 Warning / 50–74 Poor / <50 Critical), sourced from `team AgentForge.pdf` slide 8 — this doc previously defined the composite score's computation but never banded the resulting number.
+35. **Volume deviation and Affected rate given explicit formulas in Section 3.1**, sourced from the PPT slide 10 — previously only described in prose (Phase 5/8), not stated as formulas. The PPT's third formula on that slide, `Processing delay = ProcessingTime − ArrivalTime`, was evaluated and **not** adopted — no such fields exist in this dataset; the SLA formula set supersedes it.
+36. **New Phase 8b/9b added to Section 5**: a fully separate SLA risk dataset (mirrors Phase 8's structure, different target) and a dedicated Logistic Regression/Random Forest/XGBoost benchmark trained on the `SLA_Breach` label (mirrors Phase 9, different target) — chosen explicitly over reusing the existing investigation-risk model's score under a new name, which would have measured the wrong thing and called it SLA.
+37. **Priority formula reweighted in Section 3.3** to `0.35×Severity + 0.25×Risk + 0.20×BusinessImpact + 0.10×SLARisk + 0.10×AffectedClaimsScore`, folding in the new SLA Risk signal as its own term. Flagged explicitly as an inference (SLA Risk deserves its own slot because it's now a genuine model output, matching the PPT's own architecture) rather than a directly-requested number — needs confirmation before backend implementation, since the alternative (SLA Risk as a Risk-classifier feature instead) is a different build.
+38. **Weight provenance documented honestly in Section 3.3.** Read the actual implementation (`backend/app/risk/scoring/weight_config.py`) rather than assuming: `wq/wa/wm` and every Priority weight are hardcoded literals, validated only for key-match and summing to 1.0 — never fit against data or calibrated against any labeled outcome. Previously described as "illustrative... to be revisited"; that revisiting still hasn't happened, so this version says so plainly instead of repeating the same soft hedge. No calibration was invented to fill the gap.
+39. **Anomaly benchmark discrepancy flagged, not silently resolved.** `data/reports/anomaly_benchmark_results.json` currently persists only `isolation_forest` (F1 0.714), not the four-model IQR/HBOS/Isolation-Forest/LOF comparison Phase 7 requires. A `team AgentForge.pdf` slide 18 screenshot shows a different, earlier result (`iqr` selected, F1 0.111) that disagrees with it. Neither number is written into Section 6 as final — both are marked unconfirmed pending a proper re-run. New note in Phase 7 (Section 5) and item 8 of the new Section 5.1.
+40. **`PayerC.ipynb` assessed, not modified.** Read all 36 cells: it is a Great Expectations-based data-quality-scoring prototype only (six checks, unweighted average) — it performs no feature selection, no feature engineering, no anomaly/risk modeling, and is less rigorous than the already-implemented Phase 3 (weighted PASS/WARNING/CRITICAL composite). A likely bug was noted (`pd.to_numeric(errors='coerce')` on `PRVDR_STATE_CD` silently NaNs non-numeric codes before range-checking them, undercounting invalid values) but not fixed, since the notebook sits outside the spec chain. No feature-selection notebook was built in this pass — left open in Section 5.1.
+41. **New Section 5.1 added** — a consolidated "what's actually left" list placed directly after the Phase 0–22 build order, separate from Section 9's older condensed snapshot (which has not been fully re-synced to v8 — cross-check both if they disagree, and treat 5.1 as more current on SLA/formula/anomaly-benchmark items specifically).
+
+**v9 (2026-08-20) — spec 017-batch-file-ingestion implemented, closing the ingestion gap; unrelated to v8's SLA work:**
+42. **`POST /claims/upload` built for real**, via `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement` (30/30 tasks). Validates a raw, pipe-delimited, 197-column extract against Phase 1's profiled schema before any pipeline stage runs, then drives Phase 2-12's existing services in order (cleaning → quality → features → anomaly enrichment → a new `risk.scoring.inference` scoring call → incident creation), reusing each phase's own functions rather than reimplementing any of them. See Phase 17, Section 5, and `specs/017-batch-file-ingestion/` for full detail.
+43. **New `ingested_batches` table and `IngestedBatch` tracking** — every upload, accepted or rejected, is its own row (unique `batch_id` per attempt, even for a repeated file) and gets one Phase 16 audit entry. `ingestion` was re-entered into `backend/app/audit/registry.py`'s `EXPECTED_AUDITED_MODULES` and `backend/app/audit/schemas.py`'s `PipelineStage` enum — both had carried an explicit "re-add once a real ingestion write path exists" comment since Phase 16 shipped, anticipating exactly this. The Phase 16 test that had asserted ingestion's *absence* was flipped, not just supplemented, to keep the reasoning trail visible.
+44. **One new file added outside `ingestion`, owned by `risk`**: `risk/scoring/inference.py`. No prior code scored a *new* window with the Phase 9-selected production model — only the demo module's own, separately-scoped `predict_risk` did. This fills that gap for real ingested data specifically, loading the persisted model artifact by its own recorded `feature_columns` rather than guessing column order.
+45. **One additive, backward-compatible signature change to already-shipped code**: `quality.scoring_service.run_validation` gained an optional `batch_path` parameter (defaulting to its exact prior behavior). Every other function this feature calls (`run_cleaning`, `compute_baseline_snapshot`, `compute_features`) already had an equivalent override; `run_validation` was the one gap.
+46. **Honest limitation documented, not hidden**: only the raw upload gets durable, batch-scoped storage. Downstream results (Phase 3 quality, Phase 7 anomaly enrichment) are read/written through each phase's existing *shared*, single-current-batch state, because Phase 7's enrichment has no per-batch override at all and this feature does not modify Phase 7. Consequence: `IngestedBatch.quality_result_id`/`anomaly_result_id`/`risk_result_id` are reliable only until a later batch's run supersedes that shared state — the same trade-off `app/demo/pipeline.py` already lives with, for the identical reason. `anomaly_result_id`/`risk_result_id` record "which model," not "which run," since neither has a persisted per-run id upstream to reference. Full reasoning: `specs/017-batch-file-ingestion/tasks.md`'s Post-Implementation Findings.
+47. **`app/demo`'s `POST /demo/upload` is unaffected and unrelated** — it validates the already-cleaned/synthetic schema for demo/simulator purposes; this feature validates the raw 197-column schema for real production ingestion. The two were deliberately kept separate rather than consolidated (research.md's first decision).
+48. **Two real bugs caught by the new test suite before being called done**: a rejection-path crash (`RejectionReasonCode(str)` conversion missing before calling `.value`), and a failure-status bug where `pipeline_runner` reported the stage that was *about to run* rather than the last one that actually completed — caught directly by `test_partial_failure_status.py` expecting `"cleaning"` and getting `"quality"`. Both fixed; full backend suite re-run afterward (442 passed / 3 skipped, up from 396 passed / 3 skipped before this pass — the difference includes both this feature's own 17 new tests and pre-existing demo-module tests this document's v6/v7 snapshot had not yet counted).
+49. **Note for whoever reads this next**: while implementing this feature, `MVP_CONTEXT.md` was found already at v8 with substantial SLA-related changes (Section 2.4.1, Phase 8b/9b, reweighted Priority formula) that this session had no prior visibility into — they were not reverted, questioned, or built upon; this pass is purely the ingestion spec closing out, additive to v8, not a response to it.
+
+**v10 (2026-08-20) — spec 007 T028 closed for real; v8's anomaly-benchmark discrepancy resolved by evidence, not by picking one of the two numbers:**
+50. **`specs/007-anomaly-detection-benchmark/quickstart.md`'s full manual verification run end-to-end against a real, live backend** (via FastAPI's `TestClient` against the actual `app.main:app`, real `init_db()`, real `data/raw/inpatient.csv` — not mocked, not simulated). Every one of the six documented steps was executed and checked against its contract: `POST /anomaly/benchmark` (200 OK, ~66s, all 4 models), the existing `test_leakage_isolation.py` (passed), the 5-injection-type check on `GET /anomaly/results` (all present), the selection-matches-F1 check (`iqr` selected, F1 0.1111, matches the best-scoring model exactly, no tie-break needed), `POST /anomaly/enrich-windows` run twice (2,928 windows enriched, zero `null`s, byte-identical output on the second run). **Zero contract/implementation drift found — nothing needed fixing**, closing T028 as 29/29.
+51. **v8's anomaly-benchmark discrepancy resolved by running the benchmark for real, not by declaring one of the two prior numbers correct.** The stale `isolation_forest`-only file (F1 0.714) v8 found on disk is now superseded by a complete, real four-model run: `iqr` wins with F1 0.1111 — an exact match to the `team AgentForge.pdf` slide 18 screenshot v8 had flagged as conflicting. The screenshot was right; the stale file was wrong. `hbos` (Section 6's prior "expected" production model) scored F1 0.0 in this real run and did not win — constitution Principle I ("the benchmark result governs, not the plan") applies directly. Section 6, Phase 7 (Section 5), and Section 5.1 items 1/8 updated to match.
+52. **Full backend suite re-run after the live benchmark/enrichment run** (which overwrites real persisted report files by design — that is what T028 asked for) confirmed no regressions: `tests/anomaly/`, `tests/features/`, and the full suite all still pass.
+53. **Scope note**: this pass only closed spec 007's T028 and its directly-linked v8 flag (anomaly-benchmark reconciliation, Section 5.1 item 8). It did not touch Section 5.1 items 6/7/9/10/11 (SLA dataset/model/weight items) or item 5 (the three-document reconciliation) — those remain open exactly as v8/v9 left them.
+
 ## 9. MVP status snapshot & completion plan (shareable handoff doc)
 
 **Purpose of this section:** everything above (Sections 1–8) is the full, detailed spec history. This section is a self-contained condensed version — if you hand *only this section* to another person or LLM, they should know what the project is, what data it uses, the architecture, what's actually done vs. still open, and a concrete task list to close out the MVP. No implementation should start from this section alone without reading Sections 3.1/3.2/3.3 (the exact formulas) and the relevant spec's `data-model.md`/`contracts/api.md` first — this is an orientation doc, not a replacement for the specs.
+
+**v8 note:** this section (9.1–9.5) predates the v8 SLA/formula-reconciliation edit and has not been fully rewritten to match — treat **Section 5.1** as the current "what's left" list, and this section's SLA/anomaly-benchmark statements below (9.3, 9.4) as superseded where they conflict with Sections 2.4.1, 3.1, 3.3, and 5.1.
 
 ### 9.1 What is the project
 
@@ -500,7 +609,7 @@ PayerGuard is a healthcare claims quality and risk monitoring system. It ingests
 
 In scope, per Section 4: the full pipeline above end-to-end on `inpatient.csv` only — profiling → cleaning → GX quality scoring → historical baseline → feature engineering/selection → anomaly benchmark+scoring → risk dataset+benchmark+scoring → severity/business-impact/priority → LLM investigation → incident management/HITL → constrained remediation → revalidation → audit trail. Manual + repeated-batch file ingestion (not live streaming). Backend containerized with Docker Compose. Repo/speckit scaffolding.
 
-Explicitly out of scope for this MVP pass: live claims-stream ingestion (any socket/streaming API), a finished frontend, CI/CD, cloud deployment, a second dataset, and any SLA-breach-timing model (the data doesn't support one — Section 2.4).
+Explicitly out of scope for this MVP pass: live claims-stream ingestion (any socket/streaming API), a finished frontend, CI/CD, cloud deployment, a second dataset. SLA modeling is back in scope as of v8 (batch-cutoff-cadence proxy, Section 2.4.1/3.1) — superseding the line that used to be here; see Section 5.1 item 6/7 for what's actually built vs. still open on it.
 
 ### 9.4 Current implementation status (as of 2026-08-18)
 
@@ -512,7 +621,7 @@ Explicitly out of scope for this MVP pass: live claims-stream ingestion (any soc
 | 004-historical-baseline | 4 | ✅ 25/25 |
 | 005-feature-engineering | 5 | ✅ 30/30 |
 | 006-feature-selection | 6 | ✅ 20/20 |
-| 007-anomaly-detection-benchmark | 7 | ⚠️ 28/29 — **T028 open** (manual quickstart verification against a running backend) |
+| 007-anomaly-detection-benchmark | 7 | ✅ 29/29 — T028 closed 2026-08-20, verified end-to-end against a real backend, zero drift; production model confirmed `iqr` |
 | 008-risk-dataset-construction | 8 | ✅ 24/24 |
 | 009-risk-model-benchmark | 9 | ✅ 23/23 |
 | 010-severity-impact-priority-scoring | 10 | ✅ 19/19 |
@@ -523,27 +632,27 @@ Explicitly out of scope for this MVP pass: live claims-stream ingestion (any soc
 | 015-testing-suite | 15 | ✅ 19/19 — see `docs/testing/phase15_coverage_map.md`; 3 Ingestion scenarios are `limitation_documented`, not tested (retired pipeline) |
 | 016-audit-history | 16 | ✅ 31/31 — `/history` + `/audit/baseline`; audit-source registry covers 10 modules (`ingestion` excluded, phase retired) |
 | *(015-continuous-ingestion)* | *(retired)* | Deleted — live pipeline out of scope |
-| 017-batch-file-ingestion | 17 | 🔲 Spec created 2026-08-19, scoped explicitly as manual + repeated-batch upload only (not live streaming). `spec.md` generation was interrupted mid-run — still template scaffolding, no real content yet. Plan/tasks/implementation not started. |
+| 017-batch-file-ingestion | 17 | ✅ 30/30 — `POST /claims/upload` real; see Phase 17 in Section 5 |
 | Frontend | 18 | 🔲 Real source now at `frontend/` (merged from a separately-developed codebase, 2026-08-19) — 8 pages, real components, zero API integration, several concepts requiring exemption (SLA, EDI/NPI/NCCI — see Section 4.1). CORS is no longer a blocker (commit `57ccb0f`). |
 | Dockerization/CI-CD/AWS/Monitoring | 19–22 | 🔲 Not started — deliberately deferred until the backend pipeline is functionally complete |
 
-**All 16 active specs complete, 1 of them with a single open manual task (007's T028, which needs a running backend).** The backend pipeline (Phases 1-16) is functionally done and CORS-enabled for a browser frontend. The backend test suite runs 396 passed / 3 skipped (the 3 skips are a deliberate hand-off between two complementary HITL state-machine tests, not gaps). Frontend is still visually designed but zero real implementation; ingestion has a spec number reserved (017) but no content yet.
+**All 17 active specs complete, one of them (007) with a single open manual task (T028, which needs a running backend).** The backend pipeline (Phases 1-17) is functionally done and CORS-enabled for a browser frontend. The backend test suite runs 442 passed / 3 skipped as of spec 017's completion (the 3 skips remain the same deliberate HITL state-machine hand-off, not new gaps). Frontend is still visually designed but zero real implementation confirmed beyond `Dashboard.tsx` (see Section 5.1 item 12, a v8 finding this pass did not investigate further).
 
 ### 9.5 High-level tasks to finish by tomorrow (for review before any building starts)
 
 This is a priority-ordered task list, not a promise every item fits in one day — use it to decide what actually gets attempted. Nothing here should be built until reviewed and approved.
 
-1. **Close out spec 007.** Run T028 (`specs/007-anomaly-detection-benchmark/quickstart.md`'s manual end-to-end verification) against a real running backend; fix any drift found. Still open — it needs a running backend with real dependencies, which the planning environment can't provide.
-2. **Ingestion gap — in progress, not yet resolved.** Spec `017-batch-file-ingestion` was created 2026-08-19, correctly scoped (manual + repeated-batch upload only, explicitly not live streaming, not a claims simulator) — but generation was interrupted right after `spec.md` was created from the template, before real content was written. Needs `/speckit.specify` re-run/resumed, then `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`. `backend/app/ingestion/router.py` is still the original placeholder.
+1. ~~**Close out spec 007.**~~ ✅ **Done** (2026-08-20). T028 run end-to-end against a real backend; zero drift found, nothing needed fixing.
+2. ~~**Ingestion gap**~~ ✅ **Done** (2026-08-20). Spec `017-batch-file-ingestion` ran through `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`, 30/30 tasks. `backend/app/ingestion/router.py` is real. See Phase 17, Section 5.
 3. ~~**Implement spec 013 (remediation engine)**~~ ✅ **Done** — 33/33 tasks. Deterministic-only handlers (duplicate flagging, approved imputation, approved status mapping); anything unmapped becomes "Manual Action Required."
 4. ~~**Plan/tasks/implement spec 014 (revalidation)**~~ ✅ **Done** — 26/26 tasks. Re-runs GX + anomaly + risk on affected claims post-remediation, honest before/after comparison (deltas are never clamped to look favourable), Resolved/Reopened status.
 5. ~~**Plan/tasks/implement spec 015 (testing suite)**~~ ✅ **Done** — 19/19 tasks. Two scope conflicts were found and resolved rather than papered over: the Ingestion category's three scenarios are recorded as `limitation_documented` (the pipeline they test was retired with the old Phase 15), and the reject→feedback→recalculate→re-review round-trip is cited to Phase 12's existing test rather than duplicated. Coverage is tracked in `docs/testing/phase15_coverage_map.md`.
 6. ~~**Plan/tasks/implement spec 016 (audit & history)**~~ ✅ **Done** — 31/31 tasks. Full audit log across ten pipeline-stage modules, `/history` with pagination/filtering and deterministic ordering, `/audit/baseline` pass-through, and an executable registry-completeness check. Its FR-001 previously required aggregating a `Phase 15 IngestedBatch` record; that record type died with the retired ingestion phase and was dropped from the requirement.
 7. ~~**Add CORS support**~~ ✅ **Done** (2026-08-19, commit `57ccb0f`) — `CORSMiddleware` in `backend/app/main.py`, origins configurable via `cors_allowed_origins`. No longer blocks a browser-based frontend dev server.
-8. **Finish spec 017 (batch-file ingestion)** — spec created but interrupted before real content was written; resume `/speckit.specify`, then plan/tasks/implement. See item 2.
+8. ~~**Finish spec 017 (batch-file ingestion)**~~ ✅ **Done.** See item 2.
 9. **Decide on the frontend's fate before doing anything with it**: the existing `frontend/` folder is a mockup, not a partial implementation (Section 4.1). Decide whether to rebuild it from scratch against real endpoints (reusing its route list and Tailwind theme only), and resolve the `/stream` route conflict with the continuous-ingestion removal, before any frontend coding starts.
 10. **Only after the above are functionally complete locally (no Docker):** validate `docker compose up --build` actually works end-to-end (Phase 19) — this has never been build-tested in this project so far.
 
-**Remaining work now that Phases 1-16 are complete and CORS is resolved:** 007's T028 manual verification (needs a running backend), finishing spec 017 (ingestion), the frontend rebuild decision, then the deferred Phases 19-22 (Docker validation, CI/CD, AWS, monitoring).
+**Remaining work now that Phases 1-17 are complete, CORS is resolved, and 007's T028 is closed:** the frontend rebuild decision, then the deferred Phases 19-22 (Docker validation, CI/CD, AWS, monitoring) — plus everything the v8 SLA reintroduction opened (Section 5.1 items 6-11).
 
 **Revisit after this MVP pass (do not pull forward without a separate decision):** CI/CD pipeline, AWS deployment, a second CMS dataset (outpatient/carrier/DME), model/data monitoring + retraining loop, and a real frontend build. All are already marked deferred in Section 4/5 — listed here again because they're the items most likely to get scope-crept into "the MVP" if this snapshot is shared without the rest of the document.

@@ -1,0 +1,62 @@
+[
+  {
+    "batch": 1,
+    "file": "batch_01_2015-02-25_2016-11-27.csv",
+    "date_from": "2015-02-25",
+    "date_to": "2016-11-27",
+    "rows": 8481,
+    "claims": 3477,
+    "beneficiaries": 1846,
+    "clm_pmt_amt_sum": 61633975.36
+  },
+  {
+    "batch": 2,
+    "file": "batch_02_2016-11-28_2018-06-02.csv",
+    "date_from": "2016-11-28",
+    "date_to": "2018-06-02",
+    "rows": 8659,
+    "claims": 3478,
+    "beneficiaries": 1806,
+    "clm_pmt_amt_sum": 58006009.64
+  },
+  {
+    "batch": 3,
+    "file": "batch_03_2018-06-03_2019-10-11.csv",
+    "date_from": "2018-06-03",
+    "date_to": "2019-10-11",
+    "rows": 9057,
+    "claims": 3473,
+    "beneficiaries": 1800,
+    "clm_pmt_amt_sum": 68722703.74000001
+  },
+  {
+    "batch": 4,
+    "file": "batch_04_2019-10-12_2021-01-17.csv",
+    "date_from": "2019-10-12",
+    "date_to": "2021-01-17",
+    "rows": 10803,
+    "claims": 3477,
+    "beneficiaries": 1834,
+    "clm_pmt_amt_sum": 178898671.26999998
+  },
+  {
+    "batch": 5,
+    "file": "batch_05_2021-01-18_2022-03-10.csv",
+    "date_from": "2021-01-18",
+    "date_to": "2022-03-10",
+    "rows": 10283,
+    "claims": 3481,
+    "beneficiaries": 1794,
+    "clm_pmt_amt_sum": 160180031.45
+  },
+  {
+    "batch": 6,
+    "file": "batch_06_2022-03-11_2023-03-02.csv",
+    "date_from": "2022-03-11",
+    "date_to": "2023-03-02",
+    "rows": 10783,
+    "claims": 3481,
+    "beneficiaries": 1713,
+    "clm_pmt_amt_sum": 264480585.39999998
+  }
+]

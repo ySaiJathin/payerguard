@@ -1,6 +1,6 @@
 {
-  "source_file": "D:\\CODIN\\payerguard\\data\\raw\\inpatient.csv",
-  "generated_at": "2026-08-18T08:37:37.325237Z",
+  "source_file": "D:\\CODIN\\payerguard\\payerguard\\data\\raw\\inpatient.csv",
+  "generated_at": "2026-08-19T04:44:47.301793Z",
   "total_rows": 58066,
   "total_columns": 197,
   "unique_claim_count": 20867,
@@ -77,11 +77,11 @@
           "count": 46
         },
         {
-          "value": "-10000930521375",
+          "value": "-10000930487748",
           "count": 34
         },
         {
-          "value": "-10000930487748",
+          "value": "-10000930521375",
           "count": 34
         },
         {
@@ -120,7 +120,7 @@
     {
       "column_name": "NCH_NEAR_LINE_REC_IDENT_CD",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -156,7 +156,7 @@
     {
       "column_name": "CLM_FROM_DT",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 2914,
@@ -169,7 +169,7 @@
     {
       "column_name": "CLM_THRU_DT",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 2910,
@@ -182,7 +182,7 @@
     {
       "column_name": "NCH_WKLY_PROC_DT",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 417,
@@ -226,7 +226,7 @@
     {
       "column_name": "PRVDR_NUM",
       "category": "identifier",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 2841,
       "missing_pct": 4.892708297454621,
       "cardinality": 4876,
@@ -347,7 +347,7 @@
     {
       "column_name": "CLM_MDCR_NON_PMT_RSN_CD",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -370,7 +370,7 @@
       "missing_pct": 0.0,
       "cardinality": 10341,
       "numeric_stats": {
-        "mean": 13638.307733613474,
+        "mean": 13638.307733613472,
         "median": 1481.7150000000001,
         "std": 35993.90777966173,
         "min": 62.44,
@@ -413,7 +413,7 @@
     {
       "column_name": "NCH_PRMRY_PYR_CD",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -552,7 +552,7 @@
     {
       "column_name": "AT_PHYSN_UPIN",
       "category": "identifier",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -624,7 +624,7 @@
     {
       "column_name": "OP_PHYSN_UPIN",
       "category": "identifier",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -758,7 +758,7 @@
     {
       "column_name": "CLM_PPS_IND_CD",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -781,7 +781,7 @@
       "missing_pct": 0.0,
       "cardinality": 10341,
       "numeric_stats": {
-        "mean": 13638.307733613474,
+        "mean": 13638.307733613472,
         "median": 1481.7150000000001,
         "std": 35993.90777966173,
         "min": 62.44,
@@ -800,7 +800,7 @@
     {
       "column_name": "CLM_ADMSN_DT",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 2914,
@@ -869,7 +869,7 @@
     {
       "column_name": "NCH_PTNT_STATUS_IND_CD",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -918,7 +918,7 @@
       "numeric_stats": {
         "mean": 9.590875555402473,
         "median": 0.0,
-        "std": 84.71334545719272,
+        "std": 84.71334545719273,
         "min": 0.0,
         "max": 1644.0,
         "p25": 0.0,
@@ -940,9 +940,9 @@
       "missing_pct": 0.0,
       "cardinality": 8032,
       "numeric_stats": {
-        "mean": 1894.9540321358456,
+        "mean": 1894.9540321358454,
         "median": 228.01,
-        "std": 6138.646528541673,
+        "std": 6138.6465285416725,
         "min": 0.0,
         "max": 119743.4,
         "p25": 0.0,
@@ -1014,7 +1014,7 @@
       "numeric_stats": {
         "mean": 1695.810203389247,
         "median": 0.0,
-        "std": 12396.736167847776,
+        "std": 12396.736167847777,
         "min": 0.0,
         "max": 246764.71,
         "p25": 0.0,
@@ -1038,7 +1038,7 @@
       "numeric_stats": {
         "mean": 1695.810203389247,
         "median": 0.0,
-        "std": 12396.736167847776,
+        "std": 12396.736167847777,
         "min": 0.0,
         "max": 246764.71,
         "p25": 0.0,
@@ -1248,7 +1248,7 @@
       "numeric_stats": {
         "mean": 1.700272104157338,
         "median": 0.0,
-        "std": 4.0024997263281525,
+        "std": 4.002499726328153,
         "min": 0.0,
         "max": 104.0,
         "p25": 0.0,
@@ -1272,7 +1272,7 @@
       "numeric_stats": {
         "mean": 0.0016532910825612234,
         "median": 0.0,
-        "std": 0.2592918468549491,
+        "std": 0.25929184685494905,
         "min": 0.0,
         "max": 44.0,
         "p25": 0.0,
@@ -1413,7 +1413,7 @@
     {
       "column_name": "NCH_BENE_DSCHRG_DT",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 2910,
@@ -1524,7 +1524,7 @@
     {
       "column_name": "ADMTG_DGNS_CD",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 41938,
       "missing_pct": 72.22470981297144,
       "cardinality": 65,
@@ -1578,7 +1578,7 @@
     {
       "column_name": "PRNCPAL_DGNS_CD",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 190,
@@ -1632,7 +1632,7 @@
     {
       "column_name": "ICD_DGNS_CD1",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 231,
@@ -1686,7 +1686,7 @@
     {
       "column_name": "CLM_POA_IND_SW1",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 2,
@@ -1708,7 +1708,7 @@
     {
       "column_name": "ICD_DGNS_CD2",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57,
       "missing_pct": 0.09816415802707264,
       "cardinality": 242,
@@ -1762,7 +1762,7 @@
     {
       "column_name": "CLM_POA_IND_SW2",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57,
       "missing_pct": 0.09816415802707264,
       "cardinality": 2,
@@ -1784,7 +1784,7 @@
     {
       "column_name": "ICD_DGNS_CD3",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 268,
       "missing_pct": 0.4615437605483415,
       "cardinality": 238,
@@ -1838,7 +1838,7 @@
     {
       "column_name": "CLM_POA_IND_SW3",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 268,
       "missing_pct": 0.4615437605483415,
       "cardinality": 2,
@@ -1860,7 +1860,7 @@
     {
       "column_name": "ICD_DGNS_CD4",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 642,
       "missing_pct": 1.1056384114628182,
       "cardinality": 223,
@@ -1914,7 +1914,7 @@
     {
       "column_name": "CLM_POA_IND_SW4",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 642,
       "missing_pct": 1.1056384114628182,
       "cardinality": 2,
@@ -1936,7 +1936,7 @@
     {
       "column_name": "ICD_DGNS_CD5",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 1099,
       "missing_pct": 1.8926738538904007,
       "cardinality": 218,
@@ -1990,7 +1990,7 @@
     {
       "column_name": "CLM_POA_IND_SW5",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 1099,
       "missing_pct": 1.8926738538904007,
       "cardinality": 2,
@@ -2012,7 +2012,7 @@
     {
       "column_name": "ICD_DGNS_CD6",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 1592,
       "missing_pct": 2.741707711914029,
       "cardinality": 204,
@@ -2066,7 +2066,7 @@
     {
       "column_name": "CLM_POA_IND_SW6",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 1592,
       "missing_pct": 2.741707711914029,
       "cardinality": 2,
@@ -2088,7 +2088,7 @@
     {
       "column_name": "ICD_DGNS_CD7",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 2282,
       "missing_pct": 3.9300106775049084,
       "cardinality": 210,
@@ -2142,7 +2142,7 @@
     {
       "column_name": "CLM_POA_IND_SW7",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 2282,
       "missing_pct": 3.9300106775049084,
       "cardinality": 2,
@@ -2164,7 +2164,7 @@
     {
       "column_name": "ICD_DGNS_CD8",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 3112,
       "missing_pct": 5.359418592635966,
       "cardinality": 204,
@@ -2218,7 +2218,7 @@
     {
       "column_name": "CLM_POA_IND_SW8",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 3112,
       "missing_pct": 5.359418592635966,
       "cardinality": 2,
@@ -2240,7 +2240,7 @@
     {
       "column_name": "ICD_DGNS_CD9",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 4476,
       "missing_pct": 7.708469672441705,
       "cardinality": 202,
@@ -2294,7 +2294,7 @@
     {
       "column_name": "CLM_POA_IND_SW9",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 4476,
       "missing_pct": 7.708469672441705,
       "cardinality": 2,
@@ -2316,7 +2316,7 @@
     {
       "column_name": "ICD_DGNS_CD10",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 6135,
       "missing_pct": 10.56556332449282,
       "cardinality": 196,
@@ -2370,7 +2370,7 @@
     {
       "column_name": "CLM_POA_IND_SW10",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 6135,
       "missing_pct": 10.56556332449282,
       "cardinality": 2,
@@ -2392,7 +2392,7 @@
     {
       "column_name": "ICD_DGNS_CD11",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 8000,
       "missing_pct": 13.777425688010196,
       "cardinality": 190,
@@ -2446,7 +2446,7 @@
     {
       "column_name": "CLM_POA_IND_SW11",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 8000,
       "missing_pct": 13.777425688010196,
       "cardinality": 2,
@@ -2468,7 +2468,7 @@
     {
       "column_name": "ICD_DGNS_CD12",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 10186,
       "missing_pct": 17.542107257258984,
       "cardinality": 179,
@@ -2522,7 +2522,7 @@
     {
       "column_name": "CLM_POA_IND_SW12",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 10186,
       "missing_pct": 17.542107257258984,
       "cardinality": 2,
@@ -2544,7 +2544,7 @@
     {
       "column_name": "ICD_DGNS_CD13",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 12576,
       "missing_pct": 21.65811318155203,
       "cardinality": 171,
@@ -2598,7 +2598,7 @@
     {
       "column_name": "CLM_POA_IND_SW13",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 12576,
       "missing_pct": 21.65811318155203,
       "cardinality": 2,
@@ -2620,7 +2620,7 @@
     {
       "column_name": "ICD_DGNS_CD14",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 15201,
       "missing_pct": 26.178830985430373,
       "cardinality": 170,
@@ -2674,7 +2674,7 @@
     {
       "column_name": "CLM_POA_IND_SW14",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 15201,
       "missing_pct": 26.178830985430373,
       "cardinality": 2,
@@ -2696,7 +2696,7 @@
     {
       "column_name": "ICD_DGNS_CD15",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 17819,
       "missing_pct": 30.687493541831707,
       "cardinality": 165,
@@ -2750,7 +2750,7 @@
     {
       "column_name": "CLM_POA_IND_SW15",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 17819,
       "missing_pct": 30.687493541831707,
       "cardinality": 2,
@@ -2772,7 +2772,7 @@
     {
       "column_name": "ICD_DGNS_CD16",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 20922,
       "missing_pct": 36.031412530568666,
       "cardinality": 157,
@@ -2826,7 +2826,7 @@
     {
       "column_name": "CLM_POA_IND_SW16",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 20922,
       "missing_pct": 36.031412530568666,
       "cardinality": 2,
@@ -2848,7 +2848,7 @@
     {
       "column_name": "ICD_DGNS_CD17",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 24225,
       "missing_pct": 41.71976716150587,
       "cardinality": 154,
@@ -2902,7 +2902,7 @@
     {
       "column_name": "CLM_POA_IND_SW17",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 24225,
       "missing_pct": 41.71976716150587,
       "cardinality": 2,
@@ -2924,7 +2924,7 @@
     {
       "column_name": "ICD_DGNS_CD18",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 27384,
       "missing_pct": 47.1601281300589,
       "cardinality": 140,
@@ -2978,7 +2978,7 @@
     {
       "column_name": "CLM_POA_IND_SW18",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 27384,
       "missing_pct": 47.1601281300589,
       "cardinality": 2,
@@ -3000,7 +3000,7 @@
     {
       "column_name": "ICD_DGNS_CD19",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 30316,
       "missing_pct": 52.20955464471464,
       "cardinality": 132,
@@ -3054,7 +3054,7 @@
     {
       "column_name": "CLM_POA_IND_SW19",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 30316,
       "missing_pct": 52.20955464471464,
       "cardinality": 2,
@@ -3076,7 +3076,7 @@
     {
       "column_name": "ICD_DGNS_CD20",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 33503,
       "missing_pct": 57.6981366031757,
       "cardinality": 133,
@@ -3130,7 +3130,7 @@
     {
       "column_name": "CLM_POA_IND_SW20",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 33503,
       "missing_pct": 57.6981366031757,
       "cardinality": 2,
@@ -3152,7 +3152,7 @@
     {
       "column_name": "ICD_DGNS_CD21",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 36443,
       "missing_pct": 62.76134054351944,
       "cardinality": 129,
@@ -3206,7 +3206,7 @@
     {
       "column_name": "CLM_POA_IND_SW21",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 36443,
       "missing_pct": 62.76134054351944,
       "cardinality": 2,
@@ -3228,7 +3228,7 @@
     {
       "column_name": "ICD_DGNS_CD22",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 39841,
       "missing_pct": 68.61330210450177,
       "cardinality": 116,
@@ -3282,7 +3282,7 @@
     {
       "column_name": "CLM_POA_IND_SW22",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 39841,
       "missing_pct": 68.61330210450177,
       "cardinality": 2,
@@ -3304,7 +3304,7 @@
     {
       "column_name": "ICD_DGNS_CD23",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 43436,
       "missing_pct": 74.80453277305136,
       "cardinality": 106,
@@ -3358,7 +3358,7 @@
     {
       "column_name": "CLM_POA_IND_SW23",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 43436,
       "missing_pct": 74.80453277305136,
       "cardinality": 2,
@@ -3380,7 +3380,7 @@
     {
       "column_name": "ICD_DGNS_CD24",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 46384,
       "missing_pct": 79.88151413908311,
       "cardinality": 103,
@@ -3434,7 +3434,7 @@
     {
       "column_name": "CLM_POA_IND_SW24",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 46384,
       "missing_pct": 79.88151413908311,
       "cardinality": 2,
@@ -3456,7 +3456,7 @@
     {
       "column_name": "ICD_DGNS_CD25",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 48762,
       "missing_pct": 83.97685392484414,
       "cardinality": 92,
@@ -3510,7 +3510,7 @@
     {
       "column_name": "CLM_POA_IND_SW25",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 48762,
       "missing_pct": 83.97685392484414,
       "cardinality": 2,
@@ -3532,7 +3532,7 @@
     {
       "column_name": "FST_DGNS_E_CD",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 12541,
       "missing_pct": 21.597836944166982,
       "cardinality": 137,
@@ -3586,7 +3586,7 @@
     {
       "column_name": "ICD_DGNS_E_CD1",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 12541,
       "missing_pct": 21.597836944166982,
       "cardinality": 126,
@@ -3640,7 +3640,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW1",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 12541,
       "missing_pct": 21.597836944166982,
       "cardinality": 2,
@@ -3662,7 +3662,7 @@
     {
       "column_name": "ICD_DGNS_E_CD2",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3680,7 +3680,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW2",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3698,7 +3698,7 @@
     {
       "column_name": "ICD_DGNS_E_CD3",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3716,7 +3716,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW3",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3734,7 +3734,7 @@
     {
       "column_name": "ICD_DGNS_E_CD4",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3752,7 +3752,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW4",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3770,7 +3770,7 @@
     {
       "column_name": "ICD_DGNS_E_CD5",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3788,7 +3788,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW5",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3806,7 +3806,7 @@
     {
       "column_name": "ICD_DGNS_E_CD6",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3824,7 +3824,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW6",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3842,7 +3842,7 @@
     {
       "column_name": "ICD_DGNS_E_CD7",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3860,7 +3860,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW7",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3878,7 +3878,7 @@
     {
       "column_name": "ICD_DGNS_E_CD8",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3896,7 +3896,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW8",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3914,7 +3914,7 @@
     {
       "column_name": "ICD_DGNS_E_CD9",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3932,7 +3932,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW9",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3950,7 +3950,7 @@
     {
       "column_name": "ICD_DGNS_E_CD10",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3968,7 +3968,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW10",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -3986,7 +3986,7 @@
     {
       "column_name": "ICD_DGNS_E_CD11",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -4004,7 +4004,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW11",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -4022,7 +4022,7 @@
     {
       "column_name": "ICD_DGNS_E_CD12",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -4040,7 +4040,7 @@
     {
       "column_name": "CLM_E_POA_IND_SW12",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 1,
@@ -4058,7 +4058,7 @@
     {
       "column_name": "ICD_PRCDR_CD1",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 9913,
       "missing_pct": 17.071952605655632,
       "cardinality": 114,
@@ -4112,7 +4112,7 @@
     {
       "column_name": "PRCDR_DT1",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 9913,
       "missing_pct": 17.071952605655632,
       "cardinality": 2824,
@@ -4125,7 +4125,7 @@
     {
       "column_name": "ICD_PRCDR_CD2",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 13007,
       "missing_pct": 22.400371990493575,
       "cardinality": 51,
@@ -4179,7 +4179,7 @@
     {
       "column_name": "PRCDR_DT2",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 13007,
       "missing_pct": 22.400371990493575,
       "cardinality": 2724,
@@ -4192,7 +4192,7 @@
     {
       "column_name": "ICD_PRCDR_CD3",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 18082,
       "missing_pct": 31.140426411325045,
       "cardinality": 53,
@@ -4246,7 +4246,7 @@
     {
       "column_name": "PRCDR_DT3",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 18082,
       "missing_pct": 31.140426411325045,
       "cardinality": 2530,
@@ -4259,7 +4259,7 @@
     {
       "column_name": "ICD_PRCDR_CD4",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 22375,
       "missing_pct": 38.533737471153515,
       "cardinality": 23,
@@ -4313,7 +4313,7 @@
     {
       "column_name": "PRCDR_DT4",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 22375,
       "missing_pct": 38.533737471153515,
       "cardinality": 2332,
@@ -4326,7 +4326,7 @@
     {
       "column_name": "ICD_PRCDR_CD5",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 26438,
       "missing_pct": 45.53094754245169,
       "cardinality": 16,
@@ -4380,7 +4380,7 @@
     {
       "column_name": "PRCDR_DT5",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 26438,
       "missing_pct": 45.53094754245169,
       "cardinality": 2167,
@@ -4393,7 +4393,7 @@
     {
       "column_name": "ICD_PRCDR_CD6",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 32607,
       "missing_pct": 56.155064926118555,
       "cardinality": 11,
@@ -4447,7 +4447,7 @@
     {
       "column_name": "PRCDR_DT6",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 32607,
       "missing_pct": 56.155064926118555,
       "cardinality": 1893,
@@ -4460,7 +4460,7 @@
     {
       "column_name": "ICD_PRCDR_CD7",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 39885,
       "missing_pct": 68.68907794578583,
       "cardinality": 11,
@@ -4514,7 +4514,7 @@
     {
       "column_name": "PRCDR_DT7",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 39885,
       "missing_pct": 68.68907794578583,
       "cardinality": 1404,
@@ -4527,7 +4527,7 @@
     {
       "column_name": "ICD_PRCDR_CD8",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 47366,
       "missing_pct": 81.57269314228637,
       "cardinality": 12,
@@ -4581,7 +4581,7 @@
     {
       "column_name": "PRCDR_DT8",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 47366,
       "missing_pct": 81.57269314228637,
       "cardinality": 829,
@@ -4594,7 +4594,7 @@
     {
       "column_name": "ICD_PRCDR_CD9",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 52393,
       "missing_pct": 90.23008300898977,
       "cardinality": 9,
@@ -4644,7 +4644,7 @@
     {
       "column_name": "PRCDR_DT9",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 52393,
       "missing_pct": 90.23008300898977,
       "cardinality": 366,
@@ -4657,7 +4657,7 @@
     {
       "column_name": "ICD_PRCDR_CD10",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 53929,
       "missing_pct": 92.87534874108772,
       "cardinality": 9,
@@ -4707,7 +4707,7 @@
     {
       "column_name": "PRCDR_DT10",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 53929,
       "missing_pct": 92.87534874108772,
       "cardinality": 237,
@@ -4720,7 +4720,7 @@
     {
       "column_name": "ICD_PRCDR_CD11",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 54398,
       "missing_pct": 93.68305032204732,
       "cardinality": 5,
@@ -4754,7 +4754,7 @@
     {
       "column_name": "PRCDR_DT11",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 54398,
       "missing_pct": 93.68305032204732,
       "cardinality": 205,
@@ -4767,7 +4767,7 @@
     {
       "column_name": "ICD_PRCDR_CD12",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 55172,
       "missing_pct": 95.01601625736231,
       "cardinality": 6,
@@ -4805,7 +4805,7 @@
     {
       "column_name": "PRCDR_DT12",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 55172,
       "missing_pct": 95.01601625736231,
       "cardinality": 157,
@@ -4818,7 +4818,7 @@
     {
       "column_name": "ICD_PRCDR_CD13",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 55623,
       "missing_pct": 95.7927186305239,
       "cardinality": 4,
@@ -4848,7 +4848,7 @@
     {
       "column_name": "PRCDR_DT13",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 55623,
       "missing_pct": 95.7927186305239,
       "cardinality": 130,
@@ -4861,7 +4861,7 @@
     {
       "column_name": "ICD_PRCDR_CD14",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 56074,
       "missing_pct": 96.56942100368546,
       "cardinality": 5,
@@ -4895,7 +4895,7 @@
     {
       "column_name": "PRCDR_DT14",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 56074,
       "missing_pct": 96.56942100368546,
       "cardinality": 103,
@@ -4908,7 +4908,7 @@
     {
       "column_name": "ICD_PRCDR_CD15",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 56556,
       "missing_pct": 97.39951090138807,
       "cardinality": 5,
@@ -4942,7 +4942,7 @@
     {
       "column_name": "PRCDR_DT15",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 56556,
       "missing_pct": 97.39951090138807,
       "cardinality": 78,
@@ -4955,7 +4955,7 @@
     {
       "column_name": "ICD_PRCDR_CD16",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57104,
       "missing_pct": 98.34326456101678,
       "cardinality": 4,
@@ -4985,7 +4985,7 @@
     {
       "column_name": "PRCDR_DT16",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57104,
       "missing_pct": 98.34326456101678,
       "cardinality": 48,
@@ -4998,7 +4998,7 @@
     {
       "column_name": "ICD_PRCDR_CD17",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57557,
       "missing_pct": 99.12341129060034,
       "cardinality": 4,
@@ -5028,7 +5028,7 @@
     {
       "column_name": "PRCDR_DT17",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57557,
       "missing_pct": 99.12341129060034,
       "cardinality": 21,
@@ -5041,7 +5041,7 @@
     {
       "column_name": "ICD_PRCDR_CD18",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57696,
       "missing_pct": 99.36279406192952,
       "cardinality": 4,
@@ -5071,7 +5071,7 @@
     {
       "column_name": "PRCDR_DT18",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57696,
       "missing_pct": 99.36279406192952,
       "cardinality": 15,
@@ -5084,7 +5084,7 @@
     {
       "column_name": "ICD_PRCDR_CD19",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57696,
       "missing_pct": 99.36279406192952,
       "cardinality": 4,
@@ -5114,7 +5114,7 @@
     {
       "column_name": "PRCDR_DT19",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57696,
       "missing_pct": 99.36279406192952,
       "cardinality": 15,
@@ -5127,7 +5127,7 @@
     {
       "column_name": "ICD_PRCDR_CD20",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57776,
       "missing_pct": 99.50056831880964,
       "cardinality": 4,
@@ -5157,7 +5157,7 @@
     {
       "column_name": "PRCDR_DT20",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57776,
       "missing_pct": 99.50056831880964,
       "cardinality": 11,
@@ -5170,7 +5170,7 @@
     {
       "column_name": "ICD_PRCDR_CD21",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57776,
       "missing_pct": 99.50056831880964,
       "cardinality": 4,
@@ -5200,7 +5200,7 @@
     {
       "column_name": "PRCDR_DT21",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57776,
       "missing_pct": 99.50056831880964,
       "cardinality": 11,
@@ -5213,7 +5213,7 @@
     {
       "column_name": "ICD_PRCDR_CD22",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57819,
       "missing_pct": 99.57462198188269,
       "cardinality": 4,
@@ -5243,7 +5243,7 @@
     {
       "column_name": "PRCDR_DT22",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57819,
       "missing_pct": 99.57462198188269,
       "cardinality": 9,
@@ -5256,7 +5256,7 @@
     {
       "column_name": "ICD_PRCDR_CD23",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57865,
       "missing_pct": 99.65384217958875,
       "cardinality": 4,
@@ -5286,7 +5286,7 @@
     {
       "column_name": "PRCDR_DT23",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57865,
       "missing_pct": 99.65384217958875,
       "cardinality": 7,
@@ -5299,7 +5299,7 @@
     {
       "column_name": "ICD_PRCDR_CD24",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57935,
       "missing_pct": 99.77439465435883,
       "cardinality": 3,
@@ -5325,7 +5325,7 @@
     {
       "column_name": "PRCDR_DT24",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57935,
       "missing_pct": 99.77439465435883,
       "cardinality": 5,
@@ -5338,7 +5338,7 @@
     {
       "column_name": "ICD_PRCDR_CD25",
       "category": "diagnosis_procedure_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57984,
       "missing_pct": 99.8587813866979,
       "cardinality": 2,
@@ -5360,7 +5360,7 @@
     {
       "column_name": "PRCDR_DT25",
       "category": "date",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 57984,
       "missing_pct": 99.8587813866979,
       "cardinality": 3,
@@ -5498,7 +5498,7 @@
     {
       "column_name": "HCPCS_CD",
       "category": "categorical_code",
-      "dtype_observed": "object",
+      "dtype_observed": "str",
       "missing_count": 0,
       "missing_pct": 0.0,
       "cardinality": 106,

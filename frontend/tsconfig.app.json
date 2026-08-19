@@ -27,10 +27,9 @@
   },
   "include": ["src"],
   /*
-   * The /stream and /simulator pages are paused pending a product decision,
-   * not cancelled -- see src/pages/index.ts. They depend on the deleted
-   * random-claim generator, so they are kept on disk but excluded from the
-   * build rather than left to break `tsc -b`.
+   * LiveMonitor (/stream) still depends on the deleted random-claim
+   * generator, so it stays out of the build. The Simulator page is now real
+   * and is compiled.
    */
-  "exclude": ["src/pages/LiveMonitor.tsx", "src/pages/Simulator.tsx"]
+  "exclude": ["src/pages/LiveMonitor.tsx"]
 }

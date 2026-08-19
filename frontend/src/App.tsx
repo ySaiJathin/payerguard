@@ -1,16 +1,23 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from './layouts/MainLayout';
-import { Dashboard, Upload, Incidents, Investigation, History, Settings } from './pages';
+import { Dashboard, Simulator, Investigation, History } from './pages';
 
 /**
- * `/stream` and `/simulator` are deliberately absent.
+ * Four routes, deliberately.
  *
- * Both were backed by `streamSimulatorService.generateRandomClaim()`, which
- * fabricated a new fake claim every few seconds -- exactly the "claims
- * simulator" the constitution names as out of scope. Their page files are kept
- * on disk (excluded from the build) because the decision to rebuild them
- * around real, already-computed data or cut them entirely is still open.
+ * `/settings` and `/incidents` were removed outright. Settings configured
+ * nothing the backend reads. The Incidents list duplicated what History now
+ * shows -- History is the single home for incident history across every run,
+ * and every "Investigate" action goes to `/investigation/:id`, which is where
+ * it always went.
+ *
+ * `/upload` was folded into `/simulator`: an uploaded file is another way to
+ * feed the same pipeline, so it belongs beside the batch runner rather than
+ * on a page of its own.
+ *
+ * Anything still pointing at a removed path lands on `/dashboard` via the
+ * catch-all rather than 404ing.
  */
 export function App() {
   return (
@@ -19,11 +26,9 @@ export function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="upload" element={<Upload />} />
-          <Route path="incidents" element={<Incidents />} />
-          <Route path="investigation/:id" element={<Investigation />} />
+          <Route path="simulator" element={<Simulator />} />
           <Route path="history" element={<History />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="investigation/:id" element={<Investigation />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Routes>

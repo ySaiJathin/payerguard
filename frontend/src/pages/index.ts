@@ -1,13 +1,13 @@
 export * from './Dashboard';
-export * from './Upload';
-export * from './Incidents';
+export * from './Simulator';
 export * from './Investigation';
 export * from './History';
-export * from './Settings';
 
-// `LiveMonitor` (/stream) and `Simulator` (/simulator) are intentionally not
-// exported. Both pages are driven by the client-side random-claim generator,
-// which the constitution rules out by name ("claims simulator"). The decision
-// to either rebuild them around real replayed data or drop them is paused, not
-// made -- so the files are kept on disk but excluded from the build (see
-// `tsconfig.app.json`) rather than deleted.
+// `Settings`, `Incidents` and `Upload` were deleted, not hidden: Settings
+// configured nothing the backend reads, the Incidents list is now History,
+// and upload lives on the Simulator page beside the batch runner.
+//
+// `LiveMonitor` (/stream) is still excluded from the build. It was driven by
+// the deleted client-side random-claim generator; the Simulator supersedes
+// what it was for, and the file is kept on disk pending deletion rather than
+// rewritten.
