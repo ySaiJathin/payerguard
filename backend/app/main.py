@@ -8,10 +8,12 @@ module only includes them.
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.anomaly.router import router as anomaly_router
 from app.audit.router import router as audit_router
 from app.baseline.router import router as baseline_router
+from app.core.config import get_settings
 from app.core.database import init_db
 from app.data_engineering.router import router as data_engineering_router
 from app.features.router import router as features_router
@@ -37,6 +39,17 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="PayerGuard", lifespan=lifespan)
+
+# Browser clients (Vite dev server, Dockerized frontend) run on a different
+# origin than the API, so requests are preflighted. Origins come from config,
+# never hardcoded here (constitution Principle II).
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=get_settings().cors_allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 for r in (
     data_engineering_router,

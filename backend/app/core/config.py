@@ -22,6 +22,11 @@ class Settings(BaseSettings):
     environment: str = "development"
     log_level: str = "INFO"
 
+    # --- CORS ---
+    # Browser origins allowed to call this API. Defaults cover the Vite dev
+    # server and the eventual Dockerized frontend port.
+    cors_allowed_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+
     # --- Ingestion ---
     ingestion_watch_dir: str = "./data/raw"
 
