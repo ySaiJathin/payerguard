@@ -49,6 +49,7 @@ build/
 # tracked spec chain, kept locally only.
 CODEBASE_AUDIT_REPORT.md
 MVP_CONTEXT.md
+PROJECT_MASTER_DOCUMENT.md
 _to_delete/
 frontend.zip
 git-copilot-summary.md
