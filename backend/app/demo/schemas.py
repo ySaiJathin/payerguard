@@ -13,6 +13,7 @@ from enum import Enum
 from pydantic import BaseModel, Field
 
 from app.anomaly.schemas import InjectionType
+from app.llm.schemas import LLMInvestigation
 
 __all__ = [
     "InjectionType",
@@ -179,6 +180,13 @@ class PipelineRunResult(BaseModel):
     windows: list[WindowRiskAssessment]
     incident_ids: list[str]
     incident_severity_counts: dict[str, int]
+    # The exact `LLMInvestigation` objects `narrative.to_investigation()`
+    # produced and logged for each incident created in this run -- the same
+    # object `GET /llm/investigations/{incident_id}` would return, captured
+    # at creation time rather than regenerated, so there's no second call
+    # needed and no risk of a duplicate/drifted copy (investigation_id is
+    # assigned once, by `to_investigation`, and never regenerated here).
+    investigations: list[LLMInvestigation] = Field(default_factory=list)
     started_at: datetime
     completed_at: datetime
 

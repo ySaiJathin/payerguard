@@ -1,10 +1,11 @@
 # PayerGuard local development stack.
-# Frontend service is intentionally commented out below -- implementation is
-# deferred per MVP_CONTEXT.md, but it WILL be containerized (its own
-# Dockerfile, its own service here) once built, same pattern as backend.
+# Frontend is now a real service (frontend/Dockerfile), containerized the
+# same way as backend, now that real frontend source exists (MVP_CONTEXT.md
+# Section 4.1) -- see the frontend service below for why it has no
+# API_BASE_URL override.
 # No live-streaming ingestion service -- ingestion happens via the backend's
-# manual-upload / continuous-file-watch endpoints against the mounted data/
-# folder.
+# POST /claims/upload (manual + repeated-batch upload against the mounted
+# data/ folder; spec 017-batch-file-ingestion).
 
 services:
   postgres:
@@ -40,32 +41,29 @@ services:
     volumes:
       - ./backend/app:/app/app
       - ./data:/app/data
-      - ./ml/artifacts:/app/ml_artifacts
     depends_on:
       postgres:
         condition: service_healthy
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: payerguard-frontend
-  #   restart: unless-stopped
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     # Base URL the frontend uses to reach the backend container.
-  #     API_BASE_URL: http://backend:8000
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./frontend:/app
-  #   depends_on:
-  #     - backend
-  # STATUS: not implemented yet. Uncomment once frontend/Dockerfile and a
-  # real app exist -- see MVP_CONTEXT.md Phase 18/19. Port, build context,
-  # and env vars above are placeholders and should be revisited against
-  # whatever frontend framework gets chosen.
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: payerguard-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    # No API_BASE_URL override, deliberately: it's a Vite build-time value
+    # baked into the served JS bundle, and the bundle runs in the *browser*
+    # on the host -- not inside this Docker network -- so it must resolve
+    # `localhost:8000` (backend's host-mapped port below), which is exactly
+    # what apiClient.ts already defaults to when unset. Pointing it at the
+    # internal service hostname `backend` would be unreachable from a
+    # browser tab.
+    # No source bind-mount: the built image serves a static production
+    # bundle via nginx, unlike backend's live-reload dev volume above.
 
 volumes:
   payerguard_pgdata:

@@ -21,10 +21,20 @@ from app.risk.scoring.percentile_scaling import percentile_bucket_score
 from app.risk.scoring.schemas import BusinessImpactComponent, BusinessImpactResult
 
 MEMBER_HARM_UNAVAILABLE_REASON = (
-    "No member-harm or clinical-outcome field exists in this dataset (MVP_CONTEXT.md Section 2)."
+    "Would need a clinical-outcome signal -- an adverse-event flag, readmission "
+    "indicator, or grievance/appeal code tied to the claim -- and this claims-only "
+    "extract carries none (MVP_CONTEXT.md Section 2). Left unavailable rather than "
+    "estimated from CLM_PMT_AMT, because a claim's dollar size is not evidence of "
+    "harm to the member; conflating the two would let a single expensive-but-benign "
+    "claim outrank a cheap claim that actually hurt someone."
 )
 PROVIDER_REPUTATION_UNAVAILABLE_REASON = (
-    "No provider-reputation or complaint field exists in this dataset (MVP_CONTEXT.md Section 2)."
+    "Would need a provider-level signal -- prior complaint count, audit findings, "
+    "sanction history, or network-tier rating keyed to PRVDR_NUM/ORG_NPI_NUM -- and "
+    "this dataset has no such table (MVP_CONTEXT.md Section 2). Left unavailable "
+    "rather than inferred from this incident's own claim volume or amount, because "
+    "that would score reputation from the same numbers already driving Severity and "
+    "Risk, double-counting one signal as if it were two independent ones."
 )
 
 

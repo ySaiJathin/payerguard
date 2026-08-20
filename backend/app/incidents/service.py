@@ -142,6 +142,16 @@ def create_incident(
         updated_at=now,
     )
     db.add(incident_orm)
+    # Force the incident row to be written within this transaction *now*,
+    # before anything below references its incident_id. SQLAlchemy's
+    # unit-of-work normally sequences this automatically via the declared
+    # ForeignKey on IncidentStatusTransition, but under the demo pipeline's
+    # long-lived, loop-heavy session (many incidents created back-to-back in
+    # one Simulator run) that ordering has been observed to break, producing
+    # a ForeignKeyViolation on incident_status_transitions at commit time.
+    # An explicit flush closes the gap regardless of why the automatic
+    # ordering failed.
+    db.flush()
 
     if status == "ready_for_review":
         db.add(

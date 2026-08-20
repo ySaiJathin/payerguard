@@ -1,180 +1,28 @@
 {
   "benchmark_results": [
     {
-      "model_type": "iqr",
-      "precision": 1.0,
-      "recall": 0.05880243814987451,
-      "f1": 0.11107348459194041,
-      "fpr": 0.0,
-      "detection_latency_ms": 0.0005479533896451215,
-      "execution_time_s": 0.14402780000818893,
-      "measurement_context": {
-        "hardware": "Windows AMD64 (Intel64 Family 6 Model 170 Stepping 4, GenuineIntel)",
-        "python_version": "3.12.10",
-        "run_timestamp": "2026-08-19T21:31:43.312281Z"
-      },
-      "per_injection_type_breakdown": {
-        "missing_value_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "amount_spike": {
-          "precision": 1.0,
-          "recall": 0.0017921146953405018,
-          "f1": 0.003577817531305903
-        },
-        "duplicate_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "volume_drop": {
-          "precision": 1.0,
-          "recall": 0.2921146953405018,
-          "f1": 0.45214979195561716
-        },
-        "distribution_shift": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        }
-      }
-    },
-    {
-      "model_type": "hbos",
+      "model_type": "isolation_forest",
       "precision": 0.0,
       "recall": 0.0,
       "f1": 0.0,
-      "fpr": 0.0,
-      "detection_latency_ms": 0.001599073799870728,
-      "execution_time_s": 3.156057600004715,
+      "fpr": 0.08611647805685896,
+      "detection_latency_ms": 0.008070996576531765,
+      "execution_time_s": 0.610152769004344,
       "measurement_context": {
-        "hardware": "Windows AMD64 (Intel64 Family 6 Model 170 Stepping 4, GenuineIntel)",
-        "python_version": "3.12.10",
-        "run_timestamp": "2026-08-19T21:31:43.312281Z"
+        "hardware": "Linux x86_64",
+        "python_version": "3.11.16",
+        "run_timestamp": "2026-08-20T01:05:23.340935Z"
       },
-      "per_injection_type_breakdown": {
-        "missing_value_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "amount_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "duplicate_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "volume_drop": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "distribution_shift": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        }
-      }
-    },
-    {
-      "model_type": "isolation_forest",
-      "precision": 1.0,
-      "recall": 0.05665112943707422,
-      "f1": 0.10722768917543264,
-      "fpr": 0.0,
-      "detection_latency_ms": 0.005070779806218345,
-      "execution_time_s": 0.1884989999962272,
-      "measurement_context": {
-        "hardware": "Windows AMD64 (Intel64 Family 6 Model 170 Stepping 4, GenuineIntel)",
-        "python_version": "3.12.10",
-        "run_timestamp": "2026-08-19T21:31:43.312281Z"
-      },
-      "per_injection_type_breakdown": {
-        "missing_value_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "amount_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "duplicate_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "volume_drop": {
-          "precision": 1.0,
-          "recall": 0.2831541218637993,
-          "f1": 0.44134078212290506
-        },
-        "distribution_shift": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        }
-      }
-    },
-    {
-      "model_type": "lof",
-      "precision": 1.0,
-      "recall": 0.05665112943707422,
-      "f1": 0.10722768917543264,
-      "fpr": 0.0,
-      "detection_latency_ms": 0.021775321181091944,
-      "execution_time_s": 3.211665199996787,
-      "measurement_context": {
-        "hardware": "Windows AMD64 (Intel64 Family 6 Model 170 Stepping 4, GenuineIntel)",
-        "python_version": "3.12.10",
-        "run_timestamp": "2026-08-19T21:31:43.312281Z"
-      },
-      "per_injection_type_breakdown": {
-        "missing_value_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "amount_spike": {
-          "precision": 1.0,
-          "recall": 0.010752688172043012,
-          "f1": 0.021276595744680854
-        },
-        "duplicate_spike": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        },
-        "volume_drop": {
-          "precision": 1.0,
-          "recall": 0.2724014336917563,
-          "f1": 0.4281690140845071
-        },
-        "distribution_shift": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0
-        }
-      }
+      "per_injection_type_breakdown": {}
     }
   ],
   "production_model_selection": {
-    "selected_model": "iqr",
+    "selected_model": "isolation_forest",
     "ranking_rule": "F1 primary, FPR tie-break, execution_time second tie-break",
     "tie_break_applied": false,
     "benchmark_result_ids": [
-      "iqr",
-      "hbos",
-      "isolation_forest",
-      "lof"
+      "isolation_forest"
     ],
-    "selected_at": "2026-08-19T21:31:50.028540Z"
+    "selected_at": "2026-08-20T01:05:23.340935Z"
   }
 }

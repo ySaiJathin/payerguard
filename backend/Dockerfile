@@ -14,7 +14,4 @@ COPY app ./app
 
 EXPOSE 8000
 
-# NOTE: app.main:app is a placeholder target -- app/main.py currently has no
-# routable FastAPI instance uncommented yet. Uncomment the CMD once real
-# implementation begins.
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

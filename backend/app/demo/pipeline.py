@@ -213,6 +213,7 @@ def run_pipeline(
 
     # --- 5. Incidents -----------------------------------------------------
     incident_ids: list[str] = []
+    investigations: list = []
     severity_counts: dict[str, int] = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0}
     for assessment in assessments:
         if assessment.risk_score < INCIDENT_RISK_FLOOR:
@@ -250,13 +251,29 @@ def run_pipeline(
             },
         )
 
+        # `_captured` is a single-element list rather than a plain variable so
+        # the closure below can write into it -- `create_incident` invokes
+        # `investigation_builder` and logs whatever it returns as *the*
+        # investigation record; capturing that exact return value here (rather
+        # than calling `narrative.to_investigation()` a second time after the
+        # fact) is what keeps `investigations` below identical to what
+        # `GET /llm/investigations/{incident_id}` would return -- a second
+        # call would mint a fresh `investigation_id` via `uuid4()` and produce
+        # a duplicate, drifted record instead of exposing the real one.
+        _captured: list = []
+
+        def _build_investigation(incident_id, _payload, a=assessment, r=rendered):
+            generated = narrative.to_investigation(incident_id, a, r)
+            _captured.append(generated)
+            return generated
+
         incident = incidents_service.create_incident(
             db,
             IncidentCreate(window_id=assessment.window_id, evidence=evidence),
-            investigation_builder=lambda incident_id, _payload, a=assessment, r=rendered: (
-                narrative.to_investigation(incident_id, a, r)
-            ),
+            investigation_builder=_build_investigation,
         )
+        if _captured:
+            investigations.append(_captured[0])
         # The severity the UI bands (`severity_result.severity`) is set to the
         # XGBoost risk score, so every surface -- KPI tiles, incident table,
         # incident detail and the severity distribution panel -- bands one
@@ -289,6 +306,7 @@ def run_pipeline(
         windows=assessments,
         incident_ids=incident_ids,
         incident_severity_counts=severity_counts,
+        investigations=investigations,
         started_at=started_at,
         completed_at=datetime.now(timezone.utc),
     )
