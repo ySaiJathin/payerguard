@@ -81,6 +81,34 @@ function insightFor(incident: Incident): Insight {
 }
 
 
+/**
+ * An incident is "implemented" (its fix has been actioned) once it leaves
+ * the actionable pipeline. `resolved` is the explicit terminal fixed state;
+ * `rejected` means a reviewer decided it needs no fix. Either way it should
+ * stop occupying one of the top-priority slots so the next highest-priority
+ * open incident moves up -- this is what makes the list dynamic rather than
+ * a fixed top 3.
+ */
+const IMPLEMENTED_STATUSES = new Set([
+  'resolved',
+  'rejected',
+]);
+
+function isOpen(incident: Incident): boolean {
+  return !IMPLEMENTED_STATUSES.has(incident.status);
+}
+
+/** P1 = highest computed priority among open incidents, P2 = next, etc. */
+function priorityLabel(rank: number): string {
+  return `P${rank + 1}`;
+}
+
+const PRIORITY_BADGE_STYLE: Record<string, string> = {
+  P1: 'bg-rose-500/15 text-rose-300 border-rose-500/40',
+  P2: 'bg-amber-500/15 text-amber-300 border-amber-500/40',
+  P3: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40',
+};
+
 export const IncidentRiskDetails: React.FC<
   IncidentRiskDetailsProps
 > = ({
@@ -90,17 +118,27 @@ export const IncidentRiskDetails: React.FC<
 
   const navigate = useNavigate();
 
+  /*
+   * Ranked by the actual composite Priority score (`priority_result.priority`
+   * -- Severity/Risk/Business Impact/Affected Claims, see MVP_CONTEXT.md
+   * §3.3), not just risk_score, since that's the number the system defines
+   * as "priority." Incidents already resolved or rejected are excluded, so
+   * as soon as one of today's top 3 is implemented the next-highest-priority
+   * open incident automatically fills its slot on the next data refresh.
+   */
   const rows = incidents
+    .filter(isOpen)
     .slice()
     .sort(
       (a, b) =>
-        (b.risk_score ?? 0) -
-        (a.risk_score ?? 0)
+        (b.priority_result?.priority ?? 0) -
+        (a.priority_result?.priority ?? 0)
     )
     .slice(0, limit)
-    .map((incident) => ({
+    .map((incident, index) => ({
       incident,
       insight: insightFor(incident),
+      priorityLabel: priorityLabel(index),
     }));
 
 
@@ -116,11 +154,12 @@ export const IncidentRiskDetails: React.FC<
             <ShieldAlert className="mx-auto mb-3 h-8 w-8 text-slate-600" />
 
             <p className="text-sm font-medium text-slate-300">
-              No active incidents
+              No open priority incidents
             </p>
 
             <p className="mt-1 text-xs text-slate-500">
-              New incidents will appear here after risk scoring.
+              Every incident is resolved or rejected, or none have been
+              scored yet. New incidents will appear here after risk scoring.
             </p>
 
           </CardContent>
@@ -129,13 +168,16 @@ export const IncidentRiskDetails: React.FC<
 
       ) : (
 
-        rows.map(({ incident, insight }) => {
+        rows.map(({ incident, insight, priorityLabel: pLabel }) => {
 
           const risk =
             incident.risk_score ?? 0;
 
           const band =
             bandForScore(risk);
+
+          const priority =
+            incident.priority_result?.priority ?? 0;
 
 
           return (
@@ -158,6 +200,18 @@ export const IncidentRiskDetails: React.FC<
                   <div>
 
                     <div className="flex flex-wrap items-center gap-2">
+
+                      <span
+                        className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-bold tracking-wide ${
+                          PRIORITY_BADGE_STYLE[pLabel] ??
+                          PRIORITY_BADGE_STYLE.P3
+                        }`}
+                        title={`Rank ${pLabel} by computed priority score (${priority.toFixed(
+                          0
+                        )}/100) among open incidents`}
+                      >
+                        {pLabel}
+                      </span>
 
                       <span className="font-mono text-[11px] font-semibold text-cyan-400">
                         {incident.incident_id}

@@ -18,7 +18,6 @@ import {
   type StageStatus,
 } from '../components/dashboard/SystemStatusSection';
 
-import { ClaimsVolumeChart } from '../components/dashboard/ClaimsVolumeChart';
 import { DataQualityTrendChart } from '../components/dashboard/DataQualityTrendChart';
 import { AnomalyTrendChart } from '../components/dashboard/AnomalyTrendChart';
 import { ClaimAmountDistribution } from '../components/dashboard/ClaimAmountDistribution';
@@ -487,35 +486,6 @@ export const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
 
-        {/* Claim Volume */}
-
-        <DataState
-          loading={baseline.loading}
-          error={baseline.error}
-          notComputed={baseline.notComputed}
-          label="Claim volume baseline"
-          producedBy="POST /baseline/compute"
-        >
-
-          {baseline.data && (
-            <ClaimsVolumeChart
-              windows={
-                baseline.data
-                  .volume_baseline
-                  .windows
-              }
-
-              windowDefinition={
-                baseline.data
-                  .volume_baseline
-                  .window_definition
-              }
-            />
-          )}
-
-        </DataState>
-
-
         {/* Data Quality */}
 
         <DataState
@@ -629,8 +599,22 @@ export const Dashboard: React.FC = () => {
 
 
       {/* =====================================================
-          RISK & INVESTIGATION
+          TOP PRIORITY INCIDENTS (P1 / P2 / P3)
       ===================================================== */}
+
+      <div>
+
+        <h2 className="text-sm font-semibold text-white">
+          Top Priority Incidents
+        </h2>
+
+        <p className="mt-0.5 text-xs text-slate-500">
+          The 3 open incidents with the highest computed priority score. Once
+          one is resolved or rejected, the next-highest-priority open
+          incident takes its slot automatically.
+        </p>
+
+      </div>
 
       <IncidentRiskDetails
         incidents={

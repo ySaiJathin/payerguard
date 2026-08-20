@@ -466,6 +466,11 @@ export interface PipelineRunResult {
   windows: WindowRiskAssessment[];
   incident_ids: string[];
   incident_severity_counts: Record<string, number>;
+  /** The exact LLMInvestigation record logged for each incident created in
+   * this run -- same shape/content GET /llm/investigations/{id} returns,
+   * included directly so a caller doesn't need a follow-up fetch per
+   * incident just to see what narrative.to_investigation() produced. */
+  investigations: LLMInvestigation[];
   started_at: string;
   completed_at: string;
 }
