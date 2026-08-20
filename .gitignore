@@ -45,6 +45,16 @@ build/
 .claude/
 .specify/
 
+# Session-local audit/summary docs and archives -- not part of the
+# tracked spec chain, kept locally only.
+CODEBASE_AUDIT_REPORT.md
+MVP_CONTEXT.md
+_to_delete/
+frontend.zip
+git-copilot-summary.md
+package-lock.json
+payerguard-demo-simulator-prompt.md
+
 
 
 data/reports/quality_issues.json
